@@ -1,0 +1,127 @@
+;;;;;;;;;;;;;;;;;;;;;;;; 表示関係 ;;;;;;;;;;;;;;;;;;;;;;;;
+; 英語フォント
+ (set-face-attribute 'default nil
+             :family "Source Code Pro" ;; font
+             :height 150)              ;; font size
+; 日本語フォント
+(set-fontset-font nil 'japanese-jisx0208  (font-spec :family "Hiragino Kaku Gothic ProN"))
+; 半角全角比を1:2
+(setq face-font-rescale-alist '((".*Hiragino_Kaku_Gothic_ProN.*" . 1.2)))
+; ウィンドウサイズの位置、サイズ
+(if window-system (progn
+  (setq initial-frame-alist '((width . 132)(height . 39)(top . 0)(left . 0)))
+  (set-background-color "Black")
+  (set-foreground-color "White")
+  (set-cursor-color "Gray")
+))
+; ウィンドウ透明化
+(add-to-list 'default-frame-alist '(alpha . (0.80 0.80)))
+; ツールバー非表示
+(tool-bar-mode -1)
+; タイトルバーにファイル名表示
+(setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
+; 行番号常に表示
+(require 'linum)
+(global-linum-mode)
+; 編集行ハイライト
+(global-hl-line-mode)
+; 釣り合いのとれる括弧をハイライトする
+(show-paren-mode 1)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;表示関係終わり
+
+;;;;;;;;;;;;;;;;;;;;;;;; キーバインド等設定 ;;;;;;;;;;;;;;;;;;;;;;;;
+; 常にutf8
+(prefer-coding-system 'utf-8)
+(setq coding-system-for-read 'utf-8)
+(setq coding-system-for-write 'utf-8)
+; ホームディレクトリの件
+(setq inhibit-splash-screen t)
+(defun cd-to-homedir-all-buffers ()
+  "Change every current directory of all buffers to the home directory."
+  (mapc
+   (lambda (buf) (set-buffer buf) (cd (expand-file-name "~"))) (buffer-list)))
+(add-hook 'after-init-hook 'cd-to-homedir-all-buffers)
+; 「元に戻す」キーバインド
+(global-set-key "\C-u" 'undo)
+; バックアップファイル作らない
+(setq make-backup-files nil)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;キーバインド等設定終わり
+
+;;;;;;;;;;;;;;;;;;;;;;;; パッケージ管理 ;;;;;;;;;;;;;;;;;;;;;;;;
+; パッケージリストを追加
+(require 'package)
+; MELPA追加
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+; MELPA-stable追加
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+; Marmalade追加
+(add-to-list 'package-archives  '("marmalade" . "http://marmalade-repo.org/packages/") t)
+; 初期化
+(package-initialize)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;パッケージ管理終わり
+
+;;;;;;;;;;;;;;;;;;;;;;;; Markdown-mode ;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;; YaTeX ;;;;;;;;;;;;;;;;;;;;;;;;
+; yatex-mode使用可能にし、拡張子と紐付け
+(autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
+(setq auto-mode-alist (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
+; 自動折り返し無効
+(add-hook 'yatex-mode-hook '(lambda () (auto-fill-mode -1)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;YaTeX終わり
+
+;;;;;;;;;;;;;;;;;;;;;;;; org-mode ;;;;;;;;;;;;;;;;;;;;;;;;
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+; キーバインド
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(define-key global-map "\C-cr" 'org-remember)
+; org-modeでの強調表示を可能に
+(add-hook 'org-mode-hook 'turn-on-font-lock)
+; 見出しの*は最小限に
+(setq org-hide-leading-stars t)
+; 画面端で改行
+(setq org-startup-truncated nil)
+; org-default-notes-fileのディレクトリ
+(setq org-directory "~/Dropbox/Emacs/org/")
+; org-default-notes-fileのファイル名
+(setq org-default-notes-file "notes.org")
+; TODO状態
+(setq org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)")))
+; DONE時刻記録
+(setq org-log-done 'time)
+; アジェンダ表示の対象ファイル
+(setq org-agenda-files (list org-directory))
+; アジェンダ表示で下線を用いる
+(add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)))
+(setq hl-line-face 'underline)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;org-mode終わり
+
+;;;;;;;;;;;;;;;;;;;;;;;; スペルチェック ;;;;;;;;;;;;;;;;;;;;;;;;
+; aspell有効に
+(setq-default ispell-program-name "/usr/local/bin/aspell")
+; 日本語混じりでも有効に
+(eval-after-load "ispell" '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")))
+; LaTeX, Markdown, org-modeでFlyspell常に有効に
+(mapc
+   (lambda (hook)
+     (add-hook hook
+                      '(lambda () (flyspell-mode 1))))
+   '(
+     yatex-mode-hook
+     markdown-mode-hook
+     org-mode-hook
+     ))
+; Flyspellで修正をCMD+RETで
+(global-set-key (kbd "<s-return>")  'ispell-word)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;スペルチェック終わり
+
+;;;;;;;;;;;;;;;;;;;;;;;; helm ;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'helm-config)
+(helm-mode 1)
+; C-hでバックスペース
+(define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
+; TABで補完
+(define-key helm-read-file-map (kbd "<tab>") 'helm-execute-persistent-action)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;helm終わり
