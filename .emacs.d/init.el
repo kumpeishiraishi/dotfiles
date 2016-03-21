@@ -1,10 +1,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;; 表示関係 ;;;;;;;;;;;;;;;;;;;;;;;;
 ; 英語フォント
- (set-face-attribute 'default nil
+(set-face-attribute 'default nil
              :family "Source Code Pro" ;; font
              :height 150)              ;; font size
 ; 日本語フォント
-(set-fontset-font nil 'japanese-jisx0208  (font-spec :family "Hiragino Kaku Gothic ProN"))
+(set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Hiragino Kaku Gothic ProN"))
 ; 半角全角比を1:2
 (setq face-font-rescale-alist '((".*Hiragino_Kaku_Gothic_ProN.*" . 1.2)))
 ; ウィンドウサイズの位置、サイズ
@@ -41,10 +41,14 @@
   (mapc
    (lambda (buf) (set-buffer buf) (cd (expand-file-name "~"))) (buffer-list)))
 (add-hook 'after-init-hook 'cd-to-homedir-all-buffers)
-; 「元に戻す」キーバインド
+; C-uを「元に戻す」
 (global-set-key "\C-u" 'undo)
 ; バックアップファイル作らない
 (setq make-backup-files nil)
+; C-hをバックスペース
+(keyboard-translate ?\C-h ?\C-?)
+; C-zを無効化
+(global-unset-key "\C-z")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;キーバインド等設定終わり
 
 ;;;;;;;;;;;;;;;;;;;;;;;; パッケージ管理 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -120,8 +124,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;; helm ;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'helm-config)
 (helm-mode 1)
-; C-hでバックスペース
-(define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
 ; TABで補完
 (define-key helm-read-file-map (kbd "<tab>") 'helm-execute-persistent-action)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;helm終わり

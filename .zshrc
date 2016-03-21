@@ -1,5 +1,5 @@
 # PATH
-PATH=/usr/local/bin:/usr/bin:/bin:/sbin:/usr/local/texlive/2015/bin/x86_64-darwin:/usr/sbin
+export PATH=/usr/local/bin:/sbin:/usr/local/texlive/2015/bin/x86_64-darwin:/usr/sbin:$PATH
 
 # 環境変数
 export LC_ALL=en_US.UTF-8
