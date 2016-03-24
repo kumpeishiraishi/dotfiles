@@ -118,7 +118,7 @@
      org-mode-hook
      ))
 ; Flyspellで修正をCMD+RETで
-(global-set-key (kbd "<s-return>")  'ispell-word)
+(global-set-key (kbd "<s-return>") 'ispell-word)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;スペルチェック終わり
 
 ;;;;;;;;;;;;;;;;;;;;;;;; helm ;;;;;;;;;;;;;;;;;;;;;;;;

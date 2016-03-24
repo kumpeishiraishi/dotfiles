@@ -9,10 +9,10 @@ export LANG=en_US.UTF-8
 autoload -Uz colors
 colors
 
-# emacs 風キーバインドに
+# emacs風キーバインドに
 bindkey -e
 
-# ヒストリの設定
+# ヒストリ設定
 HISTFILE=~/.zsh_history
 HISTSIZE=50
 SAVEHIST=50
@@ -118,6 +118,9 @@ alias mv='mv -i'
 alias mkdir='mkdir -p'
 alias pandoc_gh='pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/.pandoc/github.css'
 alias pandoc_ghm='pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/.pandoc/dynoload.js'
+alias ghc='stack ghc'
+alias ghci='stack ghci'
+alias runhaskell='stack runhaskell'
 
 # sudo の後のコマンドでエイリアスを有効にする
 alias sudo='sudo '
