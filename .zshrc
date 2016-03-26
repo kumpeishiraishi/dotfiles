@@ -116,10 +116,11 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
-alias pandoc_gh='pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/.pandoc/github.css'
-alias pandoc_ghm='pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/.pandoc/dynoload.js'
+alias pandoc_gh='pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css'
+alias pandoc_ghm='pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js'
 alias ghc='stack ghc'
 alias ghci='stack ghci'
+alias runghc='stack runghc'
 alias runhaskell='stack runhaskell'
 
 # sudo の後のコマンドでエイリアスを有効にする
