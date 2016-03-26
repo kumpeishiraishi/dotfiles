@@ -10,6 +10,7 @@ Helvetica
 Kiipeilyareena
 TikZ
 GitHub
+github
 Haskell
 GHC
 GHCi
@@ -18,3 +19,5 @@ hoge
 Gerrard
 init
 func
+dotfiles
+zsh
