@@ -23,8 +23,6 @@
 ; 行番号常に表示
 (require 'linum)
 (global-linum-mode)
-; 編集行ハイライト
-(global-hl-line-mode)
 ; 釣り合いのとれる括弧をハイライトする
 (show-paren-mode 1)
 ; beep音・画面点滅どっちも消す
@@ -56,6 +54,8 @@
 (add-hook 'after-init-hook 'mac-change-language-to-us)
 (add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
 (add-hook 'isearch-mode-hook 'mac-change-language-to-us)
+; 分割ウィンドウ移動
+(windmove-default-keybindings 'super)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;キーバインド等設定終わり
 
 ;;;;;;;;;;;;;;;;;;;;;;;; パッケージ管理 ;;;;;;;;;;;;;;;;;;;;;;;;
