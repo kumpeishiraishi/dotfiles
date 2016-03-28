@@ -4,6 +4,7 @@ export PATH=/usr/local/bin:/sbin:/usr/local/texlive/2015/bin/x86_64-darwin:/usr/
 # 環境変数
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+export EDITOR=nano
 
 # 色を使用出来るように
 autoload -Uz colors
