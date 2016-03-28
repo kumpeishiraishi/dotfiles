@@ -149,10 +149,12 @@ s(){
     local map="https://www.google.co.jp/maps/search/"
     local jawp="https://ja.wikipedia.org/wiki/"
     local enwp="https://en.wikipedia.org/wiki/"
+    local dict="http://ejje.weblio.jp/content/"
     case $1 in
 	"-m") shift; open "$map${*// /+}";;
 	"-jw") shift; w3m "$jawp${*// /_}";;
 	"-ew") shift; w3m "$enwp${*// /_}";;
+        "-d") shift; w3m "$dict${*// /_}";;
 	*) w3m "$web${*// /+}";;
     esac
     }
