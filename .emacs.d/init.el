@@ -51,9 +51,10 @@
 (global-unset-key "\C-z")
 ; emacs-24.5-inline.patchを当ててHomebrewからインストールして可能になった、日本語関係の設定（起動時、ミニバッファ、isearch/migemoで英数）
 ; (setq default-input-method "MacOSX")でIME毎カーソル色変更などは出来なかった（未解決2016/03/28）
-(add-hook 'after-init-hook 'mac-change-language-to-us)
-(add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
-(add-hook 'isearch-mode-hook 'mac-change-language-to-us)
+;下記のIME関係は、インラインパッチをあてたEmacsの全画面表示時に、日本語入力が一文字しか出来ないという問題のため、棚上げ（2016/03/28）
+;(add-hook 'after-init-hook 'mac-change-language-to-us)
+;(add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
+;(add-hook 'isearch-mode-hook 'mac-change-language-to-us)
 ; 分割ウィンドウ移動
 (windmove-default-keybindings 'super)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;キーバインド等設定終わり
@@ -72,7 +73,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;パッケージ管理終わり
 
 ;;;;;;;;;;;;;;;;;;;;;;;; exec-path-from-shell ;;;;;;;;;;;;;;;;;;;;;;;;
-; PATHをshellからEmacsに引き継ぐ
+; $PATHをshellからEmacsに引き継ぐ
 (exec-path-from-shell-initialize)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;exec-path-from-shell終わり
 
