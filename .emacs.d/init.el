@@ -51,6 +51,11 @@
 (keyboard-translate ?\C-h ?\C-?)
 ; C-zを無効化
 (global-unset-key "\C-z")
+; emacs-24.5-inline.patchを当ててHomebrewからインストールして可能になった、日本語関係の設定（起動時、ミニバッファ、isearch/migemoで英数）
+; (setq default-input-method "MacOSX")でIME毎カーソル色変更などは出来なかった（未解決2016/03/28）
+(add-hook 'after-init-hook 'mac-change-language-to-us)
+(add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
+(add-hook 'isearch-mode-hook 'mac-change-language-to-us)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;キーバインド等設定終わり
 
 ;;;;;;;;;;;;;;;;;;;;;;;; パッケージ管理 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -65,6 +70,11 @@
 ; 初期化
 (package-initialize)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;パッケージ管理終わり
+
+;;;;;;;;;;;;;;;;;;;;;;;; exec-path-from-shell ;;;;;;;;;;;;;;;;;;;;;;;;
+; PATHをshellからEmacsに引き継ぐ
+(exec-path-from-shell-initialize)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;exec-path-from-shell終わり
 
 ;;;;;;;;;;;;;;;;;;;;;;;; Markdown-mode ;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -107,7 +117,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;; スペルチェック ;;;;;;;;;;;;;;;;;;;;;;;;
 ; aspell有効に
-(setq-default ispell-program-name "/usr/local/bin/aspell")
+(setq-default ispell-program-name "aspell")
 ; 日本語混じりでも有効に
 (eval-after-load "ispell" '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")))
 ; LaTeX, Markdown, org-modeでFlyspell常に有効に
@@ -124,6 +134,18 @@
 (global-set-key (kbd "<s-return>") 'ispell-word)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;スペルチェック終わり
 
+;;;;;;;;;;;;;;;;;;;;;;;; migemo ;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'migemo)
+(setq migemo-command "cmigemo")
+(setq migemo-options '("-q" "--emacs"))
+(setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
+(setq migemo-user-dictionary nil)
+(setq migemo-regex-dictionary nil)
+(setq migemo-coding-system 'utf-8-unix)
+(load-library "migemo")
+(migemo-init)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;migemo終わり
+
 ;;;;;;;;;;;;;;;;;;;;;;;; helm ;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'helm-config)
 (helm-mode 1)
@@ -133,14 +155,4 @@
 (helm-migemo-mode 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;helm終わり
 
-;;;;;;;;;;;;;;;;;;;;;;;; migemo ;;;;;;;;;;;;;;;;;;;;;;;;
-(require 'migemo)
-(setq migemo-command "/usr/local/bin/cmigemo")
-(setq migemo-options '("-q" "--emacs"))
-(setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
-(setq migemo-user-dictionary nil)
-(setq migemo-regex-dictionary nil)
-(setq migemo-coding-system 'utf-8-unix)
-(load-library "migemo")
-(migemo-init)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;migemo終わり
+
