@@ -129,4 +129,18 @@
 (helm-mode 1)
 ; TABで補完
 (define-key helm-read-file-map (kbd "<tab>") 'helm-execute-persistent-action)
+; migemo有効に
+(helm-migemo-mode 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;helm終わり
+
+;;;;;;;;;;;;;;;;;;;;;;;; migemo ;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'migemo)
+(setq migemo-command "/usr/local/bin/cmigemo")
+(setq migemo-options '("-q" "--emacs"))
+(setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
+(setq migemo-user-dictionary nil)
+(setq migemo-regex-dictionary nil)
+(setq migemo-coding-system 'utf-8-unix)
+(load-library "migemo")
+(migemo-init)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;migemo終わり
