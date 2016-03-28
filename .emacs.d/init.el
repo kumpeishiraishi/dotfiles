@@ -146,13 +146,16 @@
 (migemo-init)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;migemo終わり
 
-;;;;;;;;;;;;;;;;;;;;;;;; helm ;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;; helmと検索 ;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'helm-config)
 (helm-mode 1)
 ; TABで補完
 (define-key helm-read-file-map (kbd "<tab>") 'helm-execute-persistent-action)
 ; migemo有効に
 (helm-migemo-mode 1)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;helm終わり
-
-
+; helm-swoop
+(require 'helm-swoop)
+; ace-isearchを導入し、avyを使う
+(global-ace-isearch-mode 1)
+(setq ace-isearch-function 'avy-goto-char)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;helmと検索終わり
