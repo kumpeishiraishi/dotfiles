@@ -1,3 +1,4 @@
+export PATH=/usr/local/bin:/sbin:/usr/local/texlive/2015/bin/x86_64-darwin:/usr/sbin:$PATH
 LC_ALL=en_US.UTF-8
 LANG=en_US.UTF-8
 
