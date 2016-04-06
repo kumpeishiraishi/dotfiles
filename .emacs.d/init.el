@@ -18,15 +18,20 @@
 (add-to-list 'default-frame-alist '(alpha . (0.80 0.80)))
 ; ツールバー非表示
 (tool-bar-mode -1)
+; スクロールバー非表示
+(scroll-bar-mode -1)
 ; タイトルバーにファイル名表示
-(setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
+(setq frame-title-format "%f")
 ; 行番号常に表示
 (require 'linum)
 (global-linum-mode)
-; 釣り合いのとれる括弧をハイライトする
+; 釣り合いのとれる括弧をハイライト
 (show-paren-mode 1)
 ; beep音・画面点滅どっちも消す
 (setq ring-bell-function 'ignore)
+; 日付と時刻をモードラインに
+(setq display-time-day-and-date t)
+(display-time)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;表示関係終わり
 
 ;;;;;;;;;;;;;;;;;;;;;;;; キーバインド等設定 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -64,10 +69,6 @@
 (require 'package)
 ; MELPA追加
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-; MELPA-stable追加
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
-; Marmalade追加
-(add-to-list 'package-archives  '("marmalade" . "http://marmalade-repo.org/packages/") t)
 ; 初期化
 (package-initialize)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;パッケージ管理終わり
@@ -160,3 +161,45 @@
 (global-ace-isearch-mode 1)
 (setq ace-isearch-function 'avy-goto-char)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;helmと検索終わり
+
+;;;;;;;;;;;;;;;;;;;;;;;; モードライン ;;;;;;;;;;;;;;;;;;;;;;;;
+(defvar mode-line-cleaner-alist
+  '(
+    (helm-mode . "")
+    (helm-migemo-mode . "")
+    (ace-isearch-mode . "")
+    (flyspell-mode . "")
+    (abbrev-mode . " Abb")
+    ;; Major modes
+    (lisp-interaction-mode . "Li")
+    (python-mode . "Py")
+    (haskell-mode . "Hs")
+    (emacs-lisp-mode . "El")
+    (yatex-mode . "TeX")
+    (c++-mode . "C++")
+    (markdown-mode . "Md")))
+(defun clean-mode-line ()
+  (interactive)
+  (loop for (mode . mode-str) in mode-line-cleaner-alist
+        do
+        (let ((old-mode-str (cdr (assq mode minor-mode-alist))))
+          (when old-mode-str
+            (setcar old-mode-str mode-str))
+          ;; major mode
+          (when (eq mode major-mode)
+            (setq mode-name mode-str)))))
+(add-hook 'after-change-major-mode-hook 'clean-mode-line)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;モードライン終わり
+
+;;;;;;;;;;;;;;;;;;;;;;;; auto-complete ;;;;;;;;;;;;;;;;;;;;;;;;
+(ac-config-default)
+(add-to-list 'ac-modes 'yatex-mode)
+(setq ac-auto-start 1)        ; n文字で開始
+(setq ac-auto-show-menu 0.2)  ; n秒で開始
+(setq ac-candidate-limit nil) ; 補完候補表示を無制限に
+(setq ac-use-menu-map t)
+(setq ac-comphist nil)
+(setq ac-ignore-case t)       ; 大文字小文字を区別しない
+(global-auto-complete-mode t)
+(setq ac-use-fuzzy t)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;auto-complete終わり
