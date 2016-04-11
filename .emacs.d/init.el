@@ -12,7 +12,7 @@
   (setq initial-frame-alist '((width . 132)(height . 39)(top . 0)(left . 0)))
   (set-background-color "Black")
   (set-foreground-color "White")
-  (set-cursor-color "Gray")
+  (set-cursor-color "Green")
 ))
 ; ウィンドウ透明化
 (add-to-list 'default-frame-alist '(alpha . (0.80 0.80)))
@@ -23,16 +23,53 @@
 ; タイトルバーにファイル名表示
 (setq frame-title-format "%f")
 ; 行番号常に表示
-(require 'linum)
-(global-linum-mode)
+(global-linum-mode 1)
 ; 釣り合いのとれる括弧をハイライト
 (show-paren-mode 1)
 ; beep音・画面点滅どっちも消す
 (setq ring-bell-function 'ignore)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;表示関係終わり
+
+;;;;;;;;;;;;;;;;;;;;;;;; モードライン ;;;;;;;;;;;;;;;;;;;;;;;;
+; モードラインにバッテリ残量
+(display-battery-mode t)
+; モードラインにカーソル行非表示
+(line-number-mode -1)
+; モードライン文字色・背景色
+(set-face-foreground 'mode-line "Yellow")
+(set-face-background 'mode-line "DarkSlateBlue")
 ; 日付と時刻をモードラインに
 (setq display-time-day-and-date t)
 (display-time)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;表示関係終わり
+; モードを略号表示
+(defvar mode-line-cleaner-alist
+  '(
+    (helm-mode . "")
+    (helm-migemo-mode . "")
+    (ace-isearch-mode . "")
+    (flyspell-mode . "")
+    (abbrev-mode . " Abb")
+    ;; Major modes
+    (lisp-interaction-mode . "Li")
+    (python-mode . "Py")
+    (haskell-mode . "Hs")
+    (emacs-lisp-mode . "El")
+    (yatex-mode . "TeX")
+    (c++-mode . "C++")
+    (c-mode . "C")
+    (markdown-mode . "Md")))
+(defun clean-mode-line ()
+  (interactive)
+  (loop for (mode . mode-str) in mode-line-cleaner-alist
+        do
+        (let ((old-mode-str (cdr (assq mode minor-mode-alist))))
+          (when old-mode-str
+            (setcar old-mode-str mode-str))
+          ;; major mode
+          (when (eq mode major-mode)
+            (setq mode-name mode-str)))))
+(add-hook 'after-change-major-mode-hook 'clean-mode-line)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;; キーバインド等設定 ;;;;;;;;;;;;;;;;;;;;;;;;
 ; 常にutf8
@@ -162,35 +199,6 @@
 (setq ace-isearch-function 'avy-goto-char)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;helmと検索終わり
 
-;;;;;;;;;;;;;;;;;;;;;;;; モードライン ;;;;;;;;;;;;;;;;;;;;;;;;
-(defvar mode-line-cleaner-alist
-  '(
-    (helm-mode . "")
-    (helm-migemo-mode . "")
-    (ace-isearch-mode . "")
-    (flyspell-mode . "")
-    (abbrev-mode . " Abb")
-    ;; Major modes
-    (lisp-interaction-mode . "Li")
-    (python-mode . "Py")
-    (haskell-mode . "Hs")
-    (emacs-lisp-mode . "El")
-    (yatex-mode . "TeX")
-    (c++-mode . "C++")
-    (markdown-mode . "Md")))
-(defun clean-mode-line ()
-  (interactive)
-  (loop for (mode . mode-str) in mode-line-cleaner-alist
-        do
-        (let ((old-mode-str (cdr (assq mode minor-mode-alist))))
-          (when old-mode-str
-            (setcar old-mode-str mode-str))
-          ;; major mode
-          (when (eq mode major-mode)
-            (setq mode-name mode-str)))))
-(add-hook 'after-change-major-mode-hook 'clean-mode-line)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;モードライン終わり
-
 ;;;;;;;;;;;;;;;;;;;;;;;; auto-complete ;;;;;;;;;;;;;;;;;;;;;;;;
 (ac-config-default)
 (add-to-list 'ac-modes 'yatex-mode)
@@ -198,7 +206,7 @@
 (setq ac-auto-show-menu 0.2)  ; n秒で開始
 (setq ac-candidate-limit nil) ; 補完候補表示を無制限に
 (setq ac-use-menu-map t)
-(setq ac-comphist nil)
+(setq ac-use-comphist nil)
 (setq ac-ignore-case t)       ; 大文字小文字を区別しない
 (global-auto-complete-mode t)
 (setq ac-use-fuzzy t)
