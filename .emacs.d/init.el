@@ -28,11 +28,19 @@
 (show-paren-mode 1)
 ; beep音・画面点滅どっちも消す
 (setq ring-bell-function 'ignore)
+; 
+;(global-whitespace-mode 1)
+;(setq whitespace-space-regexp "\\(\u3000\\)")
+;(setq whitespace-style '(face tabs tab-mark))
+;(setq whitespace-display-mappings ())
+;(set-face-foreground 'whitespace-tab "yellow")
+;(set-face-underline  'whitespace-tab t)
+;(set-face-foreground 'whitespace-space "yellow")
+;(set-face-background 'whitespace-space "red")
+;(set-face-underline  'whitespace-space t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;表示関係終わり
 
 ;;;;;;;;;;;;;;;;;;;;;;;; モードライン ;;;;;;;;;;;;;;;;;;;;;;;;
-; モードラインにバッテリ残量
-(display-battery-mode t)
 ; モードラインにカーソル行非表示
 (line-number-mode -1)
 ; モードライン文字色・背景色
@@ -41,6 +49,8 @@
 ; 日付と時刻をモードラインに
 (setq display-time-day-and-date t)
 (display-time)
+; モードラインにバッテリ残量
+(display-battery-mode t)
 ; モードを略号表示
 (defvar mode-line-cleaner-alist
   '(
@@ -48,7 +58,8 @@
     (helm-migemo-mode . "")
     (ace-isearch-mode . "")
     (flyspell-mode . "")
-    (abbrev-mode . " Abb")
+    (abbrev-mode . "")
+    (auto-complete-mode . "")
     ;; Major modes
     (lisp-interaction-mode . "Li")
     (python-mode . "Py")
@@ -170,7 +181,7 @@
      org-mode-hook
      ))
 ; Flyspellで修正をCMD+RETで
-(global-set-key (kbd "<s-return>") 'ispell-word)
+(global-set-key [s-return] 'ispell-word)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;スペルチェック終わり
 
 ;;;;;;;;;;;;;;;;;;;;;;;; migemo ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -201,7 +212,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;; auto-complete ;;;;;;;;;;;;;;;;;;;;;;;;
 (ac-config-default)
-(add-to-list 'ac-modes 'yatex-mode)
 (setq ac-auto-start 1)        ; n文字で開始
 (setq ac-auto-show-menu 0.2)  ; n秒で開始
 (setq ac-candidate-limit nil) ; 補完候補表示を無制限に
@@ -211,3 +221,26 @@
 (global-auto-complete-mode t)
 (setq ac-use-fuzzy t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;auto-complete終わり
+
+;;;;;;;;;;;;;;;;;;;;;;;; SKK ;;;;;;;;;;;;;;;;;;;;;;;;
+; load-path
+(let ((default-directory (expand-file-name "~/.emacs.d/skk/site-lisp")))
+  (add-to-list 'load-path default-directory)
+  (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
+           (normal-top-level-add-subdirs-to-load-path)))
+
+; skk設定
+(require 'skk-autoloads)
+(require 'skk-study)
+(global-set-key "\C-\\" 'skk-mode)
+(setq skk-jisyo-code 'utf-8)
+(setq skk-large-jisyo "~/.emacs.d/skk/data/SKK-JISYO.L")
+(setq skk-extra-jisyo-file-list
+      (list '("~/.emacs.d/skk/data/SKK-JISYO.geo"
+              "~/.emacs.d/skk/data/SKK-JISYO.jinmei"
+              "~/.emacs.d/skk/data/SKK-JISYO.propernoun"
+              "~/.emacs.d/skk/data/SKK-JISYO.station"))
+)
+(setq skk-isearch-start-mode 'latin)
+(setq skk-tut-file "~/.emacs.d/skk/data/SKK.tut")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;SKK終わり
