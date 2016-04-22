@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el
 ;;; Created: around 2014
-;;; Modified: 2016-04-20
+;;; Modified: 2016-04-22
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -10,6 +10,14 @@
 ;; 言語環境・文字コード
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
+(setq coding-system-for-read 'utf-8)
+(setq coding-system-for-write 'utf-8)
+;; emacs-24.5-inline.patchを当ててHomebrewからインストールして可能になった、日本語関係の設定（起動時、ミニバッファ、isearch/migemoで英数）
+;; (setq default-input-method "MacOSX")でIME毎カーソル色変更などは出来なかった（未解決2016/03/28）
+;; 下記のIME関係は、インラインパッチをあてたEmacsの全画面表示時に、日本語入力が一文字しか出来ないという問題のため、棚上げ（2016/03/28）
+;; (add-hook 'after-init-hook 'mac-change-language-to-us)
+;; (add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
+;; (add-hook 'isearch-mode-hook 'mac-change-language-to-us)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; 表示
@@ -21,19 +29,22 @@
 (setq ring-bell-function 'ignore)
 (setq frame-title-format "%f")
 ;; フォント
+;; Macでヒラギノ、それ以外で源ノ角。Source Code Proと源ノ角を統合したSource Han Code JPもあるが、欧文太字潰れや幅が気に入らず、見送り（2016-04-21）
 (set-face-attribute 'default nil
-             :family "Source Code Pro"
-             :height 150)
-(set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Hiragino Kaku Gothic ProN"))
-(setq face-font-rescale-alist '((".*Hiragino_Kaku_Gothic_ProN.*" . 1.2)));; 半角全角比を1:2
+		    :family "Source Code Pro"
+		    :height 135)
+(if (equal system-type 'darwin)
+    (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Hiragino Kaku Gothic ProN"))
+  (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Source Han Sans")))
+(setq face-font-rescale-alist '(("Hiragino.*" . 1.2)))
 ;; ウィンドウ
-(if window-system (progn
-  (setq initial-frame-alist '((width . 132)(height . 39)(top . 0)(left . 0)))
-  (set-background-color "Black")
-  (set-foreground-color "White")
-  (set-cursor-color "Green")
-));; 位置色
-(add-to-list 'default-frame-alist '(alpha . (0.80 0.80)));; 透明化
+(if window-system
+    (progn
+      (set-frame-parameter nil 'fullscreen 'maximized)
+      (set-background-color "Black")
+      (set-foreground-color "White")
+      (set-cursor-color "Green")
+      (set-frame-parameter nil 'alpha 80)))
 ;; 起動時画面
 (setq inhibit-splash-screen t)
 (setq initial-scratch-message nil)
@@ -71,7 +82,7 @@
     (python-mode . "Py")
     (haskell-mode . "Hs")
     (emacs-lisp-mode . "El")
-;    (yatex-mode . "TeX")
+;;    (yatex-mode . "TeX")
     (c++-mode . "C++")
     (c-mode . "C")
     (markdown-mode . "Md")))
@@ -91,14 +102,8 @@
 ;;; キーバインド
 (global-set-key "\C-u" 'undo)
 (global-unset-key "\C-z")
-(windmove-default-keybindings 'super);; 分割ウィンドウ移動をCMDで
 (keyboard-translate ?\C-h ?\C-?)
-;; emacs-24.5-inline.patchを当ててHomebrewからインストールして可能になった、日本語関係の設定（起動時、ミニバッファ、isearch/migemoで英数）
-;; (setq default-input-method "MacOSX")でIME毎カーソル色変更などは出来なかった（未解決2016/03/28）
-;;下記のIME関係は、インラインパッチをあてたEmacsの全画面表示時に、日本語入力が一文字しか出来ないという問題のため、棚上げ（2016/03/28）
-;;(add-hook 'after-init-hook 'mac-change-language-to-us)
-;;(add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
-;;(add-hook 'isearch-mode-hook 'mac-change-language-to-us)
+(windmove-default-keybindings 'super);; 分割ウィンドウ移動をCMDで
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; パッケージ管理
@@ -113,6 +118,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Markdown-mode
+(setq markdown-command "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js");; エイリアスpandoc_ghmを認識せず（2016-04-22）
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; haskell-mode
@@ -155,12 +161,12 @@
 (global-set-key [s-return] 'ispell-word)
 ;; flyspell
 (mapc
-   (lambda (hook)
-     (add-hook hook
-                      '(lambda () (flyspell-mode 1))))
-   '(yatex-mode-hook
-     markdown-mode-hook
-     org-mode-hook))
+ (lambda (hook)
+   (add-hook hook
+	     '(lambda () (flyspell-mode 1))))
+ '(yatex-mode-hook
+   markdown-mode-hook
+   org-mode-hook))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; migemo
@@ -203,21 +209,20 @@
 (let ((default-directory (expand-file-name "~/.emacs.d/skk/site-lisp")))
   (add-to-list 'load-path default-directory)
   (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
-           (normal-top-level-add-subdirs-to-load-path)))
+      (normal-top-level-add-subdirs-to-load-path)))
 
 ;; 設定
 (require 'skk-autoloads)
 (require 'skk-study)
 (global-set-key "\C-\\" 'skk-mode)
 (setq skk-jisyo-code 'utf-8)
+(setq skk-isearch-start-mode 'utf-8);; migemoではSKK不要
 (setq skk-large-jisyo "~/.emacs.d/skk/etc/SKK-JISYO.L")
 (setq skk-extra-jisyo-file-list
       (list '("~/.emacs.d/skk/etc/SKK-JISYO.geo"
               "~/.emacs.d/skk/etc/SKK-JISYO.jinmei"
               "~/.emacs.d/skk/etc/SKK-JISYO.propernoun"
-              "~/.emacs.d/skk/etc/SKK-JISYO.station"))
-)
-(setq skk-isearch-start-mode 'utf-8);; migemoではSKK不要
+              "~/.emacs.d/skk/etc/SKK-JISYO.station")))
 (setq skk-tut-file "~/.emacs.d/skk/etc/SKK.tut")
 (setq skk-latin-mode-string "A"
       skk-hiragana-mode-string "あ"
