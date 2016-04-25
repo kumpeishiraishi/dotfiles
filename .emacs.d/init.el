@@ -1,8 +1,39 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el
 ;;; Created: around 2014
-;;; Modified: 2016-04-22
+;;; Modified: 2016-04-25
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; パッケージ管理
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(package-initialize)
+(when (not package-archive-contents) (package-refresh-contents))
+(defvar myPackages
+  '(ace-isearch
+    ace-jump-mode
+    async
+    auto-complete
+    avy
+    dash
+    epl
+    exec-path-from-shell
+    haskell-mode
+    helm
+    helm-core
+    helm-swoop
+    let-alist
+    markdown-mode
+    migemo
+    org
+    pkg-info
+    popup
+    pos-tip
+    seq
+    yatex))
+(mapc #'(lambda (package) (unless (package-installed-p package) (package-install package))) myPackages)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; 設定
@@ -32,11 +63,11 @@
 ;; Macでヒラギノ、それ以外で源ノ角。Source Code Proと源ノ角を統合したSource Han Code JPもあるが、欧文太字潰れや幅が気に入らず、見送り（2016-04-21）
 (set-face-attribute 'default nil
 		    :family "Source Code Pro"
-		    :height 135)
+		    :height 150)
 (if (equal system-type 'darwin)
     (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Hiragino Kaku Gothic ProN"))
   (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Source Han Sans")))
-(setq face-font-rescale-alist '(("Hiragino.*" . 1.2)))
+(setq face-font-rescale-alist '(("Hiragino.*" . 1)))
 ;; ウィンドウ
 (if window-system
     (progn
@@ -104,13 +135,6 @@
 (global-unset-key "\C-z")
 (keyboard-translate ?\C-h ?\C-?)
 (windmove-default-keybindings 'super);; 分割ウィンドウ移動をCMDで
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; パッケージ管理
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-(package-initialize)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; exec-path-from-shell
