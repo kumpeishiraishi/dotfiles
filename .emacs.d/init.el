@@ -1,39 +1,32 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el
 ;;; Created: around 2014
-;;; Modified: 2016-04-25
+;;; Modified: 2016-05-02
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; パッケージ管理
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
 (when (not package-archive-contents) (package-refresh-contents))
 (defvar myPackages
   '(ace-isearch
-    ace-jump-mode
-    async
     auto-complete
     avy
-    dash
-    epl
     exec-path-from-shell
     haskell-mode
     helm
-    helm-core
     helm-swoop
-    let-alist
     markdown-mode
     migemo
     org
-    pkg-info
-    popup
-    pos-tip
-    seq
     yatex))
-(mapc #'(lambda (package) (unless (package-installed-p package) (package-install package))) myPackages)
+(dolist (package myPackages)
+  (unless (package-installed-p package)
+    (package-install package)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; 設定
@@ -241,12 +234,18 @@
 (global-set-key "\C-\\" 'skk-mode)
 (setq skk-jisyo-code 'utf-8)
 (setq skk-isearch-start-mode 'utf-8);; migemoではSKK不要
-(setq skk-large-jisyo "~/.emacs.d/skk/etc/SKK-JISYO.L")
+;; (setq skk-user-directory "~/Dropbox/Emacs/skk") これでは以下のように、ファイル群を望んだフォルダ配下に保存できない（2016/05/02）
+(setq skk-jisyo "~/Dropbox/Emacs/skk/jisyo"
+      skk-backup-jisyo "~/Dropbox/Emacs/skk/jisyo.bak"
+      skk-record-file "~/Dropbox/Emacs/skk/record"
+      skk-study-file "~/Dropbox/Emacs/skk/study"
+      skk-study-backup-file "~/Dropbox/Emacs/skk/study.bak")
+(setq skk-large-jisyo "~/Dropbox/Emacs/skk/SKK-JISYO.L")
 (setq skk-extra-jisyo-file-list
-      (list '("~/.emacs.d/skk/etc/SKK-JISYO.geo"
-              "~/.emacs.d/skk/etc/SKK-JISYO.jinmei"
-              "~/.emacs.d/skk/etc/SKK-JISYO.propernoun"
-              "~/.emacs.d/skk/etc/SKK-JISYO.station")))
+      (list '("~/Dropbox/Emacs/skk/SKK-JISYO.geo"
+              "~/Dropbox/Emacs/skk/SKK-JISYO.jinmei"
+              "~/Dropbox/Emacs/skk/SKK-JISYO.propernoun"
+              "~/Dropbox/Emacs/skk/SKK-JISYO.station")))
 (setq skk-tut-file "~/.emacs.d/skk/etc/SKK.tut")
 (setq skk-latin-mode-string "A"
       skk-hiragana-mode-string "あ"
