@@ -1,4 +1,5 @@
 # .zshrc
+# Created: 2016-03-13
 # mollifierによる「少し凝った zshrc」https://gist.github.com/mollifier/4979906を改変
 
 # PATH
