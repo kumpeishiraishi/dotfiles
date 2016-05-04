@@ -1,3 +1,6 @@
+# .zshrc
+# mollifierによる「少し凝った zshrc」https://gist.github.com/mollifier/4979906を改変
+
 # PATH
 export PATH=/usr/local/bin:/sbin:/usr/local/texlive/2015/bin/x86_64-darwin:/usr/sbin:$PATH
 
@@ -15,8 +18,8 @@ bindkey -e
 
 # ヒストリ設定
 HISTFILE=~/.zsh_history
-HISTSIZE=50
-SAVEHIST=50
+HISTSIZE=1000000
+SAVEHIST=1000000
 
 # プロンプト表示
 PROMPT="%{${fg[green]}%}[%n@%m]%{${fg[magenta]}%} %~ %{${reset_color}%}
@@ -169,5 +172,8 @@ case ${OSTYPE} in
         export CLICOLOR=1
         alias ls='ls -G -F'
         ;;
-
+    linux*)
+        #Linux用の設定
+        alias ls='ls -F --color=auto'
+        ;;
 esac
