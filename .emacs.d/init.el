@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el
 ;;; Created: around 2014
-;;; Modified: 2016-05-02
+;;; Modified: 2016-05-06
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -17,6 +17,7 @@
     auto-complete
     avy
     exec-path-from-shell
+    flycheck
     haskell-mode
     helm
     helm-swoop
@@ -135,7 +136,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Markdown-mode
-(setq markdown-command "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js");; エイリアスpandoc_ghmを認識せず（2016-04-22）
+(setq markdown-command "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; haskell-mode
@@ -198,7 +199,7 @@
 (migemo-init)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; helmと検索
+;;; helm
 ;; helm
 (require 'helm-config)
 (helm-mode 1)
@@ -227,8 +228,7 @@
   (add-to-list 'load-path default-directory)
   (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
       (normal-top-level-add-subdirs-to-load-path)))
-
-;; 設定
+;; SKK設定
 (require 'skk-autoloads)
 (require 'skk-study)
 (global-set-key "\C-\\" 'skk-mode)
@@ -250,3 +250,11 @@
 (setq skk-latin-mode-string "A"
       skk-hiragana-mode-string "あ"
       skk-katakana-mode-string "ア")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; flycheck
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(global-set-key "\M-n" 'flycheck-next-error)
+(global-set-key "\M-p" 'flycheck-previous-error)
+
+;;; init.el ends here
