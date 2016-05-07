@@ -1,8 +1,12 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; init.el
-;;; Created: around 2014
-;;; Modified: 2016-05-06
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; init.el --- My Emacs settings
+
+;;; Commentary:
+
+;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
+;; Created: around 2014
+;; Last modified: 2016-05-07
+
+;;; Code:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; パッケージ管理
@@ -102,6 +106,7 @@
     (flyspell-mode . "")
     (abbrev-mode . "")
     (auto-complete-mode . "")
+    (flycheck-mode . "")
     ;; Major modes
     (lisp-interaction-mode . "Li")
     (python-mode . "Py")
@@ -211,7 +216,7 @@
 (setq ace-isearch-function 'avy-goto-char)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; auto-complete 
+;;; auto-complete
 (ac-config-default)
 (setq ac-auto-start 1)        ;; n文字で開始
 (setq ac-auto-show-menu 0.2)  ;; n秒で開始
