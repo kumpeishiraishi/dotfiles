@@ -178,7 +178,7 @@
 (setq hl-line-face 'underline)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; スペルチェック 
+;;; スペルチェック
 (setq-default ispell-program-name "aspell")
 (eval-after-load "ispell" '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")));; 日本語混じりでも有効に
 (global-set-key [s-return] 'ispell-word)
@@ -233,10 +233,11 @@
   (add-to-list 'load-path default-directory)
   (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
       (normal-top-level-add-subdirs-to-load-path)))
-;; SKK設定
+;; SKKを使用
 (require 'skk-autoloads)
 (require 'skk-study)
 (global-set-key "\C-\\" 'skk-mode)
+;; SKK辞書・ファイル
 (setq skk-jisyo-code 'utf-8)
 (setq skk-isearch-start-mode 'utf-8);; migemoではSKK不要
 ;; (setq skk-user-directory "~/Dropbox/Emacs/skk") これでは以下のように、ファイル群を望んだフォルダ配下に保存できない（2016/05/02）
@@ -252,9 +253,26 @@
               "~/Dropbox/Emacs/skk/SKK-JISYO.propernoun"
               "~/Dropbox/Emacs/skk/SKK-JISYO.station")))
 (setq skk-tut-file "~/.emacs.d/skk/etc/SKK.tut")
+;; SKK表示
 (setq skk-latin-mode-string "A"
       skk-hiragana-mode-string "あ"
       skk-katakana-mode-string "ア")
+(when skk-use-color-cursor
+  (setq skk-cursor-default-color "Green"
+	skk-cursor-hiragana-color "Magenta"
+	skk-cursor-katakana-color "Cyan"
+	skk-cursor-abbrev-color "Royalblue"
+	skk-cursor-jisx0208-latin-color "Pink";; 全英
+	skk-cursor-latin-color "Green"))
+;; SKK設定
+(setq skk-auto-insert-paren t);; 対応する閉括弧挿入
+(setq skk-previous-candidate-key "x");; 前候補に戻るのはxだけ、C-pは使わない
+(setq skk-dcomp-activate t
+      skk-dcomp-multiple-activate t
+      skk-dcomp-multiple-rows 5);; 動的補完
+(defadvice skk-j-mode-on (after skk-settings-for-dcomp activate)
+  (define-key skk-j-mode-map "\C-n" 'skk-comp-wrapper)
+  (define-key skk-j-mode-map "\C-p" 'skk-previous-comp-maybe))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; flycheck
