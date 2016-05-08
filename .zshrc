@@ -127,6 +127,7 @@ alias ghc='stack ghc'
 alias ghci='stack ghci'
 alias runghc='stack runghc'
 alias runhaskell='stack runhaskell'
+alias jupyternb='jupyter notebook'
 
 # sudo の後のコマンドでエイリアスを有効にする
 alias sudo='sudo '
