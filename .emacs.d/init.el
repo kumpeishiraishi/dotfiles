@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2016-05-07
+;; Last modified: 2016-05-09
 
 ;;; Code:
 
@@ -42,8 +42,8 @@
 (setq coding-system-for-read 'utf-8)
 (setq coding-system-for-write 'utf-8)
 ;; emacs-24.5-inline.patchを当ててHomebrewからインストールして可能になった、日本語関係の設定（起動時、ミニバッファ、isearch/migemoで英数）
-;; (setq default-input-method "MacOSX")でIME毎カーソル色変更などは出来なかった（未解決2016/03/28）
-;; 下記のIME関係は、インラインパッチをあてたEmacsの全画面表示時に、日本語入力が一文字しか出来ないという問題のため、棚上げ（2016/03/28）
+;; (setq default-input-method "MacOSX")でIME毎カーソル色変更などは出来なかった（未解決2016-03-28）
+;; 下記のIME関係は、インラインパッチをあてたEmacsの全画面表示時に、日本語入力が一文字しか出来ないという問題のため、棚上げ（2016-03-28）
 ;; (add-hook 'after-init-hook 'mac-change-language-to-us)
 ;; (add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
 ;; (add-hook 'isearch-mode-hook 'mac-change-language-to-us)
@@ -78,15 +78,8 @@
 (setq inhibit-splash-screen t)
 (setq initial-scratch-message nil)
 ;; 空白
+;;(require 'whitespace)
 ;;(global-whitespace-mode 1)
-;;(setq whitespace-space-regexp "\\(\u3000\\)")
-;;(setq whitespace-style '(face tabs tab-mark))
-;;(setq whitespace-display-mappings ())
-;;(set-face-foreground 'whitespace-tab "yellow")
-;;(set-face-underline  'whitespace-tab t)
-;;(set-face-foreground 'whitespace-space "yellow")
-;;(set-face-background 'whitespace-space "red")
-;;(set-face-underline  'whitespace-space t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; モードライン
@@ -243,7 +236,7 @@
 ;; SKK辞書・ファイル
 (setq skk-jisyo-code 'utf-8)
 (setq skk-isearch-start-mode 'utf-8);; migemoではSKK不要
-;; (setq skk-user-directory "~/Dropbox/Emacs/skk") これでは以下のように、ファイル群を望んだフォルダ配下に保存できない（2016/05/02）
+;; (setq skk-user-directory "~/Dropbox/Emacs/skk") これでは以下のように、ファイル群を望んだフォルダ配下に保存できない（2016-05-02）
 (setq skk-jisyo "~/Dropbox/Emacs/skk/jisyo"
       skk-backup-jisyo "~/Dropbox/Emacs/skk/jisyo.bak"
       skk-record-file "~/Dropbox/Emacs/skk/record"
@@ -270,9 +263,9 @@
 ;; SKK設定
 (setq skk-auto-insert-paren t);; 対応する閉括弧挿入
 (setq skk-previous-candidate-key "x");; 前候補に戻るのはxだけ、C-pは使わない
-(setq skk-dcomp-activate t
-      skk-dcomp-multiple-activate t
-      skk-dcomp-multiple-rows 5);; 動的補完
+(setq skk-dcomp-activate t);; 動的補完
+;;      skk-dcomp-multiple-activate t
+;;      skk-dcomp-multiple-rows 5);; 補完候補を複数表示させると表示が崩れるので、止め（2016-05-10）
 (defadvice skk-j-mode-on (after skk-settings-for-dcomp activate)
   (define-key skk-j-mode-map "\C-n" 'skk-comp-wrapper)
   (define-key skk-j-mode-map "\C-p" 'skk-previous-comp-maybe))
