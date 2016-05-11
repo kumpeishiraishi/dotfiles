@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2016-05-09
+;; Last modified: 2016-05-11
 
 ;;; Code:
 
@@ -244,10 +244,11 @@
       skk-study-backup-file "~/Dropbox/Emacs/skk/study.bak")
 (setq skk-large-jisyo "~/Dropbox/Emacs/skk/SKK-JISYO.L")
 (setq skk-extra-jisyo-file-list
-      (list '("~/Dropbox/Emacs/skk/SKK-JISYO.geo"
-              "~/Dropbox/Emacs/skk/SKK-JISYO.jinmei"
-              "~/Dropbox/Emacs/skk/SKK-JISYO.propernoun"
-              "~/Dropbox/Emacs/skk/SKK-JISYO.station")))
+      (list
+       "~/Dropbox/Emacs/skk/SKK-JISYO.geo"
+       "~/Dropbox/Emacs/skk/SKK-JISYO.jinmei"
+       "~/Dropbox/Emacs/skk/SKK-JISYO.propernoun"
+       "~/Dropbox/Emacs/skk/SKK-JISYO.station"))
 (setq skk-tut-file "~/.emacs.d/skk/etc/SKK.tut")
 ;; SKK表示
 (setq skk-latin-mode-string "A"
