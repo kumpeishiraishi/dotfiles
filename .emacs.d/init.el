@@ -277,4 +277,12 @@
 (global-set-key "\M-n" 'flycheck-next-error)
 (global-set-key "\M-p" 'flycheck-previous-error)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; dired
+(setq delete-by-moving-to-trash t)
+(setq dired-recursive-copies 'always)
+(setq dired-recursive-deletes 'always)
+(setq dired-isearch-filenames t)
+(setq dired-dwim-target t);; diredを2画面で開いていれば、片方でコピー/移動先を表示
+
 ;;; init.el ends here
