@@ -284,5 +284,6 @@
 (setq dired-recursive-deletes 'always)
 (setq dired-isearch-filenames t)
 (setq dired-dwim-target t);; diredを2画面で開いていれば、片方でコピー/移動先を表示
+(setq dired-listing-switches (purecopy "-alh"));; lsオプション
 
 ;;; init.el ends here
