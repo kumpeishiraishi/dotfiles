@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2016-05-11
+;; Last modified: 2016-05-21
 
 ;;; Code:
 
@@ -36,6 +36,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; 設定
 (setq make-backup-files nil)
+(fset 'yes-or-no-p 'y-or-n-p)
 ;; 言語環境・文字コード
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
@@ -270,6 +271,7 @@
 (defadvice skk-j-mode-on (after skk-settings-for-dcomp activate)
   (define-key skk-j-mode-map "\C-n" 'skk-comp-wrapper)
   (define-key skk-j-mode-map "\C-p" 'skk-previous-comp-maybe))
+(setq skk-show-annotation t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; flycheck
@@ -279,9 +281,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; dired
-(setq delete-by-moving-to-trash t)
-(setq dired-recursive-copies 'always)
-(setq dired-recursive-deletes 'always)
+(setq delete-by-moving-to-trash t
+      trash-directory "~/.Trash")
+(setq dired-recursive-copies 'always
+      dired-recursive-deletes 'always)
 (setq dired-isearch-filenames t)
 (setq dired-dwim-target t);; diredを2画面で開いていれば、片方でコピー/移動先を表示
 (setq dired-listing-switches (purecopy "-alh"));; lsオプション
