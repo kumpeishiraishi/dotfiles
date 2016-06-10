@@ -3,7 +3,7 @@
 # mollifierによる「少し凝った zshrc」https://gist.github.com/mollifier/4979906を改変
 
 # PATH
-export PATH=/usr/local/bin:/sbin:/usr/local/texlive/2015/bin/x86_64-darwin:/usr/sbin:$PATH
+export PATH=/usr/local/bin:/sbin:/Library/TeX/texbin:/usr/sbin:$PATH
 
 # 環境変数
 export LC_ALL=en_US.UTF-8
