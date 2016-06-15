@@ -28,6 +28,7 @@
     markdown-mode
     migemo
     org
+    real-auto-save
     yatex))
 (dolist (package myPackages)
   (unless (package-installed-p package)
@@ -215,12 +216,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; auto-complete
 (ac-config-default)
-(setq ac-auto-start 1)        ;; n文字で開始
-(setq ac-auto-show-menu 0.2)  ;; n秒で開始
-(setq ac-candidate-limit nil) ;; 補完候補表示を無制限に
+(setq ac-auto-start 1);; n文字で開始
+(setq ac-auto-show-menu 0.2);; n秒で開始
+(setq ac-candidate-limit nil);; 補完候補表示を無制限に
 (setq ac-use-menu-map t)
 (setq ac-use-comphist nil)
-(setq ac-ignore-case t)       ;; 大文字小文字を区別しない
+(setq ac-ignore-case t);; 大文字小文字を区別しない
 (global-auto-complete-mode t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -288,5 +289,11 @@
 (setq dired-isearch-filenames t)
 (setq dired-dwim-target t);; diredを2画面で開いていれば、片方でコピー/移動先を表示
 (setq dired-listing-switches (purecopy "-alh"));; lsオプション
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; auto-save
+(require 'real-auto-save)
+(setq real-auto-save-interval 2)
+(add-hook 'find-file-hook 'real-auto-save-mode)
 
 ;;; init.el ends here
