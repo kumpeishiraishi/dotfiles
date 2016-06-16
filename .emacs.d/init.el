@@ -102,6 +102,7 @@
     (abbrev-mode . "")
     (auto-complete-mode . "")
     (flycheck-mode . "")
+    (real-auto-save-mode . "")
     ;; Major modes
     (lisp-interaction-mode . "Li")
     (python-mode . "Py")
