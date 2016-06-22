@@ -293,8 +293,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; auto-save
-(require 'real-auto-save)
-(setq real-auto-save-interval 2)
-(add-hook 'find-file-hook 'real-auto-save-mode)
+;;(require 'real-auto-save)
+;;(setq real-auto-save-interval 0.5)
+;;(add-hook 'find-file-hook 'real-auto-save-mode)
 
 ;;; init.el ends here
