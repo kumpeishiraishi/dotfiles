@@ -163,8 +163,12 @@ s(){
         "-d") shift; w3m "$dict${*// /_}";;
 	*) w3m "$web${*// /+}";;
     esac
-    }
+}
 
+# 英和辞書（元ネタ：http://qiita.com/yubais/items/21cac44d71c30edd22c9）
+function dict() {
+    grep $1 ~/Dropbox/misc/eiwa.txt -A 1 -wi --color
+}
 
 ########################################
 # OS 別の設定
