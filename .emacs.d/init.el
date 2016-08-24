@@ -79,6 +79,7 @@
 ;; 起動時画面
 (setq inhibit-splash-screen t)
 (setq initial-scratch-message nil)
+(setq initial-major-mode 'markdown-mode)
 ;; 空白
 ;;(require 'whitespace)
 ;;(global-whitespace-mode 1)
@@ -148,6 +149,16 @@
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
 (setq auto-mode-alist (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
 (add-hook 'yatex-mode-hook '(lambda () (auto-fill-mode -1)));; 自動折り返し無効
+(setq YaTeX-kanji-code nil)
+;; skk対策
+(add-hook 'skk-mode-hook
+	  (lambda ()
+	    (if (eq major-mode 'yatex-mode)
+		(progn
+		  (define-key skk-j-mode-map "\\" 'self-insert-command)
+		  (define-key skk-j-mode-map "$" 'YaTeX-insert-dollar)
+		  ))
+	    ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; org-mode
