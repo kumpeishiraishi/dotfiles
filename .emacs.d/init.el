@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2016-05-21
+;; Last modified: 2016-09-05
 
 ;;; Code:
 
@@ -28,7 +28,6 @@
     markdown-mode
     migemo
     org
-    real-auto-save
     yatex))
 (dolist (package myPackages)
   (unless (package-installed-p package)
@@ -240,7 +239,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; SKK
 ;; load-path
-(let ((default-directory (expand-file-name "~/.emacs.d/skk/site-lisp")))
+(let ((default-directory (expand-file-name "~/Dropbox/Emacs/skk/skk/")))
   (add-to-list 'load-path default-directory)
   (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
       (normal-top-level-add-subdirs-to-load-path)))
@@ -302,11 +301,4 @@
 (setq dired-isearch-filenames t)
 (setq dired-dwim-target t);; diredを2画面で開いていれば、片方でコピー/移動先を表示
 (setq dired-listing-switches (purecopy "-alh"));; lsオプション
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; auto-save
-;;(require 'real-auto-save)
-;;(setq real-auto-save-interval 0.5)
-;;(add-hook 'find-file-hook 'real-auto-save-mode)
-
 ;;; init.el ends here
