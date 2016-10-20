@@ -20,6 +20,7 @@
   '(ace-isearch
     auto-complete
     avy
+    csv-mode
     exec-path-from-shell
     flycheck
     haskell-mode
@@ -28,6 +29,7 @@
     markdown-mode
     migemo
     org
+    undo-tree
     yatex))
 (dolist (package myPackages)
   (unless (package-installed-p package)
@@ -89,7 +91,7 @@
 (line-number-mode -1);; 常に行番号を表示しているので、モードラインには不要
 (setq display-time-day-and-date t)
 (display-time)
-(display-battery-mode t)
+(display-battery-mode 1)
 (set-face-foreground 'mode-line "Yellow")
 (set-face-background 'mode-line "DarkSlateBlue")
 ;; モードを略号表示
@@ -301,4 +303,10 @@
 (setq dired-isearch-filenames t)
 (setq dired-dwim-target t);; diredを2画面で開いていれば、片方でコピー/移動先を表示
 (setq dired-listing-switches (purecopy "-alh"));; lsオプション
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; undo-tree
+(require 'undo-tree)
+(global-undo-tree-mode t)
+(global-set-key (kbd "M-/") 'undo-tree-redo)
 ;;; init.el ends here
