@@ -81,6 +81,31 @@
 (setq inhibit-splash-screen t)
 (setq initial-scratch-message nil)
 (setq initial-major-mode 'markdown-mode)
+;; scratch buffer消さない
+;;(defun my-make-scratch (&optional arg)
+;;  (interactive)
+;;  (progn
+;;    ;; "*scratch*" を作成してbuffer-listに放り込む
+;;    (set-buffer (get-buffer-create "*scratch*"))
+;;    (funcall initial-major-mode)
+;;    (erase-buffer)
+;;    (when (and initial-scratch-message (not inhibit-startup-message))
+;;      (insert initial-scratch-message))
+;;    (or arg (progn (setq arg 0)
+;;                   (switch-to-buffer "*scratch*")))
+;;    (cond ((= arg 0) (message "*scratch* is cleared up."))
+;;          ((= arg 1) (message "another *scratch* is created")))))
+;;(add-hook 'kill-buffer-query-functions
+;;          ;; *scratch*バッファでkill-bufferしたら内容を消去するだけにする
+;;          (lambda ()
+;;            (if (string= "*scratch*" (buffer-name))
+;;                (progn (my-make-scratch 0) nil)
+;;              t)))
+;;(add-hook 'after-save-hook
+;;          ;; *scratch*バッファの内容を保存したら*scratch*バッファを新しく作る
+;;          (lambda ()
+;;            (unless (member (get-buffer "*scratch*") (buffer-list))
+;;              (my-make-scratch 1))))
 ;; 空白
 ;;(require 'whitespace)
 ;;(global-whitespace-mode 1)
@@ -318,7 +343,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yatex undo-tree migemo markdown-mode haskell-mode flycheck exec-path-from-shell csv-mode auto-complete ace-isearch))))
+    (org yatex undo-tree migemo markdown-mode haskell-mode flycheck exec-path-from-shell csv-mode auto-complete ace-isearch))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
