@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2016-09-05
+;; Last modified: 2016-11-05
 
 ;;; Code:
 
@@ -176,7 +176,7 @@
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
 (setq auto-mode-alist (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
 (add-hook 'yatex-mode-hook '(lambda () (auto-fill-mode -1)));; 自動折り返し無効
-(setq YaTeX-kanji-code nil)
+(setq YaTeX-kanji-code 4)
 ;; skk対策
 (add-hook 'skk-mode-hook
 	  (lambda ()
@@ -290,7 +290,8 @@
        "~/Dropbox/Emacs/skk/SKK-JISYO.geo"
        "~/Dropbox/Emacs/skk/SKK-JISYO.jinmei"
        "~/Dropbox/Emacs/skk/SKK-JISYO.propernoun"
-       "~/Dropbox/Emacs/skk/SKK-JISYO.station"))
+       "~/Dropbox/Emacs/skk/SKK-JISYO.station"
+       "~/Dropbox/Emacs/skk/SKK-JISYO.itaiji"))
 (setq skk-tut-file "~/.emacs.d/skk/etc/SKK.tut")
 ;; SKK表示
 (setq skk-latin-mode-string "A"
@@ -313,6 +314,11 @@
   (define-key skk-j-mode-map "\C-n" 'skk-comp-wrapper)
   (define-key skk-j-mode-map "\C-p" 'skk-previous-comp-maybe))
 (setq skk-show-annotation t)
+(setq skk-rom-kana-rule-list
+      (append skk-rom-kana-rule-list
+              '(("！" nil "!")
+		("@" nil "@");;「トゥデイ」機能は使わない
+                )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; flycheck
@@ -329,6 +335,7 @@
 (setq dired-isearch-filenames t)
 (setq dired-dwim-target t);; diredを2画面で開いていれば、片方でコピー/移動先を表示
 (setq dired-listing-switches (purecopy "-alh"));; lsオプション
+(define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; undo-tree
