@@ -1,0 +1,11 @@
+(setq user-env-table '(
+("tikzpicture")
+("spacing")
+("answer")
+("problem")
+("definition")
+("Proof")
+("theorem*")
+("frame")
+("easylist")
+))
