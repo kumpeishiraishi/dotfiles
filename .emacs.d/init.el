@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2016-11-05
+;; Last modified: 2016-12-03
 
 ;;; Code:
 
@@ -182,7 +182,11 @@
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
 (setq auto-mode-alist (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
 (add-hook 'yatex-mode-hook '(lambda () (auto-fill-mode -1)));; 自動折り返し無効
-(setq YaTeX-kanji-code 4)
+(setq YaTeX-kanji-code 4);;utf-8
+(setq tex-command "/Library/TeX/texbin/lualatex")
+(setq YaTeX-nervous nil);;ローカル辞書不要
+(setq YaTeX-user-completion-table "~/dotfiles/.yatexrc");;ユーザ辞書もdotfilesで管理
+
 ;; skk対策
 (add-hook 'skk-mode-hook
 	  (lambda ()
@@ -381,7 +385,7 @@
      (if asciip "en" "ja")
      (if asciip "ja" "en")
      string)))
-(global-set-key (kbd "C-c t") 'google-translate-enja-or-jaen)
+(global-set-key (kbd "C-x t") 'google-translate-enja-or-jaen)
 
 ;;; init.el ends here
 (custom-set-variables
