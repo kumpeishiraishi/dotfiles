@@ -9,3 +9,13 @@
 ("frame")
 ("easylist")
 ))
+(setq YaTeX::usepackage-alist-private '(
+("pgfplots")
+("fontspec")
+("booktabs")
+("tikz")
+))
+
+(setq YaTeX:documentclasses-private '(
+("ltjsarticle")
+))
