@@ -23,6 +23,7 @@
     csv-mode
     exec-path-from-shell
     flycheck
+    google-translate
     haskell-mode
     helm
     helm-swoop
@@ -123,8 +124,10 @@
 (setq display-time-day-and-date t)
 (display-time)
 (display-battery-mode 1)
-(set-face-foreground 'mode-line "Yellow")
-(set-face-background 'mode-line "DarkSlateBlue")
+(set-face-foreground 'mode-line "blue1")
+(set-face-background 'mode-line "gray80")
+(setq-default mode-line-buffer-identification
+      `(,(propertize "%b" 'face '(:foreground "maroon2"))))
 ;; モードを略号表示
 (defvar mode-line-cleaner-alist
   '(
@@ -183,7 +186,8 @@
 (setq auto-mode-alist (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
 (add-hook 'yatex-mode-hook '(lambda () (auto-fill-mode -1)));; 自動折り返し無効
 (setq YaTeX-kanji-code 4);;utf-8
-(setq tex-command "/Library/TeX/texbin/lualatex")
+(setq tex-command "/Library/TeX/texbin/lualatex");;通常はLuaLaTeX
+;;他の処理系を用いるには「%#!pdflatex」などと本文中に記載して、通常通りタイプセットすれば良い
 (setq YaTeX-nervous nil);;ローカル辞書不要
 (setq YaTeX-user-completion-table "~/dotfiles/.yatexrc");;ユーザ辞書もdotfilesで管理
 
@@ -357,7 +361,6 @@
 ;;; google-translate
 ;;元ネタhttp://emacs.rubikitch.com/google-translate/
 (require 'google-translate)
-
 (defvar google-translate-english-chars "[:ascii:]’“”–"
   "これらの文字が含まれているときは英語とみなす")
 (defun google-translate-enja-or-jaen (&optional string)
