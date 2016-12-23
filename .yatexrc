@@ -10,6 +10,9 @@
 ("easylist")
 ))
 (setq YaTeX::usepackage-alist-private '(
+("chemfig")
+("calc")
+("enumitem")
 ("pgfplots")
 ("fontspec")
 ("booktabs")
@@ -17,5 +20,6 @@
 ))
 
 (setq YaTeX:documentclasses-private '(
+("bxjsarticle")
 ("ltjsarticle")
 ))

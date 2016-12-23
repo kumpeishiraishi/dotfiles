@@ -65,7 +65,7 @@
 ;; Macでヒラギノ、それ以外で源ノ角。Source Code Proと源ノ角を統合したSource Han Code JPもあるが、欧文太字潰れや幅が気に入らず、見送り（2016-04-21）
 (set-face-attribute 'default nil
 		    :family "Source Code Pro"
-		    :height 130)
+		    :height 125)
 (if (equal system-type 'darwin)
     (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Hiragino Kaku Gothic ProN"))
   (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Source Han Sans")))
@@ -73,7 +73,7 @@
 ;; ウィンドウ
 (if window-system
     (progn
-      (set-frame-parameter nil 'fullscreen 'maximized)
+      (set-frame-parameter nil 'fullscreen 'fullboth)
       (set-background-color "Black")
       (set-foreground-color "White")
       (set-cursor-color "Green")
@@ -118,6 +118,27 @@
 ;;(global-whitespace-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; YaTeX
+(autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
+(setq auto-mode-alist (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
+(add-hook 'yatex-mode-hook '(lambda () (auto-fill-mode -1)));; 自動折り返し無効
+(setq YaTeX-kanji-code 4);;utf-8
+(setq tex-command "/Library/TeX/texbin/lualatex");;通常はLuaLaTeX
+;;他の処理系を用いるには「%#!pdflatex」などと本文中に記載して、通常通りタイプセットすれば良い
+(setq YaTeX-nervous nil);;ローカル辞書不要
+(setq YaTeX-user-completion-table "~/dotfiles/.yatexrc");;ユーザ辞書もdotfilesで管理
+
+;; skk対策
+(add-hook 'skk-mode-hook
+	  (lambda ()
+	    (if (eq major-mode 'yatex-mode)
+		(progn
+		  (define-key skk-j-mode-map "\\" 'self-insert-command)
+		  (define-key skk-j-mode-map "$" 'YaTeX-insert-dollar)
+		  ))
+	    ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; モードライン
 ;; 各種表示/非表示
 (line-number-mode -1);; 常に行番号を表示しているので、モードラインには不要
@@ -127,7 +148,7 @@
 (set-face-foreground 'mode-line "blue1")
 (set-face-background 'mode-line "gray80")
 (setq-default mode-line-buffer-identification
-      `(,(propertize "%b" 'face '(:foreground "maroon2"))))
+	      `(,(propertize "%b" 'face '(:foreground "maroon2"))))
 ;; モードを略号表示
 (defvar mode-line-cleaner-alist
   '(
@@ -145,7 +166,7 @@
     (python-mode . "Py")
     (haskell-mode . "Hs")
     (emacs-lisp-mode . "El")
-;;    (yatex-mode . "TeX")
+    (yatex-mode . "TeX")
     (c++-mode . "C++")
     (c-mode . "C")
     (markdown-mode . "Md")))
@@ -180,26 +201,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; haskell-mode
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; YaTeX
-(autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
-(setq auto-mode-alist (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
-(add-hook 'yatex-mode-hook '(lambda () (auto-fill-mode -1)));; 自動折り返し無効
-(setq YaTeX-kanji-code 4);;utf-8
-(setq tex-command "/Library/TeX/texbin/lualatex");;通常はLuaLaTeX
-;;他の処理系を用いるには「%#!pdflatex」などと本文中に記載して、通常通りタイプセットすれば良い
-(setq YaTeX-nervous nil);;ローカル辞書不要
-(setq YaTeX-user-completion-table "~/dotfiles/.yatexrc");;ユーザ辞書もdotfilesで管理
 
-;; skk対策
-(add-hook 'skk-mode-hook
-	  (lambda ()
-	    (if (eq major-mode 'yatex-mode)
-		(progn
-		  (define-key skk-j-mode-map "\\" 'self-insert-command)
-		  (define-key skk-j-mode-map "$" 'YaTeX-insert-dollar)
-		  ))
-	    ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; org-mode
@@ -391,17 +393,3 @@
 (global-set-key (kbd "C-x t") 'google-translate-enja-or-jaen)
 
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (google-translate org yatex undo-tree migemo markdown-mode haskell-mode flycheck exec-path-from-shell csv-mode auto-complete ace-isearch))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
