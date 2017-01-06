@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2016-12-03
+;; Last modified: 2017/01/06
 
 ;;; Code:
 
@@ -45,9 +45,10 @@
 (prefer-coding-system 'utf-8)
 (setq coding-system-for-read 'utf-8)
 (setq coding-system-for-write 'utf-8)
+;; EmacsとIMEの問題は、SKKで入力することにしたので、一応解決。Emacsでは常に英数入力という制御ができれば嬉しいが。（2017/01/06）
 ;; emacs-24.5-inline.patchを当ててHomebrewからインストールして可能になった、日本語関係の設定（起動時、ミニバッファ、isearch/migemoで英数）
-;; (setq default-input-method "MacOSX")でIME毎カーソル色変更などは出来なかった（未解決2016-03-28）
-;; 下記のIME関係は、インラインパッチをあてたEmacsの全画面表示時に、日本語入力が一文字しか出来ないという問題のため、棚上げ（2016-03-28）
+;; (setq default-input-method "MacOSX")でIME毎カーソル色変更などは出来なかった（未解決2016/03/28）
+;; 下記のIME関係は、インラインパッチをあてたEmacsの全画面表示時に、日本語入力が一文字しか出来ないという問題のため、棚上げ（2016/03/28）
 ;; (add-hook 'after-init-hook 'mac-change-language-to-us)
 ;; (add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
 ;; (add-hook 'isearch-mode-hook 'mac-change-language-to-us)
@@ -62,7 +63,7 @@
 (setq ring-bell-function 'ignore)
 (setq frame-title-format "%f")
 ;; フォント
-;; Macでヒラギノ、それ以外で源ノ角。Source Code Proと源ノ角を統合したSource Han Code JPもあるが、欧文太字潰れや幅が気に入らず、見送り（2016-04-21）
+;; Macでヒラギノ、それ以外で源ノ角。Source Code Proと源ノ角を統合したSource Han Code JPもあるが、欧文太字潰れや幅が気に入らず、見送り（2016/04/21）
 (set-face-attribute 'default nil
 		    :family "Source Code Pro"
 		    :height 125)
@@ -70,6 +71,7 @@
     (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Hiragino Kaku Gothic ProN"))
   (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Source Han Sans")))
 (setq face-font-rescale-alist '(("Hiragino.*" . 1)))
+;;ヒラギノとSource Code Proでキレイに文字幅1:2にしたい。上の安直な方法でヒラギノを1.25倍にすると、幅は良いがイビツになる。（2017/01/06）
 ;; ウィンドウ
 (if window-system
     (progn
@@ -116,27 +118,6 @@
 ;; 空白
 ;;(require 'whitespace)
 ;;(global-whitespace-mode 1)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; YaTeX
-(autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
-(setq auto-mode-alist (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
-(add-hook 'yatex-mode-hook '(lambda () (auto-fill-mode -1)));; 自動折り返し無効
-(setq YaTeX-kanji-code 4);;utf-8
-(setq tex-command "/Library/TeX/texbin/lualatex");;通常はLuaLaTeX
-;;他の処理系を用いるには「%#!pdflatex」などと本文中に記載して、通常通りタイプセットすれば良い
-(setq YaTeX-nervous nil);;ローカル辞書不要
-(setq YaTeX-user-completion-table "~/dotfiles/.yatexrc");;ユーザ辞書もdotfilesで管理
-
-;; skk対策
-(add-hook 'skk-mode-hook
-	  (lambda ()
-	    (if (eq major-mode 'yatex-mode)
-		(progn
-		  (define-key skk-j-mode-map "\\" 'self-insert-command)
-		  (define-key skk-j-mode-map "$" 'YaTeX-insert-dollar)
-		  ))
-	    ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; モードライン
@@ -190,6 +171,28 @@
 (windmove-default-keybindings 'super);; 分割ウィンドウ移動をCMDで
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; YaTeX
+(autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
+(setq auto-mode-alist (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
+(add-hook 'yatex-mode-hook '(lambda () (auto-fill-mode -1)));; 自動折り返し無効
+(setq YaTeX-kanji-code nil);;漢字コード指定せず
+(setq dvi2-command "open -a Preview");;プレビュー
+(setq tex-command "/Library/TeX/texbin/lualatex");;通常はLuaLaTeX
+;;他の処理系を用いるには「%#!pdflatex」などと本文中に記載して、通常通りタイプセットすれば良い
+(setq YaTeX-nervous nil);;ローカル辞書不要
+(setq YaTeX-user-completion-table "~/dotfiles/.yatexrc");;ユーザ辞書もdotfilesで管理
+
+;; skk対策
+(add-hook 'skk-mode-hook
+	  (lambda ()
+	    (if (eq major-mode 'yatex-mode)
+		(progn
+		  (define-key skk-j-mode-map "\\" 'self-insert-command)
+		  (define-key skk-j-mode-map "$" 'YaTeX-insert-dollar)
+		  ))
+	    ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; exec-path-from-shell
 (exec-path-from-shell-initialize)
 
@@ -228,6 +231,7 @@
 (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)))
 (setq hl-line-face 'underline)
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; スペルチェック
 (setq-default ispell-program-name "aspell")
@@ -264,6 +268,7 @@
 (define-key helm-read-file-map (kbd "<tab>") 'helm-execute-persistent-action)
 (define-key helm-find-files-map (kbd "<tab>") 'helm-execute-persistent-action)
 (helm-migemo-mode 1)
+(define-key global-map (kbd "M-y") 'helm-show-kill-ring)
 ;; 検索
 (require 'helm-swoop)
 (global-ace-isearch-mode 1)
@@ -294,7 +299,7 @@
 ;; SKK辞書・ファイル
 (setq skk-jisyo-code 'utf-8)
 (setq skk-isearch-start-mode 'utf-8);; migemoではSKK不要
-;; (setq skk-user-directory "~/Dropbox/Emacs/skk") これでは以下のように、ファイル群を望んだフォルダ配下に保存できない（2016-05-02）
+;; (setq skk-user-directory "~/Dropbox/Emacs/skk") これでは以下のように、ファイル群を望んだフォルダ配下に保存できない（2016/05/02）
 (setq skk-jisyo "~/Dropbox/Emacs/skk/jisyo"
       skk-backup-jisyo "~/Dropbox/Emacs/skk/jisyo.bak"
       skk-record-file "~/Dropbox/Emacs/skk/record"
@@ -325,7 +330,7 @@
 (setq skk-previous-candidate-key "x");; 前候補に戻るのはxだけ、C-pは使わない
 (setq skk-dcomp-activate t);; 動的補完
 ;;      skk-dcomp-multiple-activate t
-;;      skk-dcomp-multiple-rows 5);; 補完候補を複数表示させると表示が崩れるので、止め（2016-05-10）
+;;      skk-dcomp-multiple-rows 5);; 補完候補を複数表示させると表示が崩れるので、止め（2016/05/10）
 (defadvice skk-j-mode-on (after skk-settings-for-dcomp activate)
   (define-key skk-j-mode-map "\C-n" 'skk-comp-wrapper)
   (define-key skk-j-mode-map "\C-p" 'skk-previous-comp-maybe))
@@ -391,5 +396,48 @@
      (if asciip "ja" "en")
      string)))
 (global-set-key (kbd "C-x t") 'google-translate-enja-or-jaen)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; メール
+(setq user-mail-address "kumpeishiraishi@gmail.com"
+      user-full-name "Kumpei Shiraishi")
+(setq gnus-select-method
+      '(nnimap "gmail"
+	       (nnimap-address "imap.gmail.com")
+	       (nnimap-server-port "imaps")
+	       (nnimap-stream ssl)))
+(setq smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587
+      gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; 名言
+;; 元ネタhttp://futurismo.biz/archives/5938
+(setq cookie-file "~/Dropbox/Emacs/policy.txt")
+(global-set-key (kbd "C-x C-,") 'cookie)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; elscreen
+;;;; 元ネタhttp://emacs.rubikitch.com/elscreen/
+;;;; プレフィクスキーはC-z
+;;;;(setq elscreen-prefix-key (kbd "C-z"))
+;;(elscreen-start)
+;;;; タブの先頭に[X]を表示しない
+;;(setq elscreen-tab-display-kill-screen nil)
+;;;; header-lineの先頭に[<->]を表示しない
+;;(setq elscreen-tab-display-control nil)
+;;;; バッファ名・モード名からタブに表示させる内容を決定する(デフォルト設定)
+;;(setq elscreen-buffer-to-nickname-alist
+;;      '(("^dired-mode$" .
+;;         (lambda ()
+;;           (format "Dired(%s)" dired-directory)))
+;;        ("^Info-mode$" .
+;;         (lambda ()
+;;           (format "Info(%s)" (file-name-nondirectory Info-current-file))))
+;;        ("^liece-" . "Liece")
+;;        ("^lookup-" . "Lookup")))
+;;(setq elscreen-mode-to-nickname-alist
+;;      '(("[Ss]hell" . "shell")
+;;        ("compilation" . "compile")))
 
 ;;; init.el ends here
