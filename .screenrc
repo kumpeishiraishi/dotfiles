@@ -1,0 +1,10 @@
+# プレフィックスキー変更
+escape ^Z^Z
+# 「前のスクリーンに戻る」をC-z oで
+bind o other
+# 起動時メッセージoff
+startup_message off
+# UTF-8
+defencoding utf-8
+encoding utf-8 utf-8
+setenv LANG ja_JP.UTF-8

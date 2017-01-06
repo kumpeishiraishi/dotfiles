@@ -10,6 +10,11 @@
 ("easylist")
 ))
 (setq YaTeX::usepackage-alist-private '(
+("multicol")
+("setspace")
+("caption")
+("luatexja-fontspec")
+("otf")
 ("chemfig")
 ("calc")
 ("enumitem")
@@ -22,4 +27,17 @@
 (setq YaTeX:documentclasses-private '(
 ("bxjsarticle")
 ("ltjsarticle")
+))
+(setq YaTeX:documentclass-options-private '(
+("ja=standard")
+("8pt")
+("paper={100mm}{148mm}")
+("lualatex")
+("uplatex")
+))
+(setq user-fontsize-table '(
+("centering")
+))
+(setq user-singlecmd-table '(
+("centering")
 ))
