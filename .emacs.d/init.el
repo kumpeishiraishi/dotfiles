@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2017/01/06
+;; Last modified: 2017/02/03
 
 ;;; Code:
 
@@ -21,6 +21,7 @@
     auto-complete
     avy
     csv-mode
+    elscreen
     exec-path-from-shell
     flycheck
     google-translate
@@ -71,7 +72,7 @@
     (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Hiragino Kaku Gothic ProN"))
   (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Source Han Sans")))
 (setq face-font-rescale-alist '(("Hiragino.*" . 1)))
-;;ヒラギノとSource Code Proでキレイに文字幅1:2にしたい。上の安直な方法でヒラギノを1.25倍にすると、幅は良いがイビツになる。（2017/01/06）
+;; ヒラギノとSource Code Proでキレイに文字幅1:2にしたい。上の安直な方法でヒラギノを1.25倍にすると、幅は良いがイビツになる。（2017/01/06）
 ;; ウィンドウ
 (if window-system
     (progn
@@ -124,6 +125,10 @@
 ;; 各種表示/非表示
 (line-number-mode -1);; 常に行番号を表示しているので、モードラインには不要
 (setq display-time-day-and-date t)
+;;(setq display-time-string-forms
+;;      '((format "%s %s %s %s:%s:%s %s"
+;;		dayname monthname day 12-hours minutes seconds am-pm
+;;		)))
 (display-time)
 (display-battery-mode 1)
 (set-face-foreground 'mode-line "blue1")
@@ -175,12 +180,12 @@
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
 (setq auto-mode-alist (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
 (add-hook 'yatex-mode-hook '(lambda () (auto-fill-mode -1)));; 自動折り返し無効
-(setq YaTeX-kanji-code nil);;漢字コード指定せず
-(setq dvi2-command "open -a Preview");;プレビュー
-(setq tex-command "/Library/TeX/texbin/lualatex");;通常はLuaLaTeX
-;;他の処理系を用いるには「%#!pdflatex」などと本文中に記載して、通常通りタイプセットすれば良い
-(setq YaTeX-nervous nil);;ローカル辞書不要
-(setq YaTeX-user-completion-table "~/dotfiles/.yatexrc");;ユーザ辞書もdotfilesで管理
+(setq YaTeX-kanji-code nil);; 漢字コード指定せず
+(setq dvi2-command "open -a Preview");; プレビュー
+(setq tex-command "/Library/TeX/texbin/lualatex");; 通常はLuaLaTeX
+;; 他の処理系を用いるには「%#!pdflatex」などと本文中に記載して、通常通りタイプセットすれば良い
+(setq YaTeX-nervous nil);; ローカル辞書不要
+(setq YaTeX-user-completion-table "~/dotfiles/.yatexrc");; ユーザ辞書もdotfilesで管理
 
 ;; skk対策
 (add-hook 'skk-mode-hook
@@ -230,7 +235,6 @@
 ;; アジェンダ表示で下線を用いる
 (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)))
 (setq hl-line-face 'underline)
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; スペルチェック
@@ -366,7 +370,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; google-translate
-;;元ネタhttp://emacs.rubikitch.com/google-translate/
+;; 元ネタhttp://emacs.rubikitch.com/google-translate/
 (require 'google-translate)
 (defvar google-translate-english-chars "[:ascii:]’“”–"
   "これらの文字が含まれているときは英語とみなす")
@@ -416,28 +420,33 @@
 (setq cookie-file "~/Dropbox/Emacs/policy.txt")
 (global-set-key (kbd "C-x C-,") 'cookie)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;; elscreen
-;;;; 元ネタhttp://emacs.rubikitch.com/elscreen/
-;;;; プレフィクスキーはC-z
-;;;;(setq elscreen-prefix-key (kbd "C-z"))
-;;(elscreen-start)
-;;;; タブの先頭に[X]を表示しない
-;;(setq elscreen-tab-display-kill-screen nil)
-;;;; header-lineの先頭に[<->]を表示しない
-;;(setq elscreen-tab-display-control nil)
-;;;; バッファ名・モード名からタブに表示させる内容を決定する(デフォルト設定)
-;;(setq elscreen-buffer-to-nickname-alist
-;;      '(("^dired-mode$" .
-;;         (lambda ()
-;;           (format "Dired(%s)" dired-directory)))
-;;        ("^Info-mode$" .
-;;         (lambda ()
-;;           (format "Info(%s)" (file-name-nondirectory Info-current-file))))
-;;        ("^liece-" . "Liece")
-;;        ("^lookup-" . "Lookup")))
-;;(setq elscreen-mode-to-nickname-alist
-;;      '(("[Ss]hell" . "shell")
-;;        ("compilation" . "compile")))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; elscreen
+(elscreen-start)
+(setq elscreen-prefix-key "\C-z");; prefix key
+(setq elscreen-tab-display-kill-screen nil);; [X]を表示しない
+(setq elscreen-tab-display-control nil);; [<->]を表示しない
+(setq elscreen-display-tab nil);; タブ表示しない
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; eshell
+;; 補完時に大文字小文字を区別しない
+(setq eshell-cmpl-ignore-case t)
+;; prompt文字列の変更
+(setq eshell-prompt-function
+      (lambda ()
+        (concat "[kumpeishiraishi "
+                (eshell/pwd)
+                (if (= (user-uid) 0) "]\n# " "]\n$ ")
+                )))
+;; eshell alias
+(setq eshell-command-aliases-list
+      (append
+       (list
+        (list "la" "ls -a")
+	(list "ll" "ls -l")
+	(list "pandoc_gh" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css")
+	(list "pandoc_ghm" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js"))
+       eshell-command-aliases-list))
 
 ;;; init.el ends here

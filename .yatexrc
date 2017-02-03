@@ -1,4 +1,5 @@
 (setq user-env-table '(
+("tcolorbox")
 ("tikzpicture")
 ("spacing")
 ("answer")
@@ -10,6 +11,12 @@
 ("easylist")
 ))
 (setq YaTeX::usepackage-alist-private '(
+("easylist")
+("tcolorbox")
+("xparse")
+("physics")
+("luatexja-preset")
+("siunitx")
 ("multicol")
 ("setspace")
 ("caption")
@@ -39,5 +46,16 @@
 ("centering")
 ))
 (setq user-singlecmd-table '(
+("makeatletter")
+("makeatother")
+("toprule")
 ("centering")
+))
+(setq user-section-table '(
+("pmqty")
+("mqty")
+("setsansfont")
+("setmainfont")
+("ce")
+("subsubsection*")
 ))
