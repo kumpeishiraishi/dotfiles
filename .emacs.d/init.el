@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2017/02/03
+;; Last modified: 2017/02/22
 
 ;;; Code:
 

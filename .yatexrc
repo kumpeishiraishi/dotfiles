@@ -11,6 +11,9 @@
 ("easylist")
 ))
 (setq YaTeX::usepackage-alist-private '(
+("mathspec")
+("ifthen")
+("mathtools")
 ("easylist")
 ("tcolorbox")
 ("xparse")
@@ -36,15 +39,14 @@
 ("ltjsarticle")
 ))
 (setq YaTeX:documentclass-options-private '(
+("standalone")
 ("ja=standard")
 ("8pt")
 ("paper={100mm}{148mm}")
 ("lualatex")
 ("uplatex")
 ))
-(setq user-fontsize-table '(
-("centering")
-))
+
 (setq user-singlecmd-table '(
 ("makeatletter")
 ("makeatother")
