@@ -278,6 +278,12 @@
 (require 'helm-swoop)
 (global-ace-isearch-mode 1)
 (setq ace-isearch-function 'avy-goto-char)
+;; helm-find-files
+;; 元ネタhttps://www.reddit.com/r/emacs/comments/3f55nm/how_to_remove_2_first_dot_files_from_helmfindfiles/
+(advice-add 'helm-ff-filter-candidate-one-by-one
+        :around (lambda (fcn file)
+                  (unless (string-match ".DS_Store" file)
+                    (funcall fcn file))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; auto-complete
@@ -317,7 +323,9 @@
        "~/Dropbox/Emacs/skk/SKK-JISYO.jinmei"
        "~/Dropbox/Emacs/skk/SKK-JISYO.propernoun"
        "~/Dropbox/Emacs/skk/SKK-JISYO.station"
-       "~/Dropbox/Emacs/skk/SKK-JISYO.itaiji"))
+       "~/Dropbox/Emacs/skk/SKK-JISYO.itaiji"
+       '("~/Dropbox/Emacs/skk/SKK-JISYO.JIS3_4" . euc-jisx0213)
+       ))
 (setq skk-tut-file "~/.emacs.d/skk/etc/SKK.tut")
 ;; SKK表示
 (setq skk-latin-mode-string "A"
