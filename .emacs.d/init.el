@@ -326,7 +326,7 @@
        "~/Dropbox/Emacs/skk/SKK-JISYO.itaiji"
        '("~/Dropbox/Emacs/skk/SKK-JISYO.JIS3_4" . euc-jisx0213)
        ))
-(setq skk-tut-file "~/.emacs.d/skk/etc/SKK.tut")
+(setq skk-tut-file "~/Dropbox/Emacs/skk/skk/etc/SKK.tut")
 ;; SKK表示
 (setq skk-latin-mode-string "A"
       skk-hiragana-mode-string "あ"
