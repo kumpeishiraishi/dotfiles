@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2017/02/22
+;; Last modified: 2017/03/13
 
 ;;; Code:
 
@@ -84,7 +84,8 @@
 ;; 起動時画面
 (setq inhibit-splash-screen t)
 (setq initial-scratch-message nil)
-(setq initial-major-mode 'markdown-mode)
+(setq initial-major-mode 'org-mode)
+(setq default-directory "~/Dropbox/")
 ;; scratch buffer消さない（元ネタ：https://github.com/uwabami/emacs）
 (defun my:make-scratch (&optional arg)
   (interactive)
