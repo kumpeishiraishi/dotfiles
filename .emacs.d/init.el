@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2017/03/13
+;; Last modified: 2017/03/16
 
 ;;; Code:
 
@@ -274,6 +274,7 @@
 (define-key helm-find-files-map (kbd "<tab>") 'helm-execute-persistent-action)
 (helm-migemo-mode 1)
 (define-key global-map (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-x b") 'helm-mini)
 ;; 検索
 (require 'helm-swoop)
 (global-ace-isearch-mode 1)
@@ -457,5 +458,26 @@
 	(list "pandoc_gh" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css")
 	(list "pandoc_ghm" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js"))
        eshell-command-aliases-list))
+
+;;; eww
+(setq eww-search-prefix "http://www.google.com/search?q=")
+;; 背景色を白くしない
+;; 元ネタ：http://futurismo.biz/archives/2950
+(defvar eww-disable-colorize t)
+(defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
+  (unless eww-disable-colorize
+    (funcall orig start end fg)))
+(advice-add 'shr-colorize-region :around 'shr-colorize-region--disable)
+(advice-add 'eww-colorize-region :around 'shr-colorize-region--disable)
+(defun eww-disable-color ()
+  "eww で文字色を反映させない"
+  (interactive)
+  (setq-local eww-disable-colorize t)
+  (eww-reload))
+(defun eww-enable-color ()
+  "eww で文字色を反映させる"
+  (interactive)
+  (setq-local eww-disable-colorize nil)
+  (eww-reload))
 
 ;;; init.el ends here

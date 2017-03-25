@@ -11,6 +11,7 @@
 ("easylist")
 ))
 (setq YaTeX::usepackage-alist-private '(
+("newtxtext")
 ("mathspec")
 ("ifthen")
 ("mathtools")
@@ -46,14 +47,18 @@
 ("lualatex")
 ("uplatex")
 ))
-
 (setq user-singlecmd-table '(
+("bottomrule")
+("midrule")
+("xrightarrow")
 ("makeatletter")
 ("makeatother")
 ("toprule")
 ("centering")
 ))
+
 (setq user-section-table '(
+("term")
 ("pmqty")
 ("mqty")
 ("setsansfont")
