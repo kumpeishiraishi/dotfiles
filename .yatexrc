@@ -11,6 +11,7 @@
 ("easylist")
 ))
 (setq YaTeX::usepackage-alist-private '(
+("spreadtab")
 ("newtxtext")
 ("mathspec")
 ("ifthen")
@@ -48,6 +49,8 @@
 ("uplatex")
 ))
 (setq user-singlecmd-table '(
+("draw")
+("node")
 ("bottomrule")
 ("midrule")
 ("xrightarrow")
@@ -56,8 +59,8 @@
 ("toprule")
 ("centering")
 ))
-
 (setq user-section-table '(
+("setstretch")
 ("term")
 ("pmqty")
 ("mqty")
