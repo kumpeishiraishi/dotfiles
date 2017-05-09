@@ -4,6 +4,7 @@
 
 # PATH
 export PATH=/usr/local/bin:/sbin:/Library/TeX/texbin:/usr/sbin:$PATH
+export GOPATH=~/.go
 
 # 環境変数
 export LC_ALL=en_US.UTF-8
@@ -128,6 +129,7 @@ alias ghci='stack ghci'
 alias runghc='stack runghc'
 alias runhaskell='stack runhaskell'
 alias jupyternb='jupyter notebook'
+alias g++='g++-7 -std=c++11'
 
 # sudo の後のコマンドでエイリアスを有効にする
 alias sudo='sudo '
