@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2017/03/16
+;; Last modified: 2017/06/05
 
 ;;; Code:
 
@@ -325,6 +325,7 @@
        "~/Dropbox/Emacs/skk/SKK-JISYO.propernoun"
        "~/Dropbox/Emacs/skk/SKK-JISYO.station"
        "~/Dropbox/Emacs/skk/SKK-JISYO.itaiji"
+       "~/Dropbox/Emacs/skk/SKK-JISYO.fullname"
        '("~/Dropbox/Emacs/skk/SKK-JISYO.JIS3_4" . euc-jisx0213)
        ))
 (setq skk-tut-file "~/Dropbox/Emacs/skk/skk/etc/SKK.tut")
@@ -481,9 +482,4 @@
   (setq-local eww-disable-colorize nil)
   (eww-reload))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; keyfreq
-(require 'keyfreq)
-(keyfreq-mode 1)
-(keyfreq-autosave-mode 1)
 ;;; init.el ends here
