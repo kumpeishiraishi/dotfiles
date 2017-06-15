@@ -43,6 +43,7 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 ;; 言語環境・文字コード
 (set-language-environment "Japanese")
+(setenv "LANG" "en_US.UTF-8")
 (prefer-coding-system 'utf-8)
 (setq coding-system-for-read 'utf-8)
 (setq coding-system-for-write 'utf-8)
