@@ -51,6 +51,7 @@
 ("uplatex")
 ))
 (setq user-singlecmd-table '(
+("NewDocumentCommand")
 ("sim")
 ("quad")
 ("draw")
