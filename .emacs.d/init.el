@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2017/06/05
+;; Last modified: 2017/09/07
 
 ;;; Code:
 
@@ -134,7 +134,7 @@
 (display-time)
 (display-battery-mode 1)
 (set-face-foreground 'mode-line "blue1")
-(set-face-background 'mode-line "gray80")
+(set-face-background 'mode-line "gray90")
 (setq-default mode-line-buffer-identification
 	      `(,(propertize "%b" 'face '(:foreground "maroon2"))))
 ;; モードを略号表示
@@ -482,5 +482,7 @@
   (interactive)
   (setq-local eww-disable-colorize nil)
   (eww-reload))
+
+(require 'magit)
 
 ;;; init.el ends here

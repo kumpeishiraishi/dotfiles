@@ -157,7 +157,7 @@ s(){
     local map="https://www.google.co.jp/maps/search/"
     local jawp="https://ja.wikipedia.org/wiki/"
     local enwp="https://en.wikipedia.org/wiki/"
-    local dict="http://ejje.weblio.jp/content/"
+    local dict="http://eow.alc.co.jp/search?q="
     case $1 in
 	"-m") shift; open "$map${*// /+}";;
 	"-jw") shift; w3m "$jawp${*// /_}";;
