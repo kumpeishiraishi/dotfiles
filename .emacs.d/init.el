@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2017/09/07
+;; Last modified: 2017/09/18
 
 ;;; Code:
 
@@ -39,6 +39,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; 設定
+(require 'cl)
 (setq make-backup-files nil)
 (fset 'yes-or-no-p 'y-or-n-p)
 ;; 言語環境・文字コード
@@ -149,6 +150,7 @@
     (flycheck-mode . "")
     (real-auto-save-mode . "")
     (undo-tree-mode . "")
+    (auto-revert-mode . "")
     ;; Major modes
     (lisp-interaction-mode . "Li")
     (python-mode . "Py")
@@ -372,7 +374,8 @@
 (setq dired-isearch-filenames t)
 (setq dired-dwim-target t);; diredを2画面で開いていれば、片方でコピー/移動先を表示
 (setq dired-listing-switches (purecopy "-alh"));; lsオプション
-(define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode)
+(eval-after-load "dired" '(progn
+			    (define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; undo-tree
@@ -483,6 +486,8 @@
   (setq-local eww-disable-colorize nil)
   (eww-reload))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; magit
 (require 'magit)
 
 ;;; init.el ends here
