@@ -190,7 +190,7 @@
 ;; 他の処理系を用いるには「%#!pdflatex」などと本文中に記載して、通常通りタイプセットすれば良い
 (setq YaTeX-nervous nil);; ローカル辞書不要
 (setq YaTeX-user-completion-table "~/dotfiles/.yatexrc");; ユーザ辞書もdotfilesで管理
-
+(setq bibtex-command "biber")
 ;; skk対策
 (add-hook 'skk-mode-hook
 	  (lambda ()

@@ -11,6 +11,7 @@
 ("easylist")
 ))
 (setq YaTeX::usepackage-alist-private '(
+("unicode-math")
 ("biblatex")
 ("ulem")
 ("upgreek")
