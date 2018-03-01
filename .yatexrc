@@ -11,6 +11,7 @@
 ("easylist")
 ))
 (setq YaTeX::usepackage-alist-private '(
+("docmute")
 ("unicode-math")
 ("biblatex")
 ("ulem")
@@ -41,9 +42,11 @@
 ))
 
 (setq YaTeX:documentclasses-private '(
+("standalone")
 ("bxjsarticle")
 ("ltjsarticle")
 ))
+
 (setq YaTeX:documentclass-options-private '(
 ("standalone")
 ("ja=standard")

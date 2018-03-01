@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2017/09/18
+;; Last modified: 2018/03/01
 
 ;;; Code:
 
@@ -27,9 +27,12 @@
     google-translate
     haskell-mode
     helm
+    helm-ag
     helm-swoop
+    helm-tramp
     markdown-mode
     migemo
+    magit
     org
     undo-tree
     yatex))
@@ -178,6 +181,7 @@
 (global-unset-key "\C-z")
 (keyboard-translate ?\C-h ?\C-?)
 (windmove-default-keybindings 'super);; 分割ウィンドウ移動をCMDで
+(global-unset-key (kbd "M-ESC ESC"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; YaTeX
@@ -207,7 +211,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Markdown-mode
-(add-to-list 'auto-mode-alist '("\\.txt\\'" . markdown-mode))
 (setq markdown-command "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -217,6 +220,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; org-mode
+(add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
 ;; orgキーバインド
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
@@ -288,6 +292,9 @@
         :around (lambda (fcn file)
                   (unless (string-match ".DS_Store" file)
                     (funcall fcn file))))
+;; helm-ag
+(global-set-key (kbd "M-g .") 'helm-ag)
+(global-set-key (kbd "C-M-s") 'helm-ag-this-file)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; auto-complete
@@ -463,6 +470,7 @@
 	(list "pandoc_gh" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css")
 	(list "pandoc_ghm" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js"))
        eshell-command-aliases-list))
+;;(setq eshell-prompt-regexp "^[^λ]+ λ ")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; eww
