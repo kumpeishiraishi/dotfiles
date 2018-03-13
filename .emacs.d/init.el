@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2018/03/01
+;; Last modified: 2018/03/13
 
 ;;; Code:
 
@@ -34,6 +34,7 @@
     migemo
     magit
     org
+    org-ref
     undo-tree
     yatex))
 (dolist (package myPackages)
@@ -243,6 +244,8 @@
 ;; アジェンダ表示で下線を用いる
 (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)))
 (setq hl-line-face 'underline)
+;; org ref
+(require 'org-ref)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; スペルチェック
