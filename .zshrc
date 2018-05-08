@@ -129,7 +129,7 @@ alias ghci='stack ghci'
 alias runghc='stack runghc'
 alias runhaskell='stack runhaskell'
 alias jupyternb='jupyter notebook'
-alias g++='g++-7 -std=c++11'
+alias g++='g++-8'
 
 # sudo の後のコマンドでエイリアスを有効にする
 alias sudo='sudo '

@@ -72,8 +72,8 @@
 ;; フォント
 ;; Macでヒラギノ、それ以外で源ノ角。Source Code Proと源ノ角を統合したSource Han Code JPもあるが、欧文太字潰れや幅が気に入らず、見送り（2016/04/21）
 (set-face-attribute 'default nil
-		    :family "Source Code Pro"
-		    :height 125)
+                    :family "Source Code Pro"
+                    :height 125)
 (if (equal system-type 'darwin)
     (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Hiragino Kaku Gothic ProN"))
   (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Source Han Sans")))
@@ -134,14 +134,14 @@
 (setq display-time-day-and-date t)
 ;;(setq display-time-string-forms
 ;;      '((format "%s %s %s %s:%s:%s %s"
-;;		dayname monthname day 12-hours minutes seconds am-pm
-;;		)))
+;;              dayname monthname day 12-hours minutes seconds am-pm
+;;              )))
 (display-time)
 (display-battery-mode 1)
 (set-face-foreground 'mode-line "blue1")
 (set-face-background 'mode-line "gray90")
 (setq-default mode-line-buffer-identification
-	      `(,(propertize "%b" 'face '(:foreground "maroon2"))))
+              `(,(propertize "%b" 'face '(:foreground "maroon2"))))
 ;; モードを略号表示
 (defvar mode-line-cleaner-alist
   '(
@@ -185,6 +185,17 @@
 (global-unset-key (kbd "M-ESC ESC"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; C++
+(setq-default c-basic-offset 4
+              tab-width 4
+              indent-tabs-mode nil)
+;; C++ style
+(defun add-c++-mode-conf ()
+  (c-set-style "stroustrup")
+  (show-paren-mode t))
+(add-hook 'c++-mode-hook 'add-c++-mode-conf)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; YaTeX
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
 (setq auto-mode-alist (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
@@ -198,13 +209,13 @@
 (setq bibtex-command "biber")
 ;; skk対策
 (add-hook 'skk-mode-hook
-	  (lambda ()
-	    (if (eq major-mode 'yatex-mode)
-		(progn
-		  (define-key skk-j-mode-map "\\" 'self-insert-command)
-		  (define-key skk-j-mode-map "$" 'YaTeX-insert-dollar)
-		  ))
-	    ))
+          (lambda ()
+            (if (eq major-mode 'yatex-mode)
+                (progn
+                  (define-key skk-j-mode-map "\\" 'self-insert-command)
+                  (define-key skk-j-mode-map "$" 'YaTeX-insert-dollar)
+                  ))
+            ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; exec-path-from-shell
@@ -256,7 +267,7 @@
 (mapc
  (lambda (hook)
    (add-hook hook
-	     '(lambda () (flyspell-mode 1))))
+             '(lambda () (flyspell-mode 1))))
  '(yatex-mode-hook
    markdown-mode-hook
    org-mode-hook))
@@ -348,11 +359,11 @@
       skk-katakana-mode-string "ア")
 (when skk-use-color-cursor
   (setq skk-cursor-default-color "Green"
-	skk-cursor-hiragana-color "Magenta"
-	skk-cursor-katakana-color "Cyan"
-	skk-cursor-abbrev-color "Royalblue"
-	skk-cursor-jisx0208-latin-color "Pink";; 全英
-	skk-cursor-latin-color "Green"))
+        skk-cursor-hiragana-color "Magenta"
+        skk-cursor-katakana-color "Cyan"
+        skk-cursor-abbrev-color "Royalblue"
+        skk-cursor-jisx0208-latin-color "Pink";; 全英
+        skk-cursor-latin-color "Green"))
 ;; SKK設定
 (setq skk-auto-insert-paren t);; 対応する閉括弧挿入
 (setq skk-previous-candidate-key "x");; 前候補に戻るのはxだけ、C-pは使わない
@@ -366,7 +377,7 @@
 (setq skk-rom-kana-rule-list
       (append skk-rom-kana-rule-list
               '(("！" nil "!")
-		("@" nil "@");;「トゥデイ」機能は使わない
+                ("@" nil "@");;「トゥデイ」機能は使わない
                 )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -385,7 +396,7 @@
 (setq dired-dwim-target t);; diredを2画面で開いていれば、片方でコピー/移動先を表示
 (setq dired-listing-switches (purecopy "-alh"));; lsオプション
 (eval-after-load "dired" '(progn
-			    (define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode)))
+                            (define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; undo-tree
@@ -432,9 +443,9 @@
       user-full-name "Kumpei Shiraishi")
 (setq gnus-select-method
       '(nnimap "gmail"
-	       (nnimap-address "imap.gmail.com")
-	       (nnimap-server-port "imaps")
-	       (nnimap-stream ssl)))
+               (nnimap-address "imap.gmail.com")
+               (nnimap-server-port "imaps")
+               (nnimap-stream ssl)))
 (setq smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587
       gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
@@ -469,9 +480,9 @@
       (append
        (list
         (list "la" "ls -a")
-	(list "ll" "ls -l")
-	(list "pandoc_gh" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css")
-	(list "pandoc_ghm" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js"))
+        (list "ll" "ls -l")
+        (list "pandoc_gh" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css")
+        (list "pandoc_ghm" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js"))
        eshell-command-aliases-list))
 ;;(setq eshell-prompt-regexp "^[^λ]+ λ ")
 
