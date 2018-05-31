@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2018/03/13
+;; Last modified: 2018/05/31
 
 ;;; Code:
 
@@ -228,8 +228,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; haskell-mode
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; org-mode
 (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
@@ -385,6 +383,7 @@
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (global-set-key "\M-n" 'flycheck-next-error)
 (global-set-key "\M-p" 'flycheck-previous-error)
+(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; dired
