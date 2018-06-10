@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2018/05/31
+;; Last modified: 2018/06/10
 
 ;;; Code:
 
@@ -394,6 +394,7 @@
 (setq dired-isearch-filenames t)
 (setq dired-dwim-target t);; diredを2画面で開いていれば、片方でコピー/移動先を表示
 (setq dired-listing-switches (purecopy "-alh"));; lsオプション
+(define-key dired-mode-map (kbd "h") nil);; dired help不要
 (eval-after-load "dired" '(progn
                             (define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode)))
 
