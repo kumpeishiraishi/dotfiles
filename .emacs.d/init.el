@@ -383,7 +383,7 @@
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (global-set-key "\M-n" 'flycheck-next-error)
 (global-set-key "\M-p" 'flycheck-previous-error)
-(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
+(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++14")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; dired
@@ -513,3 +513,17 @@
 (require 'magit)
 
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (yatex undo-tree ox-pandoc org-ref migemo markdown-mode magit helm-tramp helm-swoop helm-ag haskell-mode google-translate flycheck exec-path-from-shell elscreen csv-mode avy auto-complete ace-isearch))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
