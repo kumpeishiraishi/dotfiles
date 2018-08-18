@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2018/06/10
+;; Last modified: 2018/08/18
 
 ;;; Code:
 
@@ -36,10 +36,13 @@
     org
     org-ref
     undo-tree
+    use-package
     yatex))
 (dolist (package myPackages)
   (unless (package-installed-p package)
     (package-install package)))
+
+(require 'use-package)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; 設定
@@ -183,6 +186,7 @@
 (keyboard-translate ?\C-h ?\C-?)
 (windmove-default-keybindings 'super);; 分割ウィンドウ移動をCMDで
 (global-unset-key (kbd "M-ESC ESC"))
+(global-unset-key (kbd "s-n"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; C++
@@ -484,7 +488,14 @@
         (list "pandoc_gh" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css")
         (list "pandoc_ghm" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js"))
        eshell-command-aliases-list))
-;;(setq eshell-prompt-regexp "^[^λ]+ λ ")
+(use-package helm-eshell
+  :init
+  (add-hook 'eshell-mode-hook
+        #'(lambda ()
+        (define-key eshell-mode-map [remap eshell-pcomplete] 'helm-esh-pcomplete)))
+  (add-hook 'eshell-mode-hook
+        #'(lambda ()
+                (define-key eshell-mode-map (kbd "M-p") 'helm-eshell-history))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; eww
@@ -513,17 +524,3 @@
 (require 'magit)
 
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (yatex undo-tree ox-pandoc org-ref migemo markdown-mode magit helm-tramp helm-swoop helm-ag haskell-mode google-translate flycheck exec-path-from-shell elscreen csv-mode avy auto-complete ace-isearch))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
