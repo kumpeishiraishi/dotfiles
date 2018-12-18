@@ -1,4 +1,6 @@
 (setq user-env-table '(
+("autobreak")
+("textblock*")
 ("tcolorbox")
 ("tikzpicture")
 ("spacing")
@@ -10,6 +12,7 @@
 ("frame")
 ("easylist")
 ))
+
 (setq YaTeX::usepackage-alist-private '(
 ("docmute")
 ("unicode-math")
@@ -82,5 +85,4 @@
 ("setsansfont")
 ("setmainfont")
 ("ce")
-("subsubsection*")
 ))

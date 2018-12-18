@@ -71,6 +71,8 @@ isostatic
 hyperstatic
 hypostatic
 variational
+eigenvector
+quartic
 GHCi
 CDs
 zsh

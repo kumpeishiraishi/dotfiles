@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2018/08/18
+;; Last modified: 2018/12/18
 
 ;;; Code:
 
@@ -18,9 +18,10 @@
 (when (not package-archive-contents) (package-refresh-contents))
 (defvar myPackages
   '(ace-isearch
-    auto-complete
     avy
     csv-mode
+    company
+    company-irony
     elscreen
     exec-path-from-shell
     flycheck
@@ -30,11 +31,13 @@
     helm-ag
     helm-swoop
     helm-tramp
+    irony
     markdown-mode
     migemo
     magit
     org
     org-ref
+    rust-mode
     undo-tree
     use-package
     yatex))
@@ -68,7 +71,7 @@
 ;; 各種表示/非表示
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-(global-linum-mode 1)
+(global-display-line-numbers-mode 1)
 (show-paren-mode 1)
 (setq ring-bell-function 'ignore)
 (setq frame-title-format "%f")
@@ -153,7 +156,8 @@
     (ace-isearch-mode . "")
     (flyspell-mode . "")
     (abbrev-mode . "")
-    (auto-complete-mode . "")
+    (company-mode . "")
+    (irony-mode . "")
     (flycheck-mode . "")
     (real-auto-save-mode . "")
     (undo-tree-mode . "")
@@ -286,6 +290,9 @@
 (load-library "migemo")
 (migemo-init)
 
+(require 'tramp)
+(setq tramp-default-method "ssh")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; helm
 ;; helm
@@ -313,15 +320,29 @@
 (global-set-key (kbd "C-M-s") 'helm-ag-this-file)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; auto-complete
-(ac-config-default)
-(setq ac-auto-start 1);; n文字で開始
-(setq ac-auto-show-menu 0.2);; n秒で開始
-(setq ac-candidate-limit nil);; 補完候補表示を無制限に
-(setq ac-use-menu-map t)
-(setq ac-use-comphist nil)
-(setq ac-ignore-case t);; 大文字小文字を区別しない
-(global-auto-complete-mode t)
+;;; company & irony
+(global-company-mode) ; 全バッファで有効にする 
+(setq company-idle-delay 0) ; デフォルトは0.5
+(setq company-minimum-prefix-length 2) ; デフォルトは4
+(setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
+(define-key company-active-map (kbd "M-n") nil)
+(define-key company-active-map (kbd "M-p") nil)
+(define-key company-active-map (kbd "C-n") 'company-select-next)
+(define-key company-active-map (kbd "C-p") 'company-select-previous)
+(define-key company-active-map (kbd "C-h") nil)
+
+(require 'irony)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+(add-to-list 'company-backends 'company-irony) ; backend追加
+(eval-after-load "irony"
+  '(progn
+     (custom-set-variables '(irony-additional-clang-options '("-std=c++11")))
+     (add-to-list 'company-backends 'company-irony)
+     (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+     (add-hook 'c-mode-common-hook 'irony-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; SKK
