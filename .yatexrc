@@ -12,8 +12,10 @@
 ("frame")
 ("easylist")
 ))
-
 (setq YaTeX::usepackage-alist-private '(
+("hyperref")
+("grffile")
+("here")
 ("docmute")
 ("unicode-math")
 ("biblatex")
