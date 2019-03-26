@@ -1,18 +1,13 @@
-* パッケージ管理
+#+TITLE: My Emacs settings
+#+AUTHOR: Kumpei Shiraishi
+#+EMAIL: kumpeishiraishi@gmail.com
+#+DATE: 2019/03/26
+
+This is my Emacs configurations.
+
+* Packages
 
 #+BEGIN_SRC emacs-lisp
-;;; init.el --- My Emacs settings
-
-;;; Commentary:
-
-;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
-;; Created: around 2014
-;; Last modified: 2019/03/26
-
-;;; Code:
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; パッケージ管理
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
@@ -48,12 +43,34 @@
 (dolist (package myPackages)
   (unless (package-installed-p package)
     (package-install package)))
+
+(require 'use-package)
 #+END_SRC
 
-* その他
+* Display
+Do not show tool bar, scroll bar, etc.
+#+BEGIN_SRC emacs-lisp
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (setq ring-bell-function 'ignore)
+#+END_SRC
+
+Display line numbers (not using linum-mode).
+#+BEGIN_SRC emacs-lisp
+  (global-display-line-numbers-mode 1)
+#+END_SRC
+
+Parens
+#+BEGIN_SRC emacs-lisp
+  (show-paren-mode 1)
+#+END_SRC
+
+* org-mode
+
+* misc
 
 #+BEGIN_SRC emacs-lisp
-(require 'use-package)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; 設定
@@ -77,12 +94,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; 表示
 ;; 各種表示/非表示
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(global-display-line-numbers-mode 1)
-(show-paren-mode 1)
-(setq ring-bell-function 'ignore)
-(setq frame-title-format "%f")
+
 ;; フォント
 ;; Macでヒラギノ、それ以外で源ノ角。Source Code Proと源ノ角を統合したSource Han Code JPもあるが、欧文太字潰れや幅が気に入らず、見送り（2016/04/21）
 (set-face-attribute 'default nil
