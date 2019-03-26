@@ -46,6 +46,29 @@ This is my Emacs configurations.
 (require 'use-package)
 #+END_SRC
 
+
+* General settings
+#+BEGIN_SRC emacs-lisp
+(require 'cl)
+(setq make-backup-files nil)
+(fset 'yes-or-no-p 'y-or-n-p)
+;; 言語環境・文字コード
+(set-language-environment "Japanese")
+(setenv "LANG" "en_US.UTF-8")
+(prefer-coding-system 'utf-8)
+(setq coding-system-for-read 'utf-8)
+(setq coding-system-for-write 'utf-8)
+;; EmacsとIMEの問題は、SKKで入力することにしたので、一応解決。Emacsでは常に英数入力という制御ができれば嬉しいが。（2017/01/06）
+;; emacs-24.5-inline.patchを当ててHomebrewからインストールして可能になった、日本語関係の設定（起動時、ミニバッファ、isearch/migemoで英数）
+;; (setq default-input-method "MacOSX")でIME毎カーソル色変更などは出来なかった（未解決2016/03/28）
+;; 下記のIME関係は、インラインパッチをあてたEmacsの全画面表示時に、日本語入力が一文字しか出来ないという問題のため、棚上げ（2016/03/28）
+;; (add-hook 'after-init-hook 'mac-change-language-to-us)
+;; (add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
+;; (add-hook 'isearch-mode-hook 'mac-change-language-to-us)
+
+(exec-path-from-shell-initialize)
+#+END_SRC
+
 * Display
 Do not show tool bar, scroll bar, etc.
 #+BEGIN_SRC emacs-lisp
@@ -62,6 +85,55 @@ Display line numbers (not using linum-mode).
 Parens
 #+BEGIN_SRC emacs-lisp
   (show-paren-mode 1)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(if window-system
+    (progn
+      (set-frame-parameter nil 'fullscreen 'fullboth)
+      (set-background-color "Black")
+      (set-foreground-color "White")
+      (set-cursor-color "Green")
+      (set-frame-parameter nil 'alpha 80)))
+;; 起動時画面
+(setq inhibit-splash-screen t)
+(setq initial-scratch-message nil)
+(setq initial-major-mode 'org-mode)
+(setq default-directory "~/Dropbox/")
+;; scratch buffer消さない（元ネタ：https://github.com/uwabami/emacs）
+(defun my:make-scratch (&optional arg)
+  (interactive)
+  (progn
+    ;; "*scratch*" を作成して buffer-list に放り込む
+    (set-buffer (get-buffer-create "*scratch*"))
+    (funcall initial-major-mode)
+    (erase-buffer)
+    (when (and initial-scratch-message (not inhibit-startup-message))
+      (insert initial-scratch-message))
+    (or arg
+        (progn
+          (setq arg 0)
+          (switch-to-buffer "*scratch*")))
+    (cond ((= arg 0) (message "*scratch* is cleared up."))
+          ((= arg 1) (message "another *scratch* is created")))))
+(defun my:buffer-name-list ()
+  (mapcar (function buffer-name) (buffer-list)))
+(add-hook 'kill-buffer-query-functions
+          ;; *scratch* バッファで kill-buffer したら内容を消去するだけにする
+          (function (lambda ()
+                      (if (string= "*scratch*" (buffer-name))
+                          (progn (my:make-scratch 0) nil)
+                        t))))
+(add-hook 'after-save-hook
+          ;; *scratch* バッファの内容を保存したら
+          ;; *scratch* バッファを新しく作る.
+          (function
+           (lambda ()
+             (unless (member "*scratch*" (my:buffer-name-list))
+               (my:make-scratch 1)))))
+;; 空白
+;;(require 'whitespace)
+;;(global-whitespace-mode 1)
 #+END_SRC
 
 ** Fonts
@@ -81,8 +153,6 @@ TODO: ヒラギノとSource Code Proでキレイに文字幅1:2にしたい。�
     (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Source Han Sans")))
   (setq face-font-rescale-alist '(("Hiragino.*" . 1)))
 #+END_SRC
-
-* org-mode
 
 * SKK
 I use DDSKK for Japanese writing.
@@ -167,82 +237,14 @@ Also, I do not want to use TODAY function.
 #+END_SRC
 
 * misc
-
 #+BEGIN_SRC emacs-lisp
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; 設定
-(require 'cl)
-(setq make-backup-files nil)
-(fset 'yes-or-no-p 'y-or-n-p)
-;; 言語環境・文字コード
-(set-language-environment "Japanese")
-(setenv "LANG" "en_US.UTF-8")
-(prefer-coding-system 'utf-8)
-(setq coding-system-for-read 'utf-8)
-(setq coding-system-for-write 'utf-8)
-;; EmacsとIMEの問題は、SKKで入力することにしたので、一応解決。Emacsでは常に英数入力という制御ができれば嬉しいが。（2017/01/06）
-;; emacs-24.5-inline.patchを当ててHomebrewからインストールして可能になった、日本語関係の設定（起動時、ミニバッファ、isearch/migemoで英数）
-;; (setq default-input-method "MacOSX")でIME毎カーソル色変更などは出来なかった（未解決2016/03/28）
-;; 下記のIME関係は、インラインパッチをあてたEmacsの全画面表示時に、日本語入力が一文字しか出来ないという問題のため、棚上げ（2016/03/28）
-;; (add-hook 'after-init-hook 'mac-change-language-to-us)
-;; (add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
-;; (add-hook 'isearch-mode-hook 'mac-change-language-to-us)
+;; 元ネタhttp://futurismo.biz/archives/5938
+(setq cookie-file "~/Dropbox/Emacs/policy.txt")
+(global-set-key (kbd "C-x C-,") 'cookie)
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; 表示
-;; 各種表示/非表示
-
-
-;; ウィンドウ
-(if window-system
-    (progn
-      (set-frame-parameter nil 'fullscreen 'fullboth)
-      (set-background-color "Black")
-      (set-foreground-color "White")
-      (set-cursor-color "Green")
-      (set-frame-parameter nil 'alpha 80)))
-;; 起動時画面
-(setq inhibit-splash-screen t)
-(setq initial-scratch-message nil)
-(setq initial-major-mode 'org-mode)
-(setq default-directory "~/Dropbox/")
-;; scratch buffer消さない（元ネタ：https://github.com/uwabami/emacs）
-(defun my:make-scratch (&optional arg)
-  (interactive)
-  (progn
-    ;; "*scratch*" を作成して buffer-list に放り込む
-    (set-buffer (get-buffer-create "*scratch*"))
-    (funcall initial-major-mode)
-    (erase-buffer)
-    (when (and initial-scratch-message (not inhibit-startup-message))
-      (insert initial-scratch-message))
-    (or arg
-        (progn
-          (setq arg 0)
-          (switch-to-buffer "*scratch*")))
-    (cond ((= arg 0) (message "*scratch* is cleared up."))
-          ((= arg 1) (message "another *scratch* is created")))))
-(defun my:buffer-name-list ()
-  (mapcar (function buffer-name) (buffer-list)))
-(add-hook 'kill-buffer-query-functions
-          ;; *scratch* バッファで kill-buffer したら内容を消去するだけにする
-          (function (lambda ()
-                      (if (string= "*scratch*" (buffer-name))
-                          (progn (my:make-scratch 0) nil)
-                        t))))
-(add-hook 'after-save-hook
-          ;; *scratch* バッファの内容を保存したら
-          ;; *scratch* バッファを新しく作る.
-          (function
-           (lambda ()
-             (unless (member "*scratch*" (my:buffer-name-list))
-               (my:make-scratch 1)))))
-;; 空白
-;;(require 'whitespace)
-;;(global-whitespace-mode 1)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; モードライン
+* Modeline
+#+BEGIN_SRC emacs-lisp
 ;; 各種表示/非表示
 (line-number-mode -1);; 常に行番号を表示しているので、モードラインには不要
 (setq display-time-day-and-date t)
@@ -290,18 +292,20 @@ Also, I do not want to use TODAY function.
           (when (eq mode major-mode)
             (setq mode-name mode-str)))))
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; キーバインド
+* Key bindings
+#+BEGIN_SRC emacs-lisp
 (global-set-key "\C-u" 'undo)
 (global-unset-key "\C-z")
 (keyboard-translate ?\C-h ?\C-?)
 (windmove-default-keybindings 'super);; 分割ウィンドウ移動をCMDで
 (global-unset-key (kbd "M-ESC ESC"))
 (global-unset-key (kbd "s-n"))
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; JavaScript
+* JavaScript
+#+BEGIN_SRC emacs-lisp
 (use-package js
   :init
   (add-hook 'js-mode-hook
@@ -309,9 +313,10 @@ Also, I do not want to use TODAY function.
               (make-local-variable 'js-indent-level)
               (setq js-indent-level 2)))
   )
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; C++
+* C++
+#+BEGIN_SRC emacs-lisp
 (setq-default c-basic-offset 4
               tab-width 4
               indent-tabs-mode nil)
@@ -320,9 +325,10 @@ Also, I do not want to use TODAY function.
   (c-set-style "stroustrup")
   (show-paren-mode t))
 (add-hook 'c++-mode-hook 'add-c++-mode-conf)
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; YaTeX
+* YaTeX
+#+BEGIN_SRC emacs-lisp
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
 (setq auto-mode-alist (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
 (add-hook 'yatex-mode-hook '(lambda () (auto-fill-mode -1)));; 自動折り返し無効
@@ -342,18 +348,15 @@ Also, I do not want to use TODAY function.
                   (define-key skk-j-mode-map "$" 'YaTeX-insert-dollar)
                   ))
             ))
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; exec-path-from-shell
-(exec-path-from-shell-initialize)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Markdown-mode
+* Markdown
+#+BEGIN_SRC emacs-lisp
 (setq markdown-command "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js")
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; haskell-mode
-
+* org-mode
+#+BEGIN_SRC emacs-lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; org-mode
 (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
@@ -381,9 +384,10 @@ Also, I do not want to use TODAY function.
 (setq hl-line-face 'underline)
 ;; org ref
 (require 'org-ref)
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; スペルチェック
+* Spell check
+#+BEGIN_SRC emacs-lisp
 (setq-default ispell-program-name "aspell")
 (eval-after-load "ispell" '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")));; 日本語混じりでも有効に
 (global-set-key [s-return] 'ispell-word)
@@ -395,9 +399,10 @@ Also, I do not want to use TODAY function.
  '(yatex-mode-hook
    markdown-mode-hook
    org-mode-hook))
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; migemo
+* migemo
+#+BEGIN_SRC emacs-lisp
 (require 'migemo)
 (setq migemo-command "cmigemo")
 (setq migemo-options '("-q" "--emacs"))
@@ -410,10 +415,10 @@ Also, I do not want to use TODAY function.
 
 (require 'tramp)
 (setq tramp-default-method "ssh")
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; helm
-;; helm
+* helm
+#+BEGIN_SRC emacs-lisp
 (require 'helm-config)
 (helm-mode 1)
 (define-key global-map (kbd "C-x C-f") 'helm-find-files)
@@ -436,9 +441,10 @@ Also, I do not want to use TODAY function.
 ;; helm-ag
 (global-set-key (kbd "M-g .") 'helm-ag)
 (global-set-key (kbd "C-M-s") 'helm-ag-this-file)
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; company & irony
+* company
+#+BEGIN_SRC emacs-lisp
 (global-company-mode) ; 全バッファで有効にする 
 (setq company-idle-delay 0) ; デフォルトは0.5
 (setq company-minimum-prefix-length 2) ; デフォルトは4
@@ -461,17 +467,18 @@ Also, I do not want to use TODAY function.
      (add-to-list 'company-backends 'company-irony)
      (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
      (add-hook 'c-mode-common-hook 'irony-mode)))
+#+END_SRC
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; flycheck
+* flycheck
+#+BEGIN_SRC emacs-lisp
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (global-set-key "\M-n" 'flycheck-next-error)
 (global-set-key "\M-p" 'flycheck-previous-error)
 (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++14")))
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; dired
+* dired
+#+BEGIN_SRC emacs-lisp
 (setq delete-by-moving-to-trash t
       trash-directory "~/.Trash")
 (setq dired-recursive-copies 'always
@@ -482,15 +489,17 @@ Also, I do not want to use TODAY function.
 (define-key dired-mode-map (kbd "h") nil);; dired help不要
 (eval-after-load "dired" '(progn
                             (define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode)))
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; undo-tree
+* undo-tree
+#+BEGIN_SRC emacs-lisp
 (require 'undo-tree)
 (global-undo-tree-mode t)
 (global-set-key (kbd "M-/") 'undo-tree-redo)
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; google-translate
+* google-translate
+#+BEGIN_SRC emacs-lisp
 ;; 元ネタhttp://emacs.rubikitch.com/google-translate/
 (require 'google-translate)
 (defvar google-translate-english-chars "[:ascii:]’“”–"
@@ -521,9 +530,10 @@ Also, I do not want to use TODAY function.
      (if asciip "ja" "en")
      string)))
 (global-set-key (kbd "C-x t") 'google-translate-enja-or-jaen)
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; メール
+* Mail
+#+BEGIN_SRC emacs-lisp
 (setq user-mail-address "kumpeishiraishi@gmail.com"
       user-full-name "Kumpei Shiraishi")
 (setq gnus-select-method
@@ -534,23 +544,19 @@ Also, I do not want to use TODAY function.
 (setq smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587
       gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; 名言
-;; 元ネタhttp://futurismo.biz/archives/5938
-(setq cookie-file "~/Dropbox/Emacs/policy.txt")
-(global-set-key (kbd "C-x C-,") 'cookie)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; elscreen
+* elscreen
+#+BEGIN_SRC emacs-lisp
 (elscreen-start)
 (setq elscreen-prefix-key "\C-z");; prefix key
 (setq elscreen-tab-display-kill-screen nil);; [X]を表示しない
 (setq elscreen-tab-display-control nil);; [<->]を表示しない
 (setq elscreen-display-tab nil);; タブ表示しない
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; eshell
+* eshell
+#+BEGIN_SRC emacs-lisp
 ;; 補完時に大文字小文字を区別しない
 (setq eshell-cmpl-ignore-case t)
 ;; prompt文字列の変更
@@ -577,9 +583,10 @@ Also, I do not want to use TODAY function.
   (add-hook 'eshell-mode-hook
         #'(lambda ()
                 (define-key eshell-mode-map (kbd "M-p") 'helm-eshell-history))))
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; eww
+* eww
+#+BEGIN_SRC emacs-lisp
 (setq eww-search-prefix "http://www.google.com/search?q=")
 ;; 背景色を白くしない
 ;; 元ネタ：http://futurismo.biz/archives/2950
@@ -599,9 +606,10 @@ Also, I do not want to use TODAY function.
   (interactive)
   (setq-local eww-disable-colorize nil)
   (eww-reload))
+#+END_SRC
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; magit
+* magit
+#+BEGIN_SRC emacs-lisp
 (require 'magit)
 
 ;;(ivy-mode 1) ;; デフォルトの入力補完がivyになる
