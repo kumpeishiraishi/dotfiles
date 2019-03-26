@@ -54,6 +54,7 @@ criticality
 packings
 hyperuniformity
 hyperuniform
+diagonalize
 compressibility
 invariance
 isostaticity
@@ -73,6 +74,8 @@ hypostatic
 variational
 eigenvector
 quartic
+precession
+phonon
 GHCi
 CDs
 zsh
@@ -110,3 +113,4 @@ Silbert
 Vuolukiventie
 Hongo
 Jupyter
+matplotlib
