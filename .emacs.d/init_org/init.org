@@ -6,7 +6,6 @@
 This is my Emacs configurations.
 
 * Packages
-
 #+BEGIN_SRC emacs-lisp
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
@@ -65,13 +64,111 @@ Parens
   (show-paren-mode 1)
 #+END_SRC
 
+** Fonts
+Use [[https://github.com/adobe-fonts/source-code-pro][Source Code Pro]] for English.
+To display Japanese letters in macOS, use Hiragino font.
+In other systems, use [[https://github.com/adobe-fonts/source-han-sans][Source Han Sans]].
+There is a option [[https://github.com/adobe-fonts/source-han-code-jp][Source Han Code JP]], which is a mixture of Source Code Pro and Source Han Sans, but I haven't tried it seriously yet.
+
+TODO: ヒラギノとSource Code Proでキレイに文字幅1:2にしたい。上の安直な方法でヒラギノを1.25倍にすると、幅は良いがイビツになる。（2017/01/06）
+
+#+BEGIN_SRC emacs-lisp
+  (set-face-attribute 'default nil
+                      :family "Source Code Pro"
+                      :height 125)
+  (if (equal system-type 'darwin)
+      (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Hiragino Kaku Gothic ProN"))
+    (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Source Han Sans")))
+  (setq face-font-rescale-alist '(("Hiragino.*" . 1)))
+#+END_SRC
+
 * org-mode
+
+* SKK
+I use DDSKK for Japanese writing.
+DDSKK is installed to my Dropbox directory, and some jisyo files are also in Dropbox.
+
+** SKK Basics
+#+BEGIN_SRC emacs-lisp
+  (let ((default-directory (expand-file-name "~/Dropbox/Emacs/skk/skk/")))
+    (add-to-list 'load-path default-directory)
+    (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
+        (normal-top-level-add-subdirs-to-load-path)))
+
+  (require 'skk-autoloads)
+  (require 'skk-study)
+  (global-set-key "\C-\\" 'skk-mode)
+#+END_SRC
+
+** SKK dictionaries
+#+BEGIN_SRC emacs-lisp
+  (setq skk-jisyo-code 'utf-8)
+  (setq skk-isearch-start-mode 'utf-8);; migemoではSKK不要
+  ;; (setq skk-user-directory "~/Dropbox/Emacs/skk") これでは以下のように、ファイル群を望んだフォルダ配下に保存できない（2016/05/02）
+  (setq skk-jisyo "~/Dropbox/Emacs/skk/jisyo"
+        skk-backup-jisyo "~/Dropbox/Emacs/skk/jisyo.bak"
+        skk-record-file "~/Dropbox/Emacs/skk/record"
+        skk-study-file "~/Dropbox/Emacs/skk/study"
+        skk-study-backup-file "~/Dropbox/Emacs/skk/study.bak")
+  (setq skk-large-jisyo "~/Dropbox/Emacs/skk/SKK-JISYO.L")
+  (setq skk-extra-jisyo-file-list
+        (list
+         "~/Dropbox/Emacs/skk/SKK-JISYO.geo"
+         "~/Dropbox/Emacs/skk/SKK-JISYO.jinmei"
+         "~/Dropbox/Emacs/skk/SKK-JISYO.propernoun"
+         "~/Dropbox/Emacs/skk/SKK-JISYO.station"
+         "~/Dropbox/Emacs/skk/SKK-JISYO.itaiji"
+         "~/Dropbox/Emacs/skk/SKK-JISYO.fullname"
+         '("~/Dropbox/Emacs/skk/SKK-JISYO.JIS3_4" . euc-jisx0213)
+         ))
+  (setq skk-tut-file "~/Dropbox/Emacs/skk/skk/etc/SKK.tut")
+#+END_SRC
+
+** SKK displays
+#+BEGIN_SRC emacs-lisp
+  (setq skk-latin-mode-string "A"
+        skk-hiragana-mode-string "あ"
+        skk-katakana-mode-string "ア")
+  (when skk-use-color-cursor
+    (setq skk-cursor-default-color "Green"
+          skk-cursor-hiragana-color "Magenta"
+          skk-cursor-katakana-color "Cyan"
+          skk-cursor-abbrev-color "Royalblue"
+          skk-cursor-jisx0208-latin-color "Pink";; 全角英数
+          skk-cursor-latin-color "Green"))
+#+END_SRC
+
+** SKK misc.
+Automatically insert corresponding paren.
+#+BEGIN_SRC emacs-lisp
+(setq skk-auto-insert-paren t);; 対応する閉括弧挿入
+#+END_SRC
+
+Completion
+#+BEGIN_SRC emacs-lisp
+(setq skk-previous-candidate-key "x");; 前候補に戻るのはxだけ、C-pは使わない
+(setq skk-dcomp-activate t);; 動的補完
+;;      skk-dcomp-multiple-activate t
+;;      skk-dcomp-multiple-rows 5);; 補完候補を複数表示させると表示が崩れるので、止め（2016/05/10）
+(defadvice skk-j-mode-on (after skk-settings-for-dcomp activate)
+  (define-key skk-j-mode-map "\C-n" 'skk-comp-wrapper)
+  (define-key skk-j-mode-map "\C-p" 'skk-previous-comp-maybe))
+(setq skk-show-annotation t)
+#+END_SRC
+
+Some characters must be displayed in full-width letters.
+Also, I do not want to use TODAY function.
+#+BEGIN_SRC emacs-lisp
+(setq skk-rom-kana-rule-list
+      (append skk-rom-kana-rule-list
+              '(("！" nil "!")
+                ("@" nil "@");;「トゥデイ」機能は使わない
+                )))
+#+END_SRC
 
 * misc
 
 #+BEGIN_SRC emacs-lisp
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; 設定
 (require 'cl)
@@ -95,16 +192,7 @@ Parens
 ;;; 表示
 ;; 各種表示/非表示
 
-;; フォント
-;; Macでヒラギノ、それ以外で源ノ角。Source Code Proと源ノ角を統合したSource Han Code JPもあるが、欧文太字潰れや幅が気に入らず、見送り（2016/04/21）
-(set-face-attribute 'default nil
-                    :family "Source Code Pro"
-                    :height 125)
-(if (equal system-type 'darwin)
-    (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Hiragino Kaku Gothic ProN"))
-  (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Source Han Sans")))
-(setq face-font-rescale-alist '(("Hiragino.*" . 1)))
-;; ヒラギノとSource Code Proでキレイに文字幅1:2にしたい。上の安直な方法でヒラギノを1.25倍にすると、幅は良いがイビツになる。（2017/01/06）
+
 ;; ウィンドウ
 (if window-system
     (progn
@@ -374,64 +462,6 @@ Parens
      (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
      (add-hook 'c-mode-common-hook 'irony-mode)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; SKK
-;; load-path
-(let ((default-directory (expand-file-name "~/Dropbox/Emacs/skk/skk/")))
-  (add-to-list 'load-path default-directory)
-  (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
-      (normal-top-level-add-subdirs-to-load-path)))
-;; SKKを使用
-(require 'skk-autoloads)
-(require 'skk-study)
-(global-set-key "\C-\\" 'skk-mode)
-;; SKK辞書・ファイル
-(setq skk-jisyo-code 'utf-8)
-(setq skk-isearch-start-mode 'utf-8);; migemoではSKK不要
-;; (setq skk-user-directory "~/Dropbox/Emacs/skk") これでは以下のように、ファイル群を望んだフォルダ配下に保存できない（2016/05/02）
-(setq skk-jisyo "~/Dropbox/Emacs/skk/jisyo"
-      skk-backup-jisyo "~/Dropbox/Emacs/skk/jisyo.bak"
-      skk-record-file "~/Dropbox/Emacs/skk/record"
-      skk-study-file "~/Dropbox/Emacs/skk/study"
-      skk-study-backup-file "~/Dropbox/Emacs/skk/study.bak")
-(setq skk-large-jisyo "~/Dropbox/Emacs/skk/SKK-JISYO.L")
-(setq skk-extra-jisyo-file-list
-      (list
-       "~/Dropbox/Emacs/skk/SKK-JISYO.geo"
-       "~/Dropbox/Emacs/skk/SKK-JISYO.jinmei"
-       "~/Dropbox/Emacs/skk/SKK-JISYO.propernoun"
-       "~/Dropbox/Emacs/skk/SKK-JISYO.station"
-       "~/Dropbox/Emacs/skk/SKK-JISYO.itaiji"
-       "~/Dropbox/Emacs/skk/SKK-JISYO.fullname"
-       '("~/Dropbox/Emacs/skk/SKK-JISYO.JIS3_4" . euc-jisx0213)
-       ))
-(setq skk-tut-file "~/Dropbox/Emacs/skk/skk/etc/SKK.tut")
-;; SKK表示
-(setq skk-latin-mode-string "A"
-      skk-hiragana-mode-string "あ"
-      skk-katakana-mode-string "ア")
-(when skk-use-color-cursor
-  (setq skk-cursor-default-color "Green"
-        skk-cursor-hiragana-color "Magenta"
-        skk-cursor-katakana-color "Cyan"
-        skk-cursor-abbrev-color "Royalblue"
-        skk-cursor-jisx0208-latin-color "Pink";; 全英
-        skk-cursor-latin-color "Green"))
-;; SKK設定
-(setq skk-auto-insert-paren t);; 対応する閉括弧挿入
-(setq skk-previous-candidate-key "x");; 前候補に戻るのはxだけ、C-pは使わない
-(setq skk-dcomp-activate t);; 動的補完
-;;      skk-dcomp-multiple-activate t
-;;      skk-dcomp-multiple-rows 5);; 補完候補を複数表示させると表示が崩れるので、止め（2016/05/10）
-(defadvice skk-j-mode-on (after skk-settings-for-dcomp activate)
-  (define-key skk-j-mode-map "\C-n" 'skk-comp-wrapper)
-  (define-key skk-j-mode-map "\C-p" 'skk-previous-comp-maybe))
-(setq skk-show-annotation t)
-(setq skk-rom-kana-rule-list
-      (append skk-rom-kana-rule-list
-              '(("！" nil "!")
-                ("@" nil "@");;「トゥデイ」機能は使わない
-                )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; flycheck
