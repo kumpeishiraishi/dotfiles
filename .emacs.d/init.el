@@ -4,7 +4,7 @@
 
 ;; Author: Kumpei Shiraishi <kumpeishiraishi@gmail.com>
 ;; Created: around 2014
-;; Last modified: 2018/12/18
+;; Last modified: 2019/03/26
 
 ;;; Code:
 
@@ -32,6 +32,7 @@
     helm-swoop
     helm-tramp
     irony
+    json-mode
     markdown-mode
     migemo
     magit
@@ -191,6 +192,16 @@
 (windmove-default-keybindings 'super);; 分割ウィンドウ移動をCMDで
 (global-unset-key (kbd "M-ESC ESC"))
 (global-unset-key (kbd "s-n"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; JavaScript
+(use-package js
+  :init
+  (add-hook 'js-mode-hook
+            (lambda ()
+              (make-local-variable 'js-indent-level)
+              (setq js-indent-level 2)))
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; C++
@@ -543,5 +554,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; magit
 (require 'magit)
+
+;;(ivy-mode 1) ;; デフォルトの入力補完がivyになる
+;;(counsel-mode 1)
+;;
+;;(global-set-key "\C-s" 'swiper)
+;;(global-set-key (kbd "C-c C-r") 'ivy-resume)
+;;(global-set-key (kbd "<f6>") 'ivy-resume)
+;;(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+;;(global-set-key (kbd "C-c g") 'counsel-git)
+;;(global-set-key (kbd "C-c j") 'counsel-git-grep)
+;;(global-set-key (kbd "C-c k") 'counsel-ag)
+;;(global-set-key (kbd "C-x l") 'counsel-locate)
+;;(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
 
 ;;; init.el ends here
