@@ -7,45 +7,47 @@ This is my Emacs configurations.
 
 * Packages
 #+BEGIN_SRC emacs-lisp
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-(package-initialize)
-(when (not package-archive-contents) (package-refresh-contents))
-(defvar myPackages
-  '(ace-isearch
-    avy
-    csv-mode
-    company
-    company-irony
-    elscreen
-    exec-path-from-shell
-    flycheck
-    google-translate
-    haskell-mode
-    helm
-    helm-ag
-    helm-swoop
-    helm-tramp
-    irony
-    json-mode
-    markdown-mode
-    migemo
-    magit
-    org
-    org-ref
-    rust-mode
-    undo-tree
-    use-package
-    yatex))
-(dolist (package myPackages)
-  (unless (package-installed-p package)
-    (package-install package)))
-
-(require 'use-package)
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+  (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  (package-initialize)
+  (when (not package-archive-contents) (package-refresh-contents))
+  (defvar myPackages
+    '(ace-isearch
+      avy
+      csv-mode
+      company
+      company-irony
+      elscreen
+      exec-path-from-shell
+      flycheck
+      google-translate
+      haskell-mode
+      helm
+      helm-ag
+      helm-swoop
+      helm-tramp
+      irony
+      json-mode
+      markdown-mode
+      migemo
+      magit
+      org
+      org-ref
+      rust-mode
+      undo-tree
+      use-package
+      yatex))
+  (dolist (package myPackages)
+    (unless (package-installed-p package)
+      (package-install package)))
 #+END_SRC
 
+I use use-package to configure packages.
+#+BEGIN_SRC emacs-lisp
+  (require 'use-package)
+#+END_SRC
 
 * General settings
 #+BEGIN_SRC emacs-lisp
@@ -234,13 +236,6 @@ Also, I do not want to use TODAY function.
               '(("！" nil "!")
                 ("@" nil "@");;「トゥデイ」機能は使わない
                 )))
-#+END_SRC
-
-* misc
-#+BEGIN_SRC emacs-lisp
-;; 元ネタhttp://futurismo.biz/archives/5938
-(setq cookie-file "~/Dropbox/Emacs/policy.txt")
-(global-set-key (kbd "C-x C-,") 'cookie)
 #+END_SRC
 
 * Modeline
@@ -499,8 +494,8 @@ Also, I do not want to use TODAY function.
 #+END_SRC
 
 * google-translate
+Thanks to [[http://emacs.rubikitch.com/google-translate/][rubikitch]].
 #+BEGIN_SRC emacs-lisp
-;; 元ネタhttp://emacs.rubikitch.com/google-translate/
 (require 'google-translate)
 (defvar google-translate-english-chars "[:ascii:]’“”–"
   "これらの文字が含まれているときは英語とみなす")
@@ -611,7 +606,10 @@ Also, I do not want to use TODAY function.
 * magit
 #+BEGIN_SRC emacs-lisp
 (require 'magit)
+#+END_SRC
 
+* ivy
+#+BEGIN_SRC emacs-lisp
 ;;(ivy-mode 1) ;; デフォルトの入力補完がivyになる
 ;;(counsel-mode 1)
 ;;
@@ -624,6 +622,13 @@ Also, I do not want to use TODAY function.
 ;;(global-set-key (kbd "C-c k") 'counsel-ag)
 ;;(global-set-key (kbd "C-x l") 'counsel-locate)
 ;;(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+#+END_SRC
 
-;;; init.el ends here
+* misc
+Sometimes, we lose our road, forget what we want to be, and become jerks.
+Quotes from giants help us to come back from the situation.
+I owe this code to [[http://futurismo.biz/archives/5938][this page]].
+#+BEGIN_SRC emacs-lisp
+(setq cookie-file "~/Dropbox/Emacs/policy.txt")
+(global-set-key (kbd "C-x C-,") 'cookie)
 #+END_SRC
