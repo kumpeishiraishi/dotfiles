@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/03/27
+#+DATE: 2019/03/28
 
 This is my Emacs configurations.
 
@@ -29,6 +29,7 @@ This is my Emacs configurations.
       helm-swoop
       helm-tramp
       irony
+      ivy
       json-mode
       markdown-mode
       migemo
@@ -240,74 +241,76 @@ Also, I do not want to use TODAY function.
 
 * Modeline
 #+BEGIN_SRC emacs-lisp
-;; 各種表示/非表示
-(line-number-mode -1);; 常に行番号を表示しているので、モードラインには不要
-(setq display-time-day-and-date t)
-;;(setq display-time-string-forms
-;;      '((format "%s %s %s %s:%s:%s %s"
-;;              dayname monthname day 12-hours minutes seconds am-pm
-;;              )))
-(display-time)
-(display-battery-mode 1)
-(set-face-foreground 'mode-line "blue1")
-(set-face-background 'mode-line "gray90")
-(setq-default mode-line-buffer-identification
-              `(,(propertize "%b" 'face '(:foreground "maroon2"))))
-;; モードを略号表示
-(defvar mode-line-cleaner-alist
-  '(
-    (helm-mode . "")
-    (helm-migemo-mode . "")
-    (ace-isearch-mode . "")
-    (flyspell-mode . "")
-    (abbrev-mode . "")
-    (company-mode . "")
-    (irony-mode . "")
-    (flycheck-mode . "")
-    (real-auto-save-mode . "")
-    (undo-tree-mode . "")
-    (auto-revert-mode . "")
-    ;; Major modes
-    (lisp-interaction-mode . "Li")
-    (python-mode . "Py")
-    (haskell-mode . "Hs")
-    (emacs-lisp-mode . "El")
-    (yatex-mode . "TeX")
-    (c++-mode . "C++")
-    (c-mode . "C")
-    (markdown-mode . "Md")))
-(defun clean-mode-line ()
-  (interactive)
-  (loop for (mode . mode-str) in mode-line-cleaner-alist
-        do
-        (let ((old-mode-str (cdr (assq mode minor-mode-alist))))
-          (when old-mode-str
-            (setcar old-mode-str mode-str))
-          ;; major mode
-          (when (eq mode major-mode)
-            (setq mode-name mode-str)))))
-(add-hook 'after-change-major-mode-hook 'clean-mode-line)
+  ;; 各種表示/非表示
+  (line-number-mode -1);; 常に行番号を表示しているので、モードラインには不要
+  (setq display-time-day-and-date t)
+  ;;(setq display-time-string-forms
+  ;;      '((format "%s %s %s %s:%s:%s %s"
+  ;;              dayname monthname day 12-hours minutes seconds am-pm
+  ;;              )))
+  (display-time)
+  (display-battery-mode 1)
+  (set-face-foreground 'mode-line "blue1")
+  (set-face-background 'mode-line "gray90")
+  (setq-default mode-line-buffer-identification
+                `(,(propertize "%b" 'face '(:foreground "maroon2"))))
+  ;; モードを略号表示
+  (defvar mode-line-cleaner-alist
+    '(
+      (helm-mode . "")
+      (helm-migemo-mode . "")
+      (ace-isearch-mode . "")
+      (flyspell-mode . "")
+      (abbrev-mode . "")
+      (company-mode . "")
+      (irony-mode . "")
+      (flycheck-mode . "")
+      (real-auto-save-mode . "")
+      (undo-tree-mode . "")
+      (auto-revert-mode . "")
+      (ivy-mode . "")
+      (counsel-mode . "")
+      ;; Major modes
+      (lisp-interaction-mode . "Li")
+      (python-mode . "Py")
+      (haskell-mode . "Hs")
+      (emacs-lisp-mode . "El")
+      (yatex-mode . "TeX")
+      (c++-mode . "C++")
+      (c-mode . "C")
+      (markdown-mode . "Md")))
+  (defun clean-mode-line ()
+    (interactive)
+    (loop for (mode . mode-str) in mode-line-cleaner-alist
+          do
+          (let ((old-mode-str (cdr (assq mode minor-mode-alist))))
+            (when old-mode-str
+              (setcar old-mode-str mode-str))
+            ;; major mode
+            (when (eq mode major-mode)
+              (setq mode-name mode-str)))))
+  (add-hook 'after-change-major-mode-hook 'clean-mode-line)
 #+END_SRC
 
 * Key bindings
 #+BEGIN_SRC emacs-lisp
-(global-set-key "\C-u" 'undo)
-(global-unset-key "\C-z")
-(keyboard-translate ?\C-h ?\C-?)
-(windmove-default-keybindings 'super);; 分割ウィンドウ移動をCMDで
-(global-unset-key (kbd "M-ESC ESC"))
-(global-unset-key (kbd "s-n"))
+  (global-set-key "\C-u" 'undo)
+  (global-unset-key "\C-z")
+  (keyboard-translate ?\C-h ?\C-?)
+  (windmove-default-keybindings 'super);; 分割ウィンドウ移動をCMDで
+  (global-unset-key (kbd "M-ESC ESC"))
+  (global-unset-key (kbd "s-n"))
 #+END_SRC
 
 * JavaScript
 #+BEGIN_SRC emacs-lisp
-(use-package js
-  :init
-  (add-hook 'js-mode-hook
-            (lambda ()
-              (make-local-variable 'js-indent-level)
-              (setq js-indent-level 2)))
-  )
+  (use-package js
+    :init
+    (add-hook 'js-mode-hook
+              (lambda ()
+                (make-local-variable 'js-indent-level)
+                (setq js-indent-level 2)))
+    )
 #+END_SRC
 
 * C++
@@ -529,25 +532,25 @@ Thanks to [[http://emacs.rubikitch.com/google-translate/][rubikitch]].
 
 * Mail
 #+BEGIN_SRC emacs-lisp
-(setq user-mail-address "kumpeishiraishi@gmail.com"
-      user-full-name "Kumpei Shiraishi")
-(setq gnus-select-method
-      '(nnimap "gmail"
-               (nnimap-address "imap.gmail.com")
-               (nnimap-server-port "imaps")
-               (nnimap-stream ssl)))
-(setq smtpmail-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-service 587
-      gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+  (setq user-mail-address "kumpeishiraishi@gmail.com"
+        user-full-name "Kumpei Shiraishi")
+  (setq gnus-select-method
+        '(nnimap "gmail"
+                 (nnimap-address "imap.gmail.com")
+                 (nnimap-server-port "imaps")
+                 (nnimap-stream ssl)))
+  (setq smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-service 587
+        gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
 #+END_SRC
 
 * elscreen
 #+BEGIN_SRC emacs-lisp
-(elscreen-start)
-(setq elscreen-prefix-key "\C-z");; prefix key
-(setq elscreen-tab-display-kill-screen nil);; [X]を表示しない
-(setq elscreen-tab-display-control nil);; [<->]を表示しない
-(setq elscreen-display-tab nil);; タブ表示しない
+  (elscreen-start)
+  (setq elscreen-prefix-key "\C-z");; prefix key
+  (setq elscreen-tab-display-kill-screen nil);; [X]を表示しない
+  (setq elscreen-tab-display-control nil);; [<->]を表示しない
+  (setq elscreen-display-tab nil);; タブ表示しない
 #+END_SRC
 
 * eshell
@@ -583,7 +586,7 @@ Thanks to [[http://emacs.rubikitch.com/google-translate/][rubikitch]].
 * eww
 If DuckDuckGo is not satisfactory, remove comment out below and use Google.
 #+BEGIN_SRC emacs-lisp
-;;(setq eww-search-prefix "http://www.google.com/search?q=")
+(setq eww-search-prefix "http://www.google.com/search?q=")
 #+END_SRC
 
 Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this page]]).
@@ -613,18 +616,18 @@ Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this pag
 
 * ivy
 #+BEGIN_SRC emacs-lisp
-;;(ivy-mode 1) ;; デフォルトの入力補完がivyになる
-;;(counsel-mode 1)
-;;
-;;(global-set-key "\C-s" 'swiper)
-;;(global-set-key (kbd "C-c C-r") 'ivy-resume)
-;;(global-set-key (kbd "<f6>") 'ivy-resume)
-;;(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-;;(global-set-key (kbd "C-c g") 'counsel-git)
-;;(global-set-key (kbd "C-c j") 'counsel-git-grep)
-;;(global-set-key (kbd "C-c k") 'counsel-ag)
-;;(global-set-key (kbd "C-x l") 'counsel-locate)
-;;(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+(ivy-mode 1) ;; デフォルトの入力補完がivyになる
+(counsel-mode 1)
+
+(global-set-key "\C-s" 'swiper)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "<f6>") 'ivy-resume)
+(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+(global-set-key (kbd "C-c g") 'counsel-git)
+(global-set-key (kbd "C-c j") 'counsel-git-grep)
+(global-set-key (kbd "C-c k") 'counsel-ag)
+(global-set-key (kbd "C-x l") 'counsel-locate)
+(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
 #+END_SRC
 
 * misc
