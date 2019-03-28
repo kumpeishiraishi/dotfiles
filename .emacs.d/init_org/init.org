@@ -581,31 +581,34 @@ Thanks to [[http://emacs.rubikitch.com/google-translate/][rubikitch]].
 #+END_SRC
 
 * eww
+If DuckDuckGo is not satisfactory, remove comment out below and use Google.
 #+BEGIN_SRC emacs-lisp
-(setq eww-search-prefix "http://www.google.com/search?q=")
-;; 背景色を白くしない
-;; 元ネタ：http://futurismo.biz/archives/2950
-(defvar eww-disable-colorize t)
-(defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
-  (unless eww-disable-colorize
-    (funcall orig start end fg)))
-(advice-add 'shr-colorize-region :around 'shr-colorize-region--disable)
-(advice-add 'eww-colorize-region :around 'shr-colorize-region--disable)
-(defun eww-disable-color ()
-  "eww で文字色を反映させない"
-  (interactive)
-  (setq-local eww-disable-colorize t)
-  (eww-reload))
-(defun eww-enable-color ()
-  "eww で文字色を反映させる"
-  (interactive)
-  (setq-local eww-disable-colorize nil)
-  (eww-reload))
+;;(setq eww-search-prefix "http://www.google.com/search?q=")
+#+END_SRC
+
+Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this page]]).
+#+BEGIN_SRC emacs-lisp
+  (defvar eww-disable-colorize t)
+  (defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
+    (unless eww-disable-colorize
+      (funcall orig start end fg)))
+  (advice-add 'shr-colorize-region :around 'shr-colorize-region--disable)
+  (advice-add 'eww-colorize-region :around 'shr-colorize-region--disable)
+  (defun eww-disable-color ()
+    "eww で文字色を反映させない"
+    (interactive)
+    (setq-local eww-disable-colorize t)
+    (eww-reload))
+  (defun eww-enable-color ()
+    "eww で文字色を反映させる"
+    (interactive)
+    (setq-local eww-disable-colorize nil)
+    (eww-reload))
 #+END_SRC
 
 * magit
 #+BEGIN_SRC emacs-lisp
-(require 'magit)
+  (require 'magit)
 #+END_SRC
 
 * ivy
