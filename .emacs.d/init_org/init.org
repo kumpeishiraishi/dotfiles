@@ -55,21 +55,27 @@ I use use-package to configure packages.
 (require 'cl)
 (setq make-backup-files nil)
 (fset 'yes-or-no-p 'y-or-n-p)
-;; 言語環境・文字コード
-(set-language-environment "Japanese")
-(setenv "LANG" "en_US.UTF-8")
-(prefer-coding-system 'utf-8)
-(setq coding-system-for-read 'utf-8)
-(setq coding-system-for-write 'utf-8)
-;; EmacsとIMEの問題は、SKKで入力することにしたので、一応解決。Emacsでは常に英数入力という制御ができれば嬉しいが。（2017/01/06）
-;; emacs-24.5-inline.patchを当ててHomebrewからインストールして可能になった、日本語関係の設定（起動時、ミニバッファ、isearch/migemoで英数）
-;; (setq default-input-method "MacOSX")でIME毎カーソル色変更などは出来なかった（未解決2016/03/28）
-;; 下記のIME関係は、インラインパッチをあてたEmacsの全画面表示時に、日本語入力が一文字しか出来ないという問題のため、棚上げ（2016/03/28）
-;; (add-hook 'after-init-hook 'mac-change-language-to-us)
-;; (add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
-;; (add-hook 'isearch-mode-hook 'mac-change-language-to-us)
+#+END_SRC
 
-(exec-path-from-shell-initialize)
+Language environment, text encoding etc.
+#+BEGIN_SRC emacs-lisp
+  (set-language-environment "Japanese")
+  (setenv "LANG" "en_US.UTF-8")
+  (prefer-coding-system 'utf-8)
+  (setq coding-system-for-read 'utf-8)
+  (setq coding-system-for-write 'utf-8)
+  ;; EmacsとIMEの問題は、SKKで入力することにしたので、一応解決。Emacsでは常に英数入力という制御ができれば嬉しいが。（2017/01/06）
+  ;; emacs-24.5-inline.patchを当ててHomebrewからインストールして可能になった、日本語関係の設定（起動時、ミニバッファ、isearch/migemoで英数）
+  ;; (setq default-input-method "MacOSX")でIME毎カーソル色変更などは出来なかった（未解決2016/03/28）
+  ;; 下記のIME関係は、インラインパッチをあてたEmacsの全画面表示時に、日本語入力が一文字しか出来ないという問題のため、棚上げ（2016/03/28）
+  ;; (add-hook 'after-init-hook 'mac-change-language-to-us)
+  ;; (add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
+  ;; (add-hook 'isearch-mode-hook 'mac-change-language-to-us)
+#+END_SRC
+
+Use exec-path-from-shell to PATH defined in a shell.
+#+BEGIN_SRC emacs-lisp
+  (exec-path-from-shell-initialize)
 #+END_SRC
 
 * Display
@@ -103,40 +109,46 @@ Parens
 (setq initial-scratch-message nil)
 (setq initial-major-mode 'org-mode)
 (setq default-directory "~/Dropbox/")
-;; scratch buffer消さない（元ネタ：https://github.com/uwabami/emacs）
-(defun my:make-scratch (&optional arg)
-  (interactive)
-  (progn
-    ;; "*scratch*" を作成して buffer-list に放り込む
-    (set-buffer (get-buffer-create "*scratch*"))
-    (funcall initial-major-mode)
-    (erase-buffer)
-    (when (and initial-scratch-message (not inhibit-startup-message))
-      (insert initial-scratch-message))
-    (or arg
-        (progn
-          (setq arg 0)
-          (switch-to-buffer "*scratch*")))
-    (cond ((= arg 0) (message "*scratch* is cleared up."))
-          ((= arg 1) (message "another *scratch* is created")))))
-(defun my:buffer-name-list ()
-  (mapcar (function buffer-name) (buffer-list)))
-(add-hook 'kill-buffer-query-functions
-          ;; *scratch* バッファで kill-buffer したら内容を消去するだけにする
-          (function (lambda ()
-                      (if (string= "*scratch*" (buffer-name))
-                          (progn (my:make-scratch 0) nil)
-                        t))))
-(add-hook 'after-save-hook
-          ;; *scratch* バッファの内容を保存したら
-          ;; *scratch* バッファを新しく作る.
-          (function
-           (lambda ()
-             (unless (member "*scratch*" (my:buffer-name-list))
-               (my:make-scratch 1)))))
-;; 空白
-;;(require 'whitespace)
-;;(global-whitespace-mode 1)
+#+END_SRC
+
+Do not delete ~*scratch*~ buffer (thanks to [[https://github.com/uwabami/emacs][this repository]]).
+#+BEGIN_SRC emacs-lisp
+  (defun my:make-scratch (&optional arg)
+    (interactive)
+    (progn
+      ;; "*scratch*" を作成して buffer-list に放り込む
+      (set-buffer (get-buffer-create "*scratch*"))
+      (funcall initial-major-mode)
+      (erase-buffer)
+      (when (and initial-scratch-message (not inhibit-startup-message))
+        (insert initial-scratch-message))
+      (or arg
+          (progn
+            (setq arg 0)
+            (switch-to-buffer "*scratch*")))
+      (cond ((= arg 0) (message "*scratch* is cleared up."))
+            ((= arg 1) (message "another *scratch* is created")))))
+  (defun my:buffer-name-list ()
+    (mapcar (function buffer-name) (buffer-list)))
+  (add-hook 'kill-buffer-query-functions
+            ;; *scratch* バッファで kill-buffer したら内容を消去するだけにする
+            (function (lambda ()
+                        (if (string= "*scratch*" (buffer-name))
+                            (progn (my:make-scratch 0) nil)
+                          t))))
+  (add-hook 'after-save-hook
+            ;; *scratch* バッファの内容を保存したら
+            ;; *scratch* バッファを新しく作る.
+            (function
+             (lambda ()
+               (unless (member "*scratch*" (my:buffer-name-list))
+                 (my:make-scratch 1)))))
+#+END_SRC
+
+White space
+#+BEGIN_SRC emacs-lisp
+  ;;(require 'whitespace)
+  ;;(global-whitespace-mode 1)
 #+END_SRC
 
 ** Fonts
