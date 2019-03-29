@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/03/28
+#+DATE: 2019/03/29
 
 This is my Emacs configurations.
 
@@ -19,6 +19,7 @@ This is my Emacs configurations.
       csv-mode
       company
       company-irony
+      counsel
       elscreen
       exec-path-from-shell
       flycheck
