@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/03/29
+#+DATE: 2019/03/30
 
 This is my Emacs configurations.
 
@@ -97,19 +97,23 @@ Parens
   (show-paren-mode 1)
 #+END_SRC
 
+Colors.
 #+BEGIN_SRC emacs-lisp
-(if window-system
-    (progn
-      (set-frame-parameter nil 'fullscreen 'fullboth)
-      (set-background-color "Black")
-      (set-foreground-color "White")
-      (set-cursor-color "Green")
-      (set-frame-parameter nil 'alpha 80)))
-;; 起動時画面
-(setq inhibit-splash-screen t)
-(setq initial-scratch-message nil)
-(setq initial-major-mode 'org-mode)
-(setq default-directory "~/Dropbox/")
+  (if window-system
+      (progn
+        (set-frame-parameter nil 'fullscreen 'fullboth)
+        (set-background-color "Black")
+        (set-foreground-color "White")
+        (set-cursor-color "Green")
+        (set-frame-parameter nil 'alpha 80)))
+#+END_SRC
+
+Initial screen, message, major mode, directory.
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-splash-screen t)
+  (setq initial-scratch-message nil)
+  (setq initial-major-mode 'org-mode)
+  (setq default-directory "~/Dropbox/")
 #+END_SRC
 
 Do not delete ~*scratch*~ buffer (thanks to [[https://github.com/uwabami/emacs][this repository]]).
@@ -170,6 +174,74 @@ TODO: ヒラギノとSource Code Proでキレイに文字幅1:2にしたい。�
   (setq face-font-rescale-alist '(("Hiragino.*" . 1)))
 #+END_SRC
 
+** Mode line
+Do not display line number in a mode line.
+#+BEGIN_SRC emacs-lisp
+  (line-number-mode -1)
+#+END_SRC
+
+Time and date in a mode line.
+#+BEGIN_SRC emacs-lisp
+  (setq display-time-day-and-date t)
+  ;;(setq display-time-string-forms
+  ;;      '((format "%s %s %s %s:%s:%s %s"
+  ;;              dayname monthname day 12-hours minutes seconds am-pm
+  ;;              )))
+  (display-time)
+#+END_SRC
+
+Show battery percentage.
+#+BEGIN_SRC emacs-lisp
+  (display-battery-mode 1)
+#+END_SRC
+
+Colors.
+#+BEGIN_SRC emacs-lisp
+  (set-face-foreground 'mode-line "blue1")
+  (set-face-background 'mode-line "gray90")
+  (setq-default mode-line-buffer-identification
+                `(,(propertize "%b" 'face '(:foreground "maroon2"))))
+#+END_SRC
+
+Abbreviations for each mode.
+#+BEGIN_SRC emacs-lisp
+  (defvar mode-line-cleaner-alist
+    '(
+      (helm-mode . "")
+      (helm-migemo-mode . "")
+      (ace-isearch-mode . "")
+      (flyspell-mode . "")
+      (abbrev-mode . "")
+      (company-mode . "")
+      (irony-mode . "")
+      (flycheck-mode . "")
+      (real-auto-save-mode . "")
+      (undo-tree-mode . "")
+      (auto-revert-mode . "")
+      (ivy-mode . "")
+      (counsel-mode . "")
+      ;; Major modes
+      (lisp-interaction-mode . "Li")
+      (python-mode . "Py")
+      (haskell-mode . "Hs")
+      (emacs-lisp-mode . "El")
+      (yatex-mode . "TeX")
+      (c++-mode . "C++")
+      (c-mode . "C")
+      (markdown-mode . "Md")))
+  (defun clean-mode-line ()
+    (interactive)
+    (loop for (mode . mode-str) in mode-line-cleaner-alist
+          do
+          (let ((old-mode-str (cdr (assq mode minor-mode-alist))))
+            (when old-mode-str
+              (setcar old-mode-str mode-str))
+            ;; major mode
+            (when (eq mode major-mode)
+              (setq mode-name mode-str)))))
+  (add-hook 'after-change-major-mode-hook 'clean-mode-line)
+#+END_SRC
+
 * SKK
 I use DDSKK for Japanese writing.
 DDSKK is installed to my Dropbox directory, and some jisyo files are also in Dropbox.
@@ -224,85 +296,32 @@ DDSKK is installed to my Dropbox directory, and some jisyo files are also in Dro
           skk-cursor-latin-color "Green"))
 #+END_SRC
 
-** SKK misc.
+** SKK misc
 Automatically insert corresponding paren.
 #+BEGIN_SRC emacs-lisp
-(setq skk-auto-insert-paren t);; 対応する閉括弧挿入
+  (setq skk-auto-insert-paren t)
 #+END_SRC
 
 Completion
 #+BEGIN_SRC emacs-lisp
-(setq skk-previous-candidate-key "x");; 前候補に戻るのはxだけ、C-pは使わない
-(setq skk-dcomp-activate t);; 動的補完
-;;      skk-dcomp-multiple-activate t
-;;      skk-dcomp-multiple-rows 5);; 補完候補を複数表示させると表示が崩れるので、止め（2016/05/10）
-(defadvice skk-j-mode-on (after skk-settings-for-dcomp activate)
-  (define-key skk-j-mode-map "\C-n" 'skk-comp-wrapper)
-  (define-key skk-j-mode-map "\C-p" 'skk-previous-comp-maybe))
-(setq skk-show-annotation t)
+  (setq skk-previous-candidate-key "x");; 前候補に戻るのはxだけ、C-pは使わない
+  (setq skk-dcomp-activate t);; 動的補完
+  ;;      skk-dcomp-multiple-activate t
+  ;;      skk-dcomp-multiple-rows 5);; 補完候補を複数表示させると表示が崩れるので、止め（2016/05/10）
+  (defadvice skk-j-mode-on (after skk-settings-for-dcomp activate)
+    (define-key skk-j-mode-map "\C-n" 'skk-comp-wrapper)
+    (define-key skk-j-mode-map "\C-p" 'skk-previous-comp-maybe))
+  (setq skk-show-annotation t)
 #+END_SRC
 
 Some characters must be displayed in full-width letters.
 Also, I do not want to use TODAY function.
 #+BEGIN_SRC emacs-lisp
-(setq skk-rom-kana-rule-list
-      (append skk-rom-kana-rule-list
-              '(("！" nil "!")
-                ("@" nil "@");;「トゥデイ」機能は使わない
-                )))
-#+END_SRC
-
-* Modeline
-#+BEGIN_SRC emacs-lisp
-  ;; 各種表示/非表示
-  (line-number-mode -1);; 常に行番号を表示しているので、モードラインには不要
-  (setq display-time-day-and-date t)
-  ;;(setq display-time-string-forms
-  ;;      '((format "%s %s %s %s:%s:%s %s"
-  ;;              dayname monthname day 12-hours minutes seconds am-pm
-  ;;              )))
-  (display-time)
-  (display-battery-mode 1)
-  (set-face-foreground 'mode-line "blue1")
-  (set-face-background 'mode-line "gray90")
-  (setq-default mode-line-buffer-identification
-                `(,(propertize "%b" 'face '(:foreground "maroon2"))))
-  ;; モードを略号表示
-  (defvar mode-line-cleaner-alist
-    '(
-      (helm-mode . "")
-      (helm-migemo-mode . "")
-      (ace-isearch-mode . "")
-      (flyspell-mode . "")
-      (abbrev-mode . "")
-      (company-mode . "")
-      (irony-mode . "")
-      (flycheck-mode . "")
-      (real-auto-save-mode . "")
-      (undo-tree-mode . "")
-      (auto-revert-mode . "")
-      (ivy-mode . "")
-      (counsel-mode . "")
-      ;; Major modes
-      (lisp-interaction-mode . "Li")
-      (python-mode . "Py")
-      (haskell-mode . "Hs")
-      (emacs-lisp-mode . "El")
-      (yatex-mode . "TeX")
-      (c++-mode . "C++")
-      (c-mode . "C")
-      (markdown-mode . "Md")))
-  (defun clean-mode-line ()
-    (interactive)
-    (loop for (mode . mode-str) in mode-line-cleaner-alist
-          do
-          (let ((old-mode-str (cdr (assq mode minor-mode-alist))))
-            (when old-mode-str
-              (setcar old-mode-str mode-str))
-            ;; major mode
-            (when (eq mode major-mode)
-              (setq mode-name mode-str)))))
-  (add-hook 'after-change-major-mode-hook 'clean-mode-line)
+  (setq skk-rom-kana-rule-list
+        (append skk-rom-kana-rule-list
+                '(("！" nil "!")
+                  ("@" nil "@")
+                  )))
 #+END_SRC
 
 * Key bindings
