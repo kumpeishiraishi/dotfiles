@@ -334,8 +334,8 @@ Also, I do not want to use TODAY function.
   (use-package flycheck
     :ensure t
     :bind (("M-n" . flycheck-next-error)
-	   ("M-p" . flycheck-previous-error))
-    :hook (c++-mode python-mode rust-mode)
+           ("M-p" . flycheck-previous-error))
+    :hook ((c++-mode python-mode rust-mode) . flycheck-mode)
     :init
     (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++14")))
     )
@@ -537,8 +537,7 @@ Default indent for C++ is 4.
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :ensure t
-    :bind
-    ("M-/" . undo-tree-redo)
+    :bind ("M-/" . undo-tree-redo)
     :init
     (global-undo-tree-mode)
     )
