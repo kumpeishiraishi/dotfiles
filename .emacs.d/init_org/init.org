@@ -22,7 +22,6 @@ This is my Emacs configurations.
       counsel
       elscreen
       exec-path-from-shell
-      flycheck
       google-translate
       haskell-mode
       helm
@@ -32,13 +31,9 @@ This is my Emacs configurations.
       irony
       ivy
       json-mode
-      markdown-mode
-      migemo
-      magit
       org
       org-ref
       rust-mode
-      undo-tree
       use-package
       yatex))
   (dolist (package myPackages)
@@ -336,9 +331,10 @@ Also, I do not want to use TODAY function.
 
 * flycheck
 #+BEGIN_SRC emacs-lisp
-  (use-package flycheck-mode
+  (use-package flycheck
+    :ensure t
     :bind (("M-n" . flycheck-next-error)
-           ("M-p" . flycheck-previous-error))
+	   ("M-p" . flycheck-previous-error))
     :hook (c++-mode python-mode rust-mode)
     :init
     (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++14")))
@@ -395,6 +391,7 @@ Default indent for C++ is 4.
 * Markdown
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
+    :ensure t
     :config
     (setq markdown-command "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js")
     )
@@ -448,18 +445,26 @@ Default indent for C++ is 4.
 
 * migemo
 #+BEGIN_SRC emacs-lisp
-(require 'migemo)
-(setq migemo-command "cmigemo")
-(setq migemo-options '("-q" "--emacs"))
-(setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
-(setq migemo-user-dictionary nil)
-(setq migemo-regex-dictionary nil)
-(setq migemo-coding-system 'utf-8-unix)
-(load-library "migemo")
-(migemo-init)
+  (use-package migemo
+    :ensure t
+    :config
+    (setq migemo-command "cmigemo"
+	  migemo-options '("-q" "--emacs")
+	  migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict"
+	  migemo-user-dictionary nil
+	  migemo-regex-dictionary nil
+	  migemo-coding-system 'utf-8-unix)
+    (load-library "migemo")
+    (migemo-init)
+    )
+#+END_SRC
 
-(require 'tramp)
-(setq tramp-default-method "ssh")
+* tramp
+#+BEGIN_SRC emacs-lisp
+  (use-package tramp
+    :config
+    (setq tramp-default-method "ssh")
+    )
 #+END_SRC
 
 * helm
@@ -531,10 +536,11 @@ Default indent for C++ is 4.
 * undo-tree
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
+    :ensure t
     :bind
     ("M-/" . undo-tree-redo)
-    :config
-    (global-undo-tree-mode t)
+    :init
+    (global-undo-tree-mode)
     )
 #+END_SRC
 
@@ -653,7 +659,9 @@ Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this pag
 
 * magit
 #+BEGIN_SRC emacs-lisp
-  (require 'magit)
+  (use-package magit
+    :ensure t
+  )
 #+END_SRC
 
 * ivy
