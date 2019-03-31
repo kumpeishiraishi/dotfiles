@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/03/30
+#+DATE: 2019/03/31
 
 This is my Emacs configurations.
 
@@ -334,27 +334,39 @@ Also, I do not want to use TODAY function.
   (global-unset-key (kbd "s-n"))
 #+END_SRC
 
+* flycheck
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck-mode
+    :bind (("M-n" . flycheck-next-error)
+           ("M-p" . flycheck-previous-error))
+    :hook (c++-mode python-mode rust-mode)
+    :init
+    (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++14")))
+    )
+#+END_SRC
+
 * JavaScript
 #+BEGIN_SRC emacs-lisp
   (use-package js
     :init
-    (add-hook 'js-mode-hook
-              (lambda ()
-                (make-local-variable 'js-indent-level)
-                (setq js-indent-level 2)))
+    (add-hook 'js-mode-hook (lambda () (setq js-indent-level 2)))
     )
 #+END_SRC
 
 * C++
+Default indent for C++ is 4.
 #+BEGIN_SRC emacs-lisp
-(setq-default c-basic-offset 4
-              tab-width 4
-              indent-tabs-mode nil)
-;; C++ style
-(defun add-c++-mode-conf ()
-  (c-set-style "stroustrup")
-  (show-paren-mode t))
-(add-hook 'c++-mode-hook 'add-c++-mode-conf)
+  (use-package cc-mode
+    :init
+    (add-hook 'c++-mode-hook
+          (lambda ()
+            (c-set-style "stroustrup")
+            (setq-default c-basic-offset 4
+                          tab-width 4
+                          indent-tabs-mode nil)
+            )
+          )
+    )
 #+END_SRC
 
 * YaTeX
@@ -382,7 +394,10 @@ Also, I do not want to use TODAY function.
 
 * Markdown
 #+BEGIN_SRC emacs-lisp
-  (setq markdown-command "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js")
+  (use-package markdown-mode
+    :config
+    (setq markdown-command "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js")
+    )
 #+END_SRC
 
 * org-mode
@@ -499,14 +514,6 @@ Also, I do not want to use TODAY function.
      (add-hook 'c-mode-common-hook 'irony-mode)))
 #+END_SRC
 
-* flycheck
-#+BEGIN_SRC emacs-lisp
-(add-hook 'after-init-hook #'global-flycheck-mode)
-(global-set-key "\M-n" 'flycheck-next-error)
-(global-set-key "\M-p" 'flycheck-previous-error)
-(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++14")))
-#+END_SRC
-
 * dired
 #+BEGIN_SRC emacs-lisp
 (setq delete-by-moving-to-trash t
@@ -523,9 +530,12 @@ Also, I do not want to use TODAY function.
 
 * undo-tree
 #+BEGIN_SRC emacs-lisp
-(require 'undo-tree)
-(global-undo-tree-mode t)
-(global-set-key (kbd "M-/") 'undo-tree-redo)
+  (use-package undo-tree
+    :bind
+    ("M-/" . undo-tree-redo)
+    :config
+    (global-undo-tree-mode t)
+    )
 #+END_SRC
 
 * google-translate
