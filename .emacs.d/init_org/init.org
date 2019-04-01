@@ -32,7 +32,6 @@ This is my Emacs configurations.
       json-mode
       org
       org-ref
-      rust-mode
       use-package
       yatex))
   (dolist (package myPackages)
@@ -337,6 +336,13 @@ Also, I do not want to use TODAY function.
     :hook ((c++-mode python-mode rust-mode) . flycheck-mode)
     :init
     (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++14")))
+    )
+#+END_SRC
+
+* Rust
+#+BEGIN_SRC emacs-lisp
+  (use-package rust-mode
+    :ensure t
     )
 #+END_SRC
 
