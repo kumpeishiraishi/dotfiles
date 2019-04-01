@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/03/31
+#+DATE: 2019/04/01
 
 This is my Emacs configurations.
 
@@ -20,7 +20,6 @@ This is my Emacs configurations.
       company
       company-irony
       counsel
-      elscreen
       exec-path-from-shell
       google-translate
       haskell-mode
@@ -593,11 +592,16 @@ Thanks to [[http://emacs.rubikitch.com/google-translate/][rubikitch]].
 
 * elscreen
 #+BEGIN_SRC emacs-lisp
-  (elscreen-start)
-  (setq elscreen-prefix-key "\C-z");; prefix key
-  (setq elscreen-tab-display-kill-screen nil);; [X]を表示しない
-  (setq elscreen-tab-display-control nil);; [<->]を表示しない
-  (setq elscreen-display-tab nil);; タブ表示しない
+  (use-package elscreen
+    :ensure t
+    :init
+    (elscreen-start)
+    :config
+    (setq elscreen-prefix-key "\C-z")
+    (setq elscreen-tab-display-kill-screen nil);; Do not display [X]
+    (setq elscreen-tab-display-control nil);; Do not display [<->]
+    (setq elscreen-display-tab nil);; Do not display tabs
+    )
 #+END_SRC
 
 * eshell
