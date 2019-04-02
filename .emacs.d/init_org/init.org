@@ -372,25 +372,28 @@ Default indent for C++ is 4.
 
 * YaTeX
 #+BEGIN_SRC emacs-lisp
-(autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
-(setq auto-mode-alist (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
-(add-hook 'yatex-mode-hook '(lambda () (auto-fill-mode -1)));; 自動折り返し無効
-(setq YaTeX-kanji-code nil);; 漢字コード指定せず
-(setq dvi2-command "open -a Preview");; プレビュー
-(setq tex-command "/Library/TeX/texbin/lualatex");; 通常はLuaLaTeX
-;; 他の処理系を用いるには「%#!pdflatex」などと本文中に記載して、通常通りタイプセットすれば良い
-(setq YaTeX-nervous nil);; ローカル辞書不要
-(setq YaTeX-user-completion-table "~/dotfiles/.yatexrc");; ユーザ辞書もdotfilesで管理
-(setq bibtex-command "biber")
-;; skk対策
-(add-hook 'skk-mode-hook
-          (lambda ()
-            (if (eq major-mode 'yatex-mode)
-                (progn
-                  (define-key skk-j-mode-map "\\" 'self-insert-command)
-                  (define-key skk-j-mode-map "$" 'YaTeX-insert-dollar)
-                  ))
-            ))
+  (use-package yatex
+    :bind
+    :config
+    (setq auto-mode-alist (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
+    (setq YaTeX-kanji-code nil
+	  dvi2-command "open -a Preview"
+	  tex-command "/Library/TeX/texbin/lualatex"
+	  YaTeX-nervous nil;; ローカル辞書不要
+	  YaTeX-user-completion-table "~/dotfiles/.yatexrc";; ユーザ辞書もdotfilesで管理
+	  bibtex-command "biber")
+    (add-hook 'yatex-mode-hook '(lambda () (auto-fill-mode -1)));; 自動折り返し無効
+    )
+  ;; 他の処理系を用いるには「%#!pdflatex」などと本文中に記載して、通常通りタイプセットすれば良い
+  ;; skk対策
+  (add-hook 'skk-mode-hook
+	    (lambda ()
+	      (if (eq major-mode 'yatex-mode)
+		  (progn
+		    (define-key skk-j-mode-map "\\" 'self-insert-command)
+		    (define-key skk-j-mode-map "$" 'YaTeX-insert-dollar)
+		    ))
+	      ))
 #+END_SRC
 
 * Markdown
@@ -604,16 +607,19 @@ Thanks to [[http://emacs.rubikitch.com/google-translate/][rubikitch]].
 #+END_SRC
 
 * elscreen
+Below settings prevent showing [X], [<->], tabs.
+Prefix key is ~C-z~.
+
 #+BEGIN_SRC emacs-lisp
   (use-package elscreen
     :ensure t
     :init
     (elscreen-start)
     :config
-    (setq elscreen-prefix-key "\C-z")
-    (setq elscreen-tab-display-kill-screen nil);; Do not display [X]
-    (setq elscreen-tab-display-control nil);; Do not display [<->]
-    (setq elscreen-display-tab nil);; Do not display tabs
+    (setq elscreen-prefix-key "\C-z"
+	  elscreen-tab-display-kill-screen nil
+	  elscreen-tab-display-control nil
+	  elscreen-display-tab nil)
     )
 #+END_SRC
 
@@ -682,23 +688,23 @@ Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this pag
 
 * ivy
 #+BEGIN_SRC emacs-lisp
-(ivy-mode 1) ;; デフォルトの入力補完がivyになる
-(counsel-mode 1)
+  (ivy-mode 1) ;; デフォルトの入力補完がivyになる
+  (counsel-mode 1)
 
-(global-set-key "\C-s" 'swiper)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-(global-set-key (kbd "<f6>") 'ivy-resume)
-(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
-(global-set-key (kbd "C-c k") 'counsel-ag)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+  (global-set-key "\C-s" 'swiper)
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  (global-set-key (kbd "<f6>") 'ivy-resume)
+  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-c k") 'counsel-ag)
+  (global-set-key (kbd "C-x l") 'counsel-locate)
+  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
 #+END_SRC
 
 * misc
-Sometimes, we lose our road, forget what we want to be, and become jerks.
-Quotes from giants help us to come back from the situation.
+Sometimes, we forget what we have to do, lose our faith, and become jerks.
+Quotes from giants remind us our goal.
 I owe this code to [[http://futurismo.biz/archives/5938][this page]].
 #+BEGIN_SRC emacs-lisp
 (setq cookie-file "~/Dropbox/Emacs/policy.txt")
