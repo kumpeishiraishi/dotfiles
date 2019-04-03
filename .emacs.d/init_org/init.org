@@ -14,17 +14,11 @@ This is my Emacs configurations.
   (package-initialize)
   (when (not package-archive-contents) (package-refresh-contents))
   (defvar myPackages
-    '(ace-isearch
-      avy
-      company
+    '(company
       company-irony
       exec-path-from-shell
       google-translate
       haskell-mode
-      helm
-      helm-ag
-      helm-swoop
-      helm-tramp
       irony
       json-mode
       org
@@ -479,32 +473,6 @@ Default indent for C++ is 4.
     )
 #+END_SRC
 
-* helm
-#+BEGIN_SRC emacs-lisp
-(require 'helm-config)
-(helm-mode 1)
-(define-key global-map (kbd "C-x C-f") 'helm-find-files)
-(define-key global-map (kbd "M-x") 'helm-M-x)
-(define-key helm-read-file-map (kbd "<tab>") 'helm-execute-persistent-action)
-(define-key helm-find-files-map (kbd "<tab>") 'helm-execute-persistent-action)
-(helm-migemo-mode 1)
-(define-key global-map (kbd "M-y") 'helm-show-kill-ring)
-(global-set-key (kbd "C-x b") 'helm-mini)
-;; 検索
-(require 'helm-swoop)
-(global-ace-isearch-mode 1)
-(setq ace-isearch-function 'avy-goto-char)
-;; helm-find-files
-;; 元ネタhttps://www.reddit.com/r/emacs/comments/3f55nm/how_to_remove_2_first_dot_files_from_helmfindfiles/
-(advice-add 'helm-ff-filter-candidate-one-by-one
-        :around (lambda (fcn file)
-                  (unless (string-match ".DS_Store" file)
-                    (funcall fcn file))))
-;; helm-ag
-(global-set-key (kbd "M-g .") 'helm-ag)
-(global-set-key (kbd "C-M-s") 'helm-ag-this-file)
-#+END_SRC
-
 * company
 #+BEGIN_SRC emacs-lisp
 (global-company-mode) ; 全バッファで有効にする 
@@ -638,22 +606,22 @@ Prefix key is ~C-z~.
                 (if (= (user-uid) 0) "]\n# " "]\n$ ")
                 )))
 ;; eshell alias
-(setq eshell-command-aliases-list
-      (append
-       (list
-        (list "la" "ls -a")
-        (list "ll" "ls -l")
-        (list "pandoc_gh" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css")
-        (list "pandoc_ghm" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js"))
-       eshell-command-aliases-list))
-(use-package helm-eshell
-  :init
-  (add-hook 'eshell-mode-hook
-        #'(lambda ()
-        (define-key eshell-mode-map [remap eshell-pcomplete] 'helm-esh-pcomplete)))
-  (add-hook 'eshell-mode-hook
-        #'(lambda ()
-                (define-key eshell-mode-map (kbd "M-p") 'helm-eshell-history))))
+;;(setq eshell-command-aliases-list
+;;      (append
+;;       (list
+;;        (list "la" "ls -a")
+;;        (list "ll" "ls -l")
+;;        (list "pandoc_gh" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css")
+;;        (list "pandoc_ghm" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js"))
+;;       eshell-command-aliases-list))
+;;(use-package helm-eshell
+;;  :init
+;;  (add-hook 'eshell-mode-hook
+;;        #'(lambda ()
+;;        (define-key eshell-mode-map [remap eshell-pcomplete] 'helm-esh-pcomplete)))
+;;  (add-hook 'eshell-mode-hook
+;;        #'(lambda ()
+;;                (define-key eshell-mode-map (kbd "M-p") 'helm-eshell-history))))
 #+END_SRC
 
 * eww
@@ -703,7 +671,7 @@ Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this pag
 	   ("M-y" . counsel-yank-pop)
 	   ("C-c g" . counsel-git)
 	   ("C-c j" . counsel-git-grep)
-	   ("C-c k" . counsel-ag)
+	   ("C-c k" . counsel-rg)
 	   ("C-c C-r" . ivy-resume))
 
     :config
