@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/04/02
+#+DATE: 2019/04/03
 
 This is my Emacs configurations.
 
@@ -16,10 +16,8 @@ This is my Emacs configurations.
   (defvar myPackages
     '(ace-isearch
       avy
-      csv-mode
       company
       company-irony
-      counsel
       exec-path-from-shell
       google-translate
       haskell-mode
@@ -28,12 +26,10 @@ This is my Emacs configurations.
       helm-swoop
       helm-tramp
       irony
-      ivy
       json-mode
       org
       org-ref
-      use-package
-      yatex))
+      use-package))
   (dolist (package myPackages)
     (unless (package-installed-p package)
       (package-install package)))
@@ -373,6 +369,7 @@ Default indent for C++ is 4.
 * YaTeX
 #+BEGIN_SRC emacs-lisp
   (use-package yatex
+    :ensure t
     :bind
     :config
     (setq auto-mode-alist (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
@@ -433,7 +430,14 @@ Default indent for C++ is 4.
 (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)))
 (setq hl-line-face 'underline)
 ;; org ref
-(require 'org-ref)
+;;(require 'org-ref)
+#+END_SRC
+
+* csv mode
+#+BEGIN_SRC emacs-lisp
+  (use-package csv-mode
+    :ensure t
+    )
 #+END_SRC
 
 * Spell check
@@ -533,8 +537,7 @@ Default indent for C++ is 4.
 
 #+BEGIN_SRC emacs-lisp
   (use-package dired
-    :bind
-    (:map dired-mode-map ("h" . nil))
+    :bind (:map dired-mode-map ("h" . nil))
     :config
     (setq delete-by-moving-to-trash t
 	  trash-directory "~/.Trash"
@@ -688,18 +691,25 @@ Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this pag
 
 * ivy
 #+BEGIN_SRC emacs-lisp
-  (ivy-mode 1) ;; デフォルトの入力補完がivyになる
-  (counsel-mode 1)
+  (use-package ivy
+    :ensure ivy :ensure counsel :ensure swiper
+    :init
+    (ivy-mode 1)
+    (counsel-mode 1)
+    :bind (("C-s" . swiper)
+	   ("C-x C-f" . counsel-find-file)
+	   ("C-x b" . counsel-switch-buffer)
+	   ("M-x" . counsel-M-x)
+	   ("M-y" . counsel-yank-pop)
+	   ("C-c g" . counsel-git)
+	   ("C-c j" . counsel-git-grep)
+	   ("C-c k" . counsel-ag)
+	   ("C-c C-r" . ivy-resume))
 
-  (global-set-key "\C-s" 'swiper)
-  (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  (global-set-key (kbd "<f6>") 'ivy-resume)
-  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-  (global-set-key (kbd "C-c g") 'counsel-git)
-  (global-set-key (kbd "C-c j") 'counsel-git-grep)
-  (global-set-key (kbd "C-c k") 'counsel-ag)
-  (global-set-key (kbd "C-x l") 'counsel-locate)
-  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+    :config
+    (setq ivy-height 20
+	  ivy-use-virtual-buffers t)
+    )
 #+END_SRC
 
 * misc
