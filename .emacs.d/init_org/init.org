@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/04/03
+#+DATE: 2019/04/04
 
 This is my Emacs configurations.
 
@@ -190,9 +190,6 @@ Abbreviations for each mode.
 #+BEGIN_SRC emacs-lisp
   (defvar mode-line-cleaner-alist
     '(
-      (helm-mode . "")
-      (helm-migemo-mode . "")
-      (ace-isearch-mode . "")
       (flyspell-mode . "")
       (abbrev-mode . "")
       (company-mode . "")
@@ -208,7 +205,6 @@ Abbreviations for each mode.
       (python-mode . "Py")
       (haskell-mode . "Hs")
       (emacs-lisp-mode . "El")
-      (yatex-mode . "TeX")
       (c++-mode . "C++")
       (c-mode . "C")
       (markdown-mode . "Md")))
@@ -361,21 +357,29 @@ Default indent for C++ is 4.
 #+END_SRC
 
 * YaTeX
+I use YaTeX to edit latex files for my articles, daily progress reports, presentation slides, etc.
+
+- Set ~YaTeX-kanji-code~ ~nil~ to avoid unintended encoding change by YaTeX.
+- YaTeX uses somehow Shift_JIS, so my environment settings do not display messages correctly. Therefore, I set ~YaTeX-japan~ ~nil~ to show YaTeX messages in English, which does not bother me by character garbling.
+- ~dvi2-command~ can define the application to open PDF file. ~open -a Preview~ is only for macOS.
+- By default, I use ~lualatex~. If you want to use other TeX engines, say ~pdflatex~, put ~%#!pdflatex~ at the very top of your latex file, and ~C-c t j~ as usual.
+- Local dictionaries are not needed, so set ~YaTeX-nervous~ ~nil~.
+- User dictionary is included in dotfiles.
+- ~biber~ is a replacement software for ~bibtex~.
+
 #+BEGIN_SRC emacs-lisp
   (use-package yatex
     :ensure t
-    :bind
+    :mode ("\\.tex$" . yatex-mode)
     :config
-    (setq auto-mode-alist (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
     (setq YaTeX-kanji-code nil
+	  YaTeX-japan nil
 	  dvi2-command "open -a Preview"
 	  tex-command "/Library/TeX/texbin/lualatex"
-	  YaTeX-nervous nil;; ローカル辞書不要
-	  YaTeX-user-completion-table "~/dotfiles/.yatexrc";; ユーザ辞書もdotfilesで管理
+	  YaTeX-nervous nil
+	  YaTeX-user-completion-table "~/dotfiles/.yatexrc"
 	  bibtex-command "biber")
-    (add-hook 'yatex-mode-hook '(lambda () (auto-fill-mode -1)));; 自動折り返し無効
     )
-  ;; 他の処理系を用いるには「%#!pdflatex」などと本文中に記載して、通常通りタイプセットすれば良い
   ;; skk対策
   (add-hook 'skk-mode-hook
 	    (lambda ()
@@ -614,14 +618,6 @@ Prefix key is ~C-z~.
 ;;        (list "pandoc_gh" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css")
 ;;        (list "pandoc_ghm" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js"))
 ;;       eshell-command-aliases-list))
-;;(use-package helm-eshell
-;;  :init
-;;  (add-hook 'eshell-mode-hook
-;;        #'(lambda ()
-;;        (define-key eshell-mode-map [remap eshell-pcomplete] 'helm-esh-pcomplete)))
-;;  (add-hook 'eshell-mode-hook
-;;        #'(lambda ()
-;;                (define-key eshell-mode-map (kbd "M-p") 'helm-eshell-history))))
 #+END_SRC
 
 * eww
@@ -658,6 +654,8 @@ Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this pag
 #+END_SRC
 
 * ivy
+I use [[https://github.com/abo-abo/swiper][ivy/counsel/swiper]] to find files, search, etc.
+
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
     :ensure ivy :ensure counsel :ensure swiper
@@ -673,7 +671,6 @@ Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this pag
 	   ("C-c j" . counsel-git-grep)
 	   ("C-c k" . counsel-rg)
 	   ("C-c C-r" . ivy-resume))
-
     :config
     (setq ivy-height 20
 	  ivy-use-virtual-buffers t)
