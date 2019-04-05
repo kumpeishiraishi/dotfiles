@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/04/04
+#+DATE: 2019/04/05
 
 This is my Emacs configurations.
 
@@ -18,11 +18,8 @@ This is my Emacs configurations.
       company-irony
       exec-path-from-shell
       google-translate
-      haskell-mode
       irony
-      json-mode
       org
-      org-ref
       use-package))
   (dolist (package myPackages)
     (unless (package-installed-p package)
@@ -335,6 +332,7 @@ Also, I do not want to use TODAY function.
 * JavaScript
 #+BEGIN_SRC emacs-lisp
   (use-package js
+    :ensure json
     :init
     (add-hook 'js-mode-hook (lambda () (setq js-indent-level 2)))
     )
@@ -401,6 +399,8 @@ I use YaTeX to edit latex files for my articles, daily progress reports, present
 #+END_SRC
 
 * org-mode
+TODO: ox-pandoc, org-clock, org-todo, etc
+
 #+BEGIN_SRC emacs-lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; org-mode
@@ -599,6 +599,8 @@ Prefix key is ~C-z~.
 #+END_SRC
 
 * eshell
+TODO: completion
+
 #+BEGIN_SRC emacs-lisp
 ;; 補完時に大文字小文字を区別しない
 (setq eshell-cmpl-ignore-case t)
@@ -655,7 +657,6 @@ Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this pag
 
 * ivy
 I use [[https://github.com/abo-abo/swiper][ivy/counsel/swiper]] to find files, search, etc.
-
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
     :ensure ivy :ensure counsel :ensure swiper
@@ -676,6 +677,18 @@ I use [[https://github.com/abo-abo/swiper][ivy/counsel/swiper]] to find files, s
 	  ivy-use-virtual-buffers t)
     )
 #+END_SRC
+
+To search Japanese letters with swiper, we have to use migemo.
+~avy-migemo~ provides this feature.
+
+#+begin_src emacs-lisp
+  (use-package avy-migemo
+    :ensure t
+    :config
+    (avy-migemo-mode 1)
+    (require 'avy-migemo-e.g.swiper)
+    )
+#+end_src
 
 * misc
 Sometimes, we forget what we have to do, lose our faith, and become jerks.
