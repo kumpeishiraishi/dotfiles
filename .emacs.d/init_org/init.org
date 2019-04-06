@@ -31,6 +31,20 @@ I use use-package to configure packages.
   (require 'use-package)
 #+END_SRC
 
+~:diminish~ keyword requires ~diminish~ package.
+#+BEGIN_SRC emacs-lisp
+  (use-package diminish
+    :ensure t
+    )
+#+END_SRC
+
+~:bind~ keyword requires ~bind-key~ package.
+#+BEGIN_SRC emacs-lisp
+  (use-package bind-key
+    :ensure t
+    )
+#+END_SRC
+
 * General settings
 #+BEGIN_SRC emacs-lisp
   (require 'cl)
@@ -187,16 +201,9 @@ Abbreviations for each mode.
 #+BEGIN_SRC emacs-lisp
   (defvar mode-line-cleaner-alist
     '(
-      (flyspell-mode . "")
       (abbrev-mode . "")
       (company-mode . "")
       (irony-mode . "")
-      (flycheck-mode . "")
-      (real-auto-save-mode . "")
-      (undo-tree-mode . "")
-      (auto-revert-mode . "")
-      (ivy-mode . "")
-      (counsel-mode . "")
       ;; Major modes
       (lisp-interaction-mode . "Li")
       (python-mode . "Py")
@@ -314,6 +321,7 @@ Also, I do not want to use TODAY function.
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
     :ensure t
+    :diminish
     :bind (("M-n" . flycheck-next-error)
            ("M-p" . flycheck-previous-error))
     :hook ((c++-mode python-mode rust-mode) . flycheck-mode)
@@ -325,6 +333,7 @@ Also, I do not want to use TODAY function.
 * Spell check
 #+BEGIN_SRC emacs-lisp
   (use-package flyspell
+    :diminish
     :hook ((org-mode yatex-mode markdown-mode) . flyspell-mode)
     :bind ([s-return] . ispell-word)
     :config
@@ -523,6 +532,7 @@ TODO: ox-pandoc, org-clock, org-todo, etc
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :ensure t
+    :diminish
     :bind ("M-/" . undo-tree-redo)
     :init
     (global-undo-tree-mode)
@@ -656,6 +666,7 @@ I use [[https://github.com/abo-abo/swiper][ivy/counsel/swiper]] to find files, s
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
     :ensure ivy :ensure counsel :ensure swiper
+    :diminish (ivy-mode counsel-mode)
     :init
     (ivy-mode 1)
     (counsel-mode 1)
