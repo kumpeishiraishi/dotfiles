@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/04/05
+#+DATE: 2019/04/06
 
 This is my Emacs configurations.
 
@@ -322,6 +322,17 @@ Also, I do not want to use TODAY function.
     )
 #+END_SRC
 
+* Spell check
+#+BEGIN_SRC emacs-lisp
+  (use-package flyspell
+    :hook ((org-mode yatex-mode markdown-mode) . flyspell-mode)
+    :bind ([s-return] . ispell-word)
+    :config
+    (setq-default ispell-program-name "aspell")
+    (eval-after-load "ispell" '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")));; 日本語混じりでも有効に
+    )
+#+END_SRC
+
 * Rust
 #+BEGIN_SRC emacs-lisp
   (use-package rust-mode
@@ -436,21 +447,6 @@ TODO: ox-pandoc, org-clock, org-todo, etc
   (use-package csv-mode
     :ensure t
     )
-#+END_SRC
-
-* Spell check
-#+BEGIN_SRC emacs-lisp
-(setq-default ispell-program-name "aspell")
-(eval-after-load "ispell" '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")));; 日本語混じりでも有効に
-(global-set-key [s-return] 'ispell-word)
-;; flyspell
-(mapc
- (lambda (hook)
-   (add-hook hook
-             '(lambda () (flyspell-mode 1))))
- '(yatex-mode-hook
-   markdown-mode-hook
-   org-mode-hook))
 #+END_SRC
 
 * migemo
