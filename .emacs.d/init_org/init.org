@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/04/06
+#+DATE: 2019/04/09
 
 This is my Emacs configurations.
 
@@ -14,11 +14,8 @@ This is my Emacs configurations.
   (package-initialize)
   (when (not package-archive-contents) (package-refresh-contents))
   (defvar myPackages
-    '(company
-      company-irony
-      exec-path-from-shell
+    '(exec-path-from-shell
       google-translate
-      irony
       org
       use-package))
   (dolist (package myPackages)
@@ -202,8 +199,6 @@ Abbreviations for each mode.
   (defvar mode-line-cleaner-alist
     '(
       (abbrev-mode . "")
-      (company-mode . "")
-      (irony-mode . "")
       ;; Major modes
       (lisp-interaction-mode . "Li")
       (python-mode . "Py")
@@ -483,9 +478,20 @@ TODO: ox-pandoc, org-clock, org-todo, etc
 #+END_SRC
 
 * company
+~company~ is a mode for completion.
+Key bindings are designated below explicitly.
+
+Variable ~company-idle-delay~ defines the delay time to display completion.
+By default, it is ~0.5~.
+
+Variable ~company-minimum-prefix-length~ sets the number of letters at which ~company~ starts completion.
+By default, it is ~4~.
+
+When variable ~company-selection-wrap-around~ is ~t~, the cursor goes back to top when it tries to go lower at the bottom of completions.
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :ensure t
+    :diminish
     :init
     (global-company-mode)
     :bind (:map company-active-map
@@ -495,23 +501,25 @@ TODO: ox-pandoc, org-clock, org-todo, etc
                 ("C-p" . company-select-previous)
                 ("C-h" . nil))
     :config
-    (setq company-idle-delay 0 ; デフォルトは0.5
-          company-minimum-prefix-length 2 ; デフォルトは4
-          company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
+    (setq company-idle-delay 0
+          company-minimum-prefix-length 2
+          company-selection-wrap-around t)
     )
+#+END_SRC
 
-  (require 'irony)
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'objc-mode-hook 'irony-mode)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-  (add-to-list 'company-backends 'company-irony) ; backend追加
-  (eval-after-load "irony"
-    '(progn
-       (custom-set-variables '(irony-additional-clang-options '("-std=c++11")))
-       (add-to-list 'company-backends 'company-irony)
-       (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-       (add-hook 'c-mode-common-hook 'irony-mode)))
+irony is a minor mode for C/C++ completion.
+#+BEGIN_SRC emacs-lisp
+  (use-package irony
+    :ensure t
+    :ensure company-irony
+    :diminish
+    :hook (((c-mode c++-mode) . irony-mode)
+           (irony-mode . irony-cdb-autosetup-compile-options))
+    :init
+    (add-to-list 'company-backends 'company-irony)
+    :custom
+    (irony-additional-clang-options '("-std=c++11"))
+    )
 #+END_SRC
 
 * dired
