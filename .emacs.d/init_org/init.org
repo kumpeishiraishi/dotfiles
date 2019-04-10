@@ -1,44 +1,54 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/04/09
+#+DATE: 2019/04/10
 
 This is my Emacs configurations.
 
 * Packages
 #+BEGIN_SRC emacs-lisp
-  (require 'package)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-  (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
-  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-  (package-initialize)
-  (when (not package-archive-contents) (package-refresh-contents))
-  (defvar myPackages
-    '(exec-path-from-shell
-      google-translate
-      org
-      use-package))
-  (dolist (package myPackages)
-    (unless (package-installed-p package)
-      (package-install package)))
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 #+END_SRC
 
-I use use-package to configure packages.
+Bootstrap ~use-package~, which I use to configure packages.
 #+BEGIN_SRC emacs-lisp
-  (require 'use-package)
+;;  (require 'package)
+;;  (setq package-enable-at-startup nil)
+;;  (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
+;;  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+
+;;  (package-initialize)
+;;  (unless (package-installed-p 'use-package)
+;;    (package-refresh-contents)
+;;    (package-install 'use-package))
+;;  (eval-when-compile
+;;    (require 'use-package))
 #+END_SRC
 
 ~:diminish~ keyword requires ~diminish~ package.
 #+BEGIN_SRC emacs-lisp
   (use-package diminish
-    :ensure t
+;;    :ensure t
     )
 #+END_SRC
 
 ~:bind~ keyword requires ~bind-key~ package.
 #+BEGIN_SRC emacs-lisp
   (use-package bind-key
-    :ensure t
+;;    :ensure t
     )
 #+END_SRC
 
@@ -67,7 +77,11 @@ Language environment, text encoding etc.
 
 Use exec-path-from-shell to PATH defined in a shell.
 #+BEGIN_SRC emacs-lisp
-  (exec-path-from-shell-initialize)
+  (use-package exec-path-from-shell
+;;    :ensure t
+    :init
+    (exec-path-from-shell-initialize)
+    )
 #+END_SRC
 
 * Display
@@ -103,7 +117,6 @@ Initial screen, message, major mode, directory.
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-splash-screen t)
   (setq initial-scratch-message nil)
-  (setq initial-major-mode 'org-mode)
   (setq default-directory "~/Dropbox/")
 #+END_SRC
 
@@ -315,7 +328,7 @@ Also, I do not want to use TODAY function.
 * flycheck
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
-    :ensure t
+;;    :ensure t
     :diminish
     :bind (("M-n" . flycheck-next-error)
            ("M-p" . flycheck-previous-error))
@@ -340,14 +353,14 @@ Also, I do not want to use TODAY function.
 * Rust
 #+BEGIN_SRC emacs-lisp
   (use-package rust-mode
-    :ensure t
+;;    :ensure t
     )
 #+END_SRC
 
 * JavaScript
 #+BEGIN_SRC emacs-lisp
   (use-package js
-    :ensure json-mode
+;;    :ensure json-mode
     :init
     (add-hook 'js-mode-hook (lambda () (setq js-indent-level 2)))
     )
@@ -382,7 +395,7 @@ I use YaTeX to edit latex files for my articles, daily progress reports, present
 
 #+BEGIN_SRC emacs-lisp
   (use-package yatex
-    :ensure t
+;;    :ensure t
     :mode ("\\.tex$" . yatex-mode)
     :config
     (setq YaTeX-kanji-code nil
@@ -407,7 +420,7 @@ I use YaTeX to edit latex files for my articles, daily progress reports, present
 * Markdown
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
-    :ensure t
+;;    :ensure t
     :config
     (setq markdown-command "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js")
     )
@@ -417,46 +430,31 @@ I use YaTeX to edit latex files for my articles, daily progress reports, present
 TODO: ox-pandoc, org-clock, org-todo, etc
 
 #+BEGIN_SRC emacs-lisp
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; org-mode
-(add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
-;; orgキーバインド
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-ca" 'org-agenda)
-(define-key global-map "\C-cr" 'org-remember)
-;; org表示
-(add-hook 'org-mode-hook 'turn-on-font-lock)
-(setq org-hide-leading-stars t);; 見出しの*は最小限に
-(setq org-startup-truncated nil);; 画面端で改行
-;; org note
-;; org-default-notes-fileのディレクトリ
-(setq org-directory "~/Dropbox/Emacs/org/")
-;; org-default-notes-fileのファイル名
-(setq org-default-notes-file "notes.org")
-;; TODO状態
-(setq org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)")))
-;; DONE時刻記録
-(setq org-log-done 'time)
-;; アジェンダ表示の対象ファイル
-(setq org-agenda-files (list org-directory))
-;; アジェンダ表示で下線を用いる
-(add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)))
-(setq hl-line-face 'underline)
-;; org ref
-;;(require 'org-ref)
+  (use-package org
+;;    :ensure org
+;;    :pin org
+    :init
+    (setq initial-major-mode 'org-mode)
+    :mode ("\\.txt\\'" . org-mode)
+    :config
+    (setq org-hide-leading-stars t;; 見出しの*は最小限に
+	  org-startup-truncated nil);; 画面端で改行
+    ;; org表示
+    (add-hook 'org-mode-hook 'turn-on-font-lock)
+    )
 #+END_SRC
 
 * csv mode
 #+BEGIN_SRC emacs-lisp
   (use-package csv-mode
-    :ensure t
+;;    :ensure t
     )
 #+END_SRC
 
 * migemo
 #+BEGIN_SRC emacs-lisp
   (use-package migemo
-    :ensure t
+;;    :ensure t
     :config
     (setq migemo-command "cmigemo"
           migemo-options '("-q" "--emacs")
@@ -490,7 +488,7 @@ By default, it is ~4~.
 When variable ~company-selection-wrap-around~ is ~t~, the cursor goes back to top when it tries to go lower at the bottom of completions.
 #+BEGIN_SRC emacs-lisp
   (use-package company
-    :ensure t
+;;    :ensure t
     :diminish
     :init
     (global-company-mode)
@@ -510,8 +508,8 @@ When variable ~company-selection-wrap-around~ is ~t~, the cursor goes back to to
 irony is a minor mode for C/C++ completion.
 #+BEGIN_SRC emacs-lisp
   (use-package irony
-    :ensure t
-    :ensure company-irony
+;;    :ensure t
+;;    :ensure company-irony
     :diminish
     :hook (((c-mode c++-mode) . irony-mode)
            (irony-mode . irony-cdb-autosetup-compile-options))
@@ -528,6 +526,7 @@ irony is a minor mode for C/C++ completion.
 
 #+BEGIN_SRC emacs-lisp
   (use-package dired
+    :straight nil
     :bind (:map dired-mode-map ("h" . nil))
     :config
     (setq delete-by-moving-to-trash t
@@ -545,7 +544,7 @@ irony is a minor mode for C/C++ completion.
 * undo-tree
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
-    :ensure t
+;;    :ensure t
     :diminish
     :bind ("M-/" . undo-tree-redo)
     :init
@@ -556,7 +555,9 @@ irony is a minor mode for C/C++ completion.
 * google-translate
 Thanks to [[http://emacs.rubikitch.com/google-translate/][rubikitch]].
 #+BEGIN_SRC emacs-lisp
-  (require 'google-translate)
+  (use-package google-translate
+;;    :ensure t
+    )
   (defvar google-translate-english-chars "[:ascii:]’“”–"
     "これらの文字が含まれているときは英語とみなす")
   (defun google-translate-enja-or-jaen (&optional string)
@@ -607,7 +608,7 @@ Prefix key is ~C-z~.
 
 #+BEGIN_SRC emacs-lisp
   (use-package elscreen
-    :ensure t
+;;    :ensure t
     :init
     (elscreen-start)
     :config
@@ -671,15 +672,16 @@ Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this pag
 * magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-    :ensure t
+;;    :ensure t
   )
 #+END_SRC
 
 * ivy
 I use [[https://github.com/abo-abo/swiper][ivy/counsel/swiper]] to find files, search, etc.
 #+BEGIN_SRC emacs-lisp
+(use-package counsel)
   (use-package ivy
-    :ensure ivy :ensure counsel :ensure swiper
+;;    :ensure ivy :ensure counsel :ensure swiper
     :diminish (ivy-mode counsel-mode)
     :init
     (ivy-mode 1)
@@ -703,8 +705,9 @@ To search Japanese letters with swiper, we have to use migemo.
 ~avy-migemo~ provides this feature.
 
 #+begin_src emacs-lisp
+(use-package avy)
   (use-package avy-migemo
-    :ensure t
+;;    :ensure t
     :config
     (avy-migemo-mode 1)
     (require 'avy-migemo-e.g.swiper)
