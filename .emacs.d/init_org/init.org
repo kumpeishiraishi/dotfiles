@@ -517,14 +517,14 @@ irony is a minor mode for C/C++ completion.
     :bind (:map dired-mode-map ("h" . nil))
     :config
     (setq delete-by-moving-to-trash t
-          trash-directory "~/.Trash"
-          dired-recursive-copies 'always
-          dired-recursive-deletes 'always
-          dired-isearch-filenames t
-          dired-dwim-target t
-          dired-listing-switches (purecopy "-alh"))
+	  trash-directory "~/.Trash"
+	  dired-recursive-copies 'always
+	  dired-recursive-deletes 'always
+	  dired-isearch-filenames t
+	  dired-dwim-target t
+	  dired-listing-switches (purecopy "-alh"))
     (eval-after-load "dired" '(progn
-                                (define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode)))
+				(define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode)))
     )
 #+END_SRC
 
@@ -543,8 +543,7 @@ irony is a minor mode for C/C++ completion.
 Thanks to [[http://emacs.rubikitch.com/google-translate/][rubikitch]].
 #+BEGIN_SRC emacs-lisp
   (use-package google-translate
-    :straight t
-    )
+    :straight t)
   (defvar google-translate-english-chars "[:ascii:]’“”–"
     "これらの文字が含まれているときは英語とみなす")
   (defun google-translate-enja-or-jaen (&optional string)
@@ -659,31 +658,33 @@ Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this pag
 * magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-    :straight t)
+    :straight t
+    :bind (("C-x g" . magit-status))
+  )
 #+END_SRC
 
 * ivy
 I use [[https://github.com/abo-abo/swiper][ivy/counsel/swiper]] to find files, search, etc.
 #+BEGIN_SRC emacs-lisp
-    (use-package ivy
-      :straight (ivy counsel swiper)
-      :init
-      (ivy-mode 1)
-      (counsel-mode 1)
-      :diminish (ivy-mode counsel-mode swiper)
-      :bind (("C-s" . swiper)
-             ("C-x C-f" . counsel-find-file)
-             ("C-x b" . counsel-switch-buffer)
-             ("M-x" . counsel-M-x)
-             ("M-y" . counsel-yank-pop)
-             ("C-c g" . counsel-git)
-             ("C-c j" . counsel-git-grep)
-             ("C-c k" . counsel-rg)
-             ("C-c C-r" . ivy-resume))
-      :config
-      (setq ivy-height 20
-            ivy-use-virtual-buffers t)
-      )
+  (use-package ivy
+    :straight (ivy counsel swiper)
+    :init
+    (ivy-mode 1)
+    (counsel-mode 1)
+    :diminish (ivy-mode counsel-mode swiper)
+    :bind (("C-s" . swiper)
+	   ("C-x C-f" . counsel-find-file)
+	   ("C-x b" . counsel-switch-buffer)
+	   ("M-x" . counsel-M-x)
+	   ("M-y" . counsel-yank-pop)
+	   ("C-c g" . counsel-git)
+	   ("C-c j" . counsel-git-grep)
+	   ("C-c k" . counsel-rg)
+	   ("C-c C-r" . ivy-resume))
+    :config
+    (setq ivy-height 20
+	  ivy-use-virtual-buffers t)
+    )
 #+END_SRC
 
 To search Japanese letters with swiper, we have to use migemo.
