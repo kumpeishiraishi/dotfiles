@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/04/11
+#+DATE: 2019/04/14
 
 This is my Emacs configurations.
 
@@ -698,6 +698,12 @@ To search Japanese letters with swiper, we have to use migemo.
     (require 'avy-migemo-e.g.swiper)
     )
 #+end_src
+
+* yasnippet
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :straight t)
+#+END_SRC
 
 * misc
 Sometimes, we forget what we have to do, lose our faith, and become jerks.
