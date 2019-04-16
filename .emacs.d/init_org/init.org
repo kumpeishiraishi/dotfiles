@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/04/15
+#+DATE: 2019/04/16
 
 This is my Emacs configurations.
 
@@ -10,15 +10,15 @@ Bootstrap ~straight.el~.
 #+BEGIN_SRC emacs-lisp
   (defvar bootstrap-version)
   (let ((bootstrap-file
-         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-        (bootstrap-version 5))
+	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+	(bootstrap-version 5))
     (unless (file-exists-p bootstrap-file)
       (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
+	  (url-retrieve-synchronously
+	   "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+	   'silent 'inhibit-cookies)
+	(goto-char (point-max))
+	(eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
 #+END_SRC
 
@@ -31,8 +31,8 @@ But I prefer not to do that for consistency (I might change my mind).
 
 ~:diminish~ keyword requires ~diminish~ package.
 #+BEGIN_SRC emacs-lisp
-    (use-package diminish
-      :straight t)
+  (use-package diminish
+    :straight t)
 #+END_SRC
 
 ~:bind~ keyword requires ~bind-key~ package.
@@ -307,12 +307,13 @@ Also, I do not want to use TODAY function.
 
 * Key bindings
 #+BEGIN_SRC emacs-lisp
-  (global-set-key "\C-u" 'undo)
-  (global-unset-key "\C-z")
   (keyboard-translate ?\C-h ?\C-?)
   (windmove-default-keybindings 'super);; 分割ウィンドウ移動をCMDで
-  (global-unset-key (kbd "M-ESC ESC"))
-  (global-unset-key (kbd "s-n"))
+  (bind-keys ("C-u" . undo)
+	     ("C-M-p" .nil)
+	     ("s-n" . nil)
+	     ("M-ESC ESC" . nil)
+	     ("C-z" . nil))
 #+END_SRC
 
 * flycheck
@@ -493,7 +494,7 @@ When variable ~company-selection-wrap-around~ is ~t~, the cursor goes back to to
     )
 #+END_SRC
 
-irony is a minor mode for C/C++ completion.
+~irony~ is a minor mode for C/C++ completion.
 #+BEGIN_SRC emacs-lisp
   (use-package irony
     :straight (irony company-irony)
@@ -514,7 +515,9 @@ irony is a minor mode for C/C++ completion.
 #+BEGIN_SRC emacs-lisp
   (use-package dired
     :straight nil
-    :bind (:map dired-mode-map ("h" . nil))
+    :bind (:map dired-mode-map
+		("h" . nil)
+		("C-M-p" . nil))
     :config
     (setq delete-by-moving-to-trash t
 	  trash-directory "~/.Trash"
