@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/04/16
+#+DATE: 2019/04/17
 
 This is my Emacs configurations.
 
@@ -420,6 +420,7 @@ I use YaTeX to edit latex files for my articles, daily progress reports, present
 * org-mode
 TODO: ox-pandoc, org-clock, org-todo, etc
 
+** org-mode in general
 #+BEGIN_SRC emacs-lisp
   (use-package org
     :straight t
@@ -428,10 +429,29 @@ TODO: ox-pandoc, org-clock, org-todo, etc
     :mode ("\\.txt\\'" . org-mode)
     :config
     (setq org-hide-leading-stars t;; 見出しの*は最小限に
-          org-startup-truncated nil);; 画面端で改行
+	  org-startup-truncated nil);; 画面端で改行
     ;; org表示
     (add-hook 'org-mode-hook 'turn-on-font-lock)
     )
+#+END_SRC
+
+** org-babel
+Enable the execution of ~shell~ and ~python~ in org-mode code block.
+#+BEGIN_SRC emacs-lisp
+  (use-package org
+    :config
+    (org-babel-do-load-languages 'org-babel-load-languages
+				 '((shell  . t)
+				   (python . t)))
+    (setq org-babel-python-command "python3")
+    )
+#+END_SRC
+
+~ob-rust~ offers Rust execution in ~org-babel~.
+Note that it may requires ~cargo-script~ (run ~% cargo install cargo-script~ to install it).
+#+BEGIN_SRC emacs-lisp
+  (use-package ob-rust
+    :straight t)
 #+END_SRC
 
 * csv mode
