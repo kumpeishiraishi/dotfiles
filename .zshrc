@@ -3,7 +3,6 @@
 # mollifierによる「少し凝った zshrc」https://gist.github.com/mollifier/4979906を改変
 
 # PATH
-export PATH=/usr/local/bin:/sbin:/Library/TeX/texbin:/usr/sbin:$PATH
 export GOPATH=~/.go
 
 # 環境変数
