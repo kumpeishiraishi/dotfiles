@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/04/19
+#+DATE: 2019/04/20
 
 This is my Emacs configurations.
 
@@ -418,7 +418,7 @@ I use YaTeX to edit latex files for my articles, daily progress reports, present
 #+END_SRC
 
 * org-mode
-TODO: ox-pandoc, org-clock, org-todo, etc
+TODO: org-clock, org-todo, etc
 
 ** org-mode in general
 #+BEGIN_SRC emacs-lisp
@@ -452,6 +452,15 @@ Note that it may requires ~cargo-script~ (run ~% cargo install cargo-script~ to 
 #+BEGIN_SRC emacs-lisp
   (use-package ob-rust
     :straight t)
+#+END_SRC
+
+** ox-pandoc
+#+BEGIN_SRC emacs-lisp
+  (use-package ox-pandoc
+    :straight t
+    :config
+    (setq org-pandoc-options '((standalone . t)))
+  )
 #+END_SRC
 
 * csv mode
