@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/04/20
+#+DATE: 2019/04/27
 
 This is my Emacs configurations.
 
@@ -146,8 +146,8 @@ Do not delete ~*scratch*~ buffer (thanks to [[https://github.com/uwabami/emacs][
 
 White space
 #+BEGIN_SRC emacs-lisp
-  ;;(require 'whitespace)
-  ;;(global-whitespace-mode 1)
+  (use-package whitespace
+    :straight t)
 #+END_SRC
 
 ** Fonts
