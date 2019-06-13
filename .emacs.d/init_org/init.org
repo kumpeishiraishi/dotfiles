@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/04/27
+#+DATE: 2019/06/13
 
 This is my Emacs configurations.
 
@@ -721,6 +721,13 @@ I use [[https://github.com/abo-abo/swiper][ivy/counsel/swiper]] to find files, s
 
 To search Japanese letters with swiper, we have to use migemo.
 ~avy-migemo~ provides this feature.
+
+As of June 13, 2019, [[https://github.com/momomo5717/avy-migemo][the original repository]] does not work well because of the recent change of ivy/counsel/swiper etc., and the author has not merged [[https://github.com/momomo5717/avy-migemo/pull/8][a pull request]].
+Therefore, the user needs to designate a forked version.
+#+BEGIN_SRC emacs-lisp
+  (straight-use-package
+   '(avy-migemo :type git :host github :repo "tam17aki/avy-migemo"))
+#+END_SRC
 
 #+begin_src emacs-lisp
   (use-package avy-migemo
