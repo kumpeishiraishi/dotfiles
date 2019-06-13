@@ -61,8 +61,7 @@
 ("uplatex")
 ))
 (setq user-singlecmd-table '(
-("amos")
-("amo")
+("IfValueTF")
 ("NewDocumentCommand")
 ("sim")
 ("quad")
