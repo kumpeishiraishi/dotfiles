@@ -9,7 +9,6 @@
 ("definition")
 ("Proof")
 ("theorem*")
-("frame")
 ("easylist")
 ))
 (setq YaTeX::usepackage-alist-private '(
@@ -73,7 +72,6 @@
 ("makeatletter")
 ("makeatother")
 ("toprule")
-("centering")
 ))
 
 (setq user-section-table '(
