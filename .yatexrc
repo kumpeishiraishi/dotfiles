@@ -1,4 +1,5 @@
 (setq user-env-table '(
+("scope")
 ("autobreak")
 ("textblock*")
 ("tcolorbox")
@@ -11,6 +12,7 @@
 ("theorem*")
 ("easylist")
 ))
+
 (setq YaTeX::usepackage-alist-private '(
 ("hyperref")
 ("grffile")
