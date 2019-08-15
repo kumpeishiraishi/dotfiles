@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/08/14
+#+DATE: 2019/08/15
 
 This is my Emacs configurations.
 
@@ -79,6 +79,7 @@ Do not show tool bar, scroll bar, etc.
 #+BEGIN_SRC emacs-lisp
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
+  (menu-bar-mode -1)
   (setq ring-bell-function 'ignore)
 #+END_SRC
 
@@ -307,13 +308,13 @@ Also, I do not want to use TODAY function.
 
 * Key bindings
 #+BEGIN_SRC emacs-lisp
-  (keyboard-translate ?\C-h ?\C-?)
   (windmove-default-keybindings 'super);; 分割ウィンドウ移動をCMDで
   (bind-keys ("C-u" . undo)
 	     ("C-M-p" .nil)
 	     ("s-n" . nil)
 	     ("M-ESC ESC" . nil)
-	     ("C-z" . nil))
+	     ("C-z" . nil)
+	     ("C-h" . delete-backward-char))
 #+END_SRC
 
 * flycheck
