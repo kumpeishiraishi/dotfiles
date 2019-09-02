@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/08/15
+#+DATE: 2019/09/02
 
 This is my Emacs configurations.
 
@@ -343,10 +343,88 @@ Also, I do not want to use TODAY function.
     )
 #+END_SRC
 
+* company
+~company~ is a mode for completion.
+Key bindings are designated below explicitly.
+
+Variable ~company-idle-delay~ defines the delay time to display completion.
+By default, it is ~0.5~.
+
+Variable ~company-minimum-prefix-length~ sets the number of letters at which ~company~ starts completion.
+By default, it is ~4~.
+
+When variable ~company-selection-wrap-around~ is ~t~, the cursor goes back to top when it tries to go lower at the bottom of completions.
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :straight t
+    :diminish
+    :init
+    (global-company-mode)
+    :bind (:map company-active-map
+                ("M-n" . nil)
+                ("M-p" . nil)
+                ("C-n" . company-select-next)
+                ("C-p" . company-select-previous)
+                ("C-h" . nil))
+    :config
+    (setq company-idle-delay 0
+          company-minimum-prefix-length 2
+          company-selection-wrap-around t)
+    )
+#+END_SRC
+
+* C++
+Default indent for C++ is 4.
+#+BEGIN_SRC emacs-lisp
+  (use-package cc-mode
+    :init
+    (add-hook 'c++-mode-hook
+          (lambda ()
+            (c-set-style "stroustrup")
+            (setq-default c-basic-offset 4
+                          tab-width 4
+                          indent-tabs-mode nil)
+            )
+          )
+    )
+#+END_SRC
+
+~irony~ is a minor mode for C/C++ completion.
+#+BEGIN_SRC emacs-lisp
+  (use-package irony
+    :straight (irony company-irony)
+    :diminish
+    :hook (((c-mode c++-mode) . irony-mode)
+           (irony-mode . irony-cdb-autosetup-compile-options))
+    :init
+    (add-to-list 'company-backends 'company-irony)
+    :custom
+    (irony-additional-clang-options '("-std=c++11"))
+    )
+#+END_SRC
+
 * Rust
 #+BEGIN_SRC emacs-lisp
   (use-package rust-mode
     :straight t)
+#+END_SRC
+
+~racer.el~ is a code completion mode for Rust in Emacs.
+~Racer~ provides the code completion for Rust.
+First of all, we need to install ~Racer~.
+
+#+BEGIN_SRC shell
+  rustup toolchain add nightly
+  cargo +nightly install race
+#+END_SRC
+
+Then we move on to ~racer.el~.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package racer
+    :straight t
+    :diminish
+    :hook (rust-mode . racer-mode))
 #+END_SRC
 
 * Emacs Lisp
@@ -364,22 +442,6 @@ Also, I do not want to use TODAY function.
       :init
       (add-hook 'js-mode-hook (lambda () (setq js-indent-level 2)))
       )
-#+END_SRC
-
-* C++
-Default indent for C++ is 4.
-#+BEGIN_SRC emacs-lisp
-  (use-package cc-mode
-    :init
-    (add-hook 'c++-mode-hook
-          (lambda ()
-            (c-set-style "stroustrup")
-            (setq-default c-basic-offset 4
-                          tab-width 4
-                          indent-tabs-mode nil)
-            )
-          )
-    )
 #+END_SRC
 
 * YaTeX
@@ -502,50 +564,6 @@ Note that it may requires ~cargo-script~ (run ~% cargo install cargo-script~ to 
     )
 #+END_SRC
 
-* company
-~company~ is a mode for completion.
-Key bindings are designated below explicitly.
-
-Variable ~company-idle-delay~ defines the delay time to display completion.
-By default, it is ~0.5~.
-
-Variable ~company-minimum-prefix-length~ sets the number of letters at which ~company~ starts completion.
-By default, it is ~4~.
-
-When variable ~company-selection-wrap-around~ is ~t~, the cursor goes back to top when it tries to go lower at the bottom of completions.
-#+BEGIN_SRC emacs-lisp
-  (use-package company
-    :straight t
-    :diminish
-    :init
-    (global-company-mode)
-    :bind (:map company-active-map
-                ("M-n" . nil)
-                ("M-p" . nil)
-                ("C-n" . company-select-next)
-                ("C-p" . company-select-previous)
-                ("C-h" . nil))
-    :config
-    (setq company-idle-delay 0
-          company-minimum-prefix-length 2
-          company-selection-wrap-around t)
-    )
-#+END_SRC
-
-~irony~ is a minor mode for C/C++ completion.
-#+BEGIN_SRC emacs-lisp
-  (use-package irony
-    :straight (irony company-irony)
-    :diminish
-    :hook (((c-mode c++-mode) . irony-mode)
-           (irony-mode . irony-cdb-autosetup-compile-options))
-    :init
-    (add-to-list 'company-backends 'company-irony)
-    :custom
-    (irony-additional-clang-options '("-std=c++11"))
-    )
-#+END_SRC
-
 * dired
 ~(setq dired-dwim-target t)~ sets ~mv~ / ~cp~ directory to the other dired directory (when the window is split).
 ~ls~ option for dired is ~-alh~.
@@ -554,18 +572,18 @@ When variable ~company-selection-wrap-around~ is ~t~, the cursor goes back to to
   (use-package dired
     :straight nil
     :bind (:map dired-mode-map
-		("h" . nil)
-		("C-M-p" . nil))
+                ("h" . nil)
+                ("C-M-p" . nil))
     :config
     (setq delete-by-moving-to-trash t
-	  trash-directory "~/.Trash"
-	  dired-recursive-copies 'always
-	  dired-recursive-deletes 'always
-	  dired-isearch-filenames t
-	  dired-dwim-target t
-	  dired-listing-switches (purecopy "-alh"))
+          trash-directory "~/.Trash"
+          dired-recursive-copies 'always
+          dired-recursive-deletes 'always
+          dired-isearch-filenames t
+          dired-dwim-target t
+          dired-listing-switches (purecopy "-alh"))
     (eval-after-load "dired" '(progn
-				(define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode)))
+                                (define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode)))
     )
 #+END_SRC
 
@@ -714,17 +732,17 @@ I use [[https://github.com/abo-abo/swiper][ivy/counsel/swiper]] to find files, s
     (counsel-mode 1)
     :diminish (ivy-mode counsel-mode swiper)
     :bind (("C-s" . swiper)
-	   ("C-x C-f" . counsel-find-file)
-	   ("C-x b" . counsel-switch-buffer)
-	   ("M-x" . counsel-M-x)
-	   ("M-y" . counsel-yank-pop)
-	   ("C-c g" . counsel-git)
-	   ("C-c j" . counsel-git-grep)
-	   ("C-c k" . counsel-rg)
-	   ("C-c C-r" . ivy-resume))
+           ("C-x C-f" . counsel-find-file)
+           ("C-x b" . counsel-switch-buffer)
+           ("M-x" . counsel-M-x)
+           ("M-y" . counsel-yank-pop)
+           ("C-c g" . counsel-git)
+           ("C-c j" . counsel-git-grep)
+           ("C-c k" . counsel-rg)
+           ("C-c C-r" . ivy-resume))
     :config
     (setq ivy-height 20
-	  ivy-use-virtual-buffers t)
+      ivy-use-virtual-buffers t)
     )
 #+END_SRC
 
@@ -748,8 +766,8 @@ Therefore, the user needs to designate a forked version.
     :straight (yasnippet yasnippet-snippets)
     :diminish yas-minor-mode
     :bind (:map yas-minor-mode-map
-		("C-x i n" . yas-new-snippet)
-		)
+                ("C-x i n" . yas-new-snippet)
+                )
     :init
     (yas-global-mode 1)
     (setq yas-snippets-dir "~/dotfiles/.emacs.d/snippets")
