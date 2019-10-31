@@ -6,7 +6,7 @@
 This is my Emacs configurations.
 
 * Packages
-Bootstrap ~straight.el~.
+Bootstrap =straight.el=.
 #+BEGIN_SRC emacs-lisp
   (defvar bootstrap-version)
   (let ((bootstrap-file
@@ -22,20 +22,20 @@ Bootstrap ~straight.el~.
     (load bootstrap-file nil 'nomessage))
 #+END_SRC
 
-Install ~use-package~, which I use to write package settings.
-You can set ~straight-use-package-by-default~ to a non-nil value to integrate ~straight.el~ and ~use-package~.
+Install =use-package=, which I use to write package settings.
+You can set ~straight-use-package-by-default~ to a non-nil value to integrate =straight.el= and =use-package=.
 But I prefer not to do that for consistency (I might change my mind).
 #+BEGIN_SRC emacs-lisp
   (straight-use-package 'use-package)
 #+END_SRC
 
-~:diminish~ keyword requires ~diminish~ package.
+~:diminish~ keyword requires =diminish= package.
 #+BEGIN_SRC emacs-lisp
   (use-package diminish
     :straight t)
 #+END_SRC
 
-~:bind~ keyword requires ~bind-key~ package.
+~:bind~ keyword requires =bind-key= package.
 #+BEGIN_SRC emacs-lisp
   (use-package bind-key
     :straight t)
@@ -64,7 +64,7 @@ Language environment, text encoding etc.
   ;; (add-hook 'isearch-mode-hook 'mac-change-language-to-us)
 #+END_SRC
 
-~exec-path-from-shell~ enable us to use shell PATH in Emacs.
+=exec-path-from-shell= enable us to use shell PATH in Emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package exec-path-from-shell
     :straight t
@@ -83,7 +83,7 @@ Do not show tool bar, scroll bar, etc.
   (setq ring-bell-function 'ignore)
 #+END_SRC
 
-To display line numbers without ~linum-mode~, we should use ~global-display-line-numbers-mode~.
+To display line numbers without =linum-mode=, we should use ~global-display-line-numbers-mode~.
 This feature is supported by Emacs from version 26.
 #+BEGIN_SRC emacs-lisp
   (if (version<= "26" emacs-version)
@@ -111,7 +111,7 @@ Initial screen, message, major mode, directory.
   (setq default-directory "~/Dropbox/")
 #+END_SRC
 
-Do not delete ~*scratch*~ buffer (thanks to [[https://github.com/uwabami/emacs][this repository]]).
+Do not delete =*scratch*= buffer (thanks to [[https://github.com/uwabami/emacs][this repository]]).
 #+BEGIN_SRC emacs-lisp
   (defun my:make-scratch (&optional arg)
     (interactive)
@@ -225,8 +225,8 @@ Abbreviations for each mode.
 #+END_SRC
 
 * SKK
-I use DDSKK for Japanese writing.
-DDSKK is installed to my Dropbox directory, and some jisyo files are also in Dropbox.
+I use =DDSKK= for Japanese writing.
+=DDSKK= is installed to my Dropbox directory, and some jisyo files are also in Dropbox.
 
 ** SKK Basics
 #+BEGIN_SRC emacs-lisp
@@ -310,11 +310,11 @@ Also, I do not want to use TODAY function.
 #+BEGIN_SRC emacs-lisp
   (windmove-default-keybindings 'super);; 分割ウィンドウ移動をCMDで
   (bind-keys ("C-u" . undo)
-	     ("C-M-p" .nil)
-	     ("s-n" . nil)
-	     ("M-ESC ESC" . nil)
-	     ("C-z" . nil)
-	     ("C-h" . delete-backward-char))
+             ("C-M-p" .nil)
+             ("s-n" . nil)
+             ("M-ESC ESC" . nil)
+             ("C-z" . nil)
+             ("C-h" . delete-backward-char))
 #+END_SRC
 
 * flycheck
@@ -344,13 +344,13 @@ Also, I do not want to use TODAY function.
 #+END_SRC
 
 * company
-~company~ is a mode for completion.
+=company= is a mode for completion.
 Key bindings are designated below explicitly.
 
 Variable ~company-idle-delay~ defines the delay time to display completion.
-By default, it is ~0.5~.
+By default, it is =0.5=.
 
-Variable ~company-minimum-prefix-length~ sets the number of letters at which ~company~ starts completion.
+Variable ~company-minimum-prefix-length~ sets the number of letters at which =company= starts completion.
 By default, it is ~4~.
 
 When variable ~company-selection-wrap-around~ is ~t~, the cursor goes back to top when it tries to go lower at the bottom of completions.
@@ -374,7 +374,7 @@ When variable ~company-selection-wrap-around~ is ~t~, the cursor goes back to to
 #+END_SRC
 
 * C++
-Default indent for C++ is 4.
+Default indent for C++ is ~4~ for me.
 #+BEGIN_SRC emacs-lisp
   (use-package cc-mode
     :init
@@ -389,7 +389,7 @@ Default indent for C++ is 4.
     )
 #+END_SRC
 
-~irony~ is a minor mode for C/C++ completion.
+=irony= is a minor mode for C/C++ completion.
 #+BEGIN_SRC emacs-lisp
   (use-package irony
     :straight (irony company-irony)
@@ -409,16 +409,16 @@ Default indent for C++ is 4.
     :straight t)
 #+END_SRC
 
-~racer.el~ is a code completion mode for Rust in Emacs.
-~Racer~ provides the code completion for Rust.
-First of all, we need to install ~Racer~.
+=racer.el= is a code completion mode for Rust in Emacs.
+=Racer= provides the code completion for Rust.
+First of all, we need to install =Racer=.
 
 #+BEGIN_SRC shell
   rustup toolchain add nightly
   cargo +nightly install race
 #+END_SRC
 
-Then we move on to ~racer.el~.
+Then we move on to =racer.el=.
 
 #+BEGIN_SRC emacs-lisp
   (use-package racer
@@ -431,24 +431,23 @@ Then we move on to ~racer.el~.
 #+BEGIN_SRC emacs-lisp
   (use-package emacs-lisp-mode
     :straight nil
-    :bind (("C-j" . eval-print-last-sexp))
-    )
+    :bind (("C-j" . eval-print-last-sexp)))
 #+END_SRC
 
 * JavaScript
 #+BEGIN_SRC emacs-lisp
-    (use-package js
-      :straight json-mode
-      :init
-      (add-hook 'js-mode-hook (lambda () (setq js-indent-level 2)))
-      )
+  (use-package js
+    :straight json-mode
+    :init
+    (add-hook 'js-mode-hook (lambda () (setq js-indent-level 2)))
+    )
 #+END_SRC
 
 * YaTeX
-I use YaTeX to edit latex files for my articles, daily progress reports, presentation slides, etc.
+I use =YaTeX= to edit latex files for my articles, daily progress reports, presentation slides, etc.
 
-- Set ~YaTeX-kanji-code~ ~nil~ to avoid unintended encoding change by YaTeX.
-- YaTeX uses somehow Shift_JIS, so my environment settings do not display messages correctly. Therefore, I set ~YaTeX-japan~ ~nil~ to show YaTeX messages in English, which does not bother me by character garbling.
+- Set ~YaTeX-kanji-code~ ~nil~ to avoid unintended encoding change by =YaTeX=.
+- =YaTeX= uses somehow =Shift_JIS=, so my environment settings do not display messages correctly. Therefore, I set ~YaTeX-japan~ ~nil~ to show =YaTeX= messages in English, which does not bother me by character garbling.
 - ~dvi2-command~ can define the application to open PDF file. ~open -a Preview~ is only for macOS.
 - By default, I use ~lualatex~. If you want to use other TeX engines, say ~pdflatex~, put ~%#!pdflatex~ at the very top of your latex file, and ~C-c t j~ as usual.
 - Local dictionaries are not needed, so set ~YaTeX-nervous~ ~nil~.
@@ -560,8 +559,7 @@ Note that it may requires ~cargo-script~ (run ~% cargo install cargo-script~ to 
 #+BEGIN_SRC emacs-lisp
   (use-package tramp
     :config
-    (setq tramp-default-method "ssh")
-    )
+    (setq tramp-default-method "ssh"))
 #+END_SRC
 
 * dired
@@ -742,14 +740,14 @@ I use [[https://github.com/abo-abo/swiper][ivy/counsel/swiper]] to find files, s
            ("C-c C-r" . ivy-resume))
     :config
     (setq ivy-height 20
-      ivy-use-virtual-buffers t)
+          ivy-use-virtual-buffers t)
     )
 #+END_SRC
 
-To search Japanese letters with swiper, we have to use migemo.
-~avy-migemo~ provides this feature.
+To search Japanese letters with swiper, we have to use =migemo=.
+=avy-migemo= provides this feature.
 
-As of June 13, 2019, [[https://github.com/momomo5717/avy-migemo][the original repository]] does not work well because of the recent change of ivy/counsel/swiper etc., and the author has not merged [[https://github.com/momomo5717/avy-migemo/pull/8][a pull request]].
+As of June 13, 2019, [[https://github.com/momomo5717/avy-migemo][the original repository]] does not work well because of the recent change of =ivy= / =counsel= / =swiper=, and the author has not merged [[https://github.com/momomo5717/avy-migemo/pull/8][a pull request]].
 Therefore, the user needs to designate a forked version.
 #+begin_src emacs-lisp
   (use-package avy-migemo
@@ -766,13 +764,13 @@ Therefore, the user needs to designate a forked version.
     :straight (yasnippet yasnippet-snippets)
     :diminish yas-minor-mode
     :bind (:map yas-minor-mode-map
-		("C-x i n" . yas-new-snippet)
-		)
+           ("C-x i n" . yas-new-snippet)
+           :map yas-keymap
+           ("C-h" . yas-skip-and-clear-field))
     :init
     (yas-global-mode 1)
     (setq yas-snippet-dirs "~/dotfiles/.emacs.d/snippets")
-    (yas-load-directory yas-snippet-dirs)
-    )
+    (yas-load-directory yas-snippet-dirs))
 #+END_SRC
 
 * misc
