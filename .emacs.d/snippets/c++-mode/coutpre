@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: coutpre
+# key: coutpre
+# --
+std::cout << std::setprecision($0) << std::scientific
+          << 

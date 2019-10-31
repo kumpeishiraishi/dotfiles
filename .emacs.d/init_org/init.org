@@ -766,12 +766,12 @@ Therefore, the user needs to designate a forked version.
     :straight (yasnippet yasnippet-snippets)
     :diminish yas-minor-mode
     :bind (:map yas-minor-mode-map
-                ("C-x i n" . yas-new-snippet)
-                )
+		("C-x i n" . yas-new-snippet)
+		)
     :init
     (yas-global-mode 1)
-    (setq yas-snippets-dir "~/dotfiles/.emacs.d/snippets")
-    (yas-load-directory yas-snippets-dir)
+    (setq yas-snippet-dirs "~/dotfiles/.emacs.d/snippets")
+    (yas-load-directory yas-snippet-dirs)
     )
 #+END_SRC
 
