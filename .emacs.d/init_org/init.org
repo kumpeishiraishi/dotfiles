@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/09/02
+#+DATE: 2019/11/21
 
 This is my Emacs configurations.
 
@@ -307,14 +307,25 @@ Also, I do not want to use TODAY function.
 #+END_SRC
 
 * Key bindings
+When the window is split, use the super key and the arrow keys to switch windows.
 #+BEGIN_SRC emacs-lisp
-  (windmove-default-keybindings 'super);; 分割ウィンドウ移動をCMDで
-  (bind-keys ("C-u" . undo)
-             ("C-M-p" .nil)
+  (windmove-default-keybindings 'super)
+#+END_SRC
+
+Disable some default key bindings. I easily type these keys unintentionally :p
+#+BEGIN_SRC emacs-lisp
+  (bind-keys ("C-M-p" .nil)
              ("s-n" . nil)
              ("M-ESC ESC" . nil)
-             ("C-z" . nil)
-             ("C-h" . delete-backward-char))
+             ("C-z" . nil))
+#+END_SRC
+
+Various key bindings
+#+BEGIN_SRC emacs-lisp
+  (bind-keys ("C-u" . undo)
+             ("C-h" . delete-backward-char)
+             ("C-c r" . replace-string)
+             ("C-c ;" . comment-dwin))
 #+END_SRC
 
 * flycheck
@@ -386,6 +397,7 @@ Default indent for C++ is ~4~ for me.
                           indent-tabs-mode nil)
             )
           )
+    :bind ("C-c a" . align)
     )
 #+END_SRC
 
@@ -399,8 +411,7 @@ Default indent for C++ is ~4~ for me.
     :init
     (add-to-list 'company-backends 'company-irony)
     :custom
-    (irony-additional-clang-options '("-std=c++11"))
-    )
+    (irony-additional-clang-options '("-std=c++11")))
 #+END_SRC
 
 * Rust
@@ -431,7 +442,7 @@ Then we move on to =racer.el=.
 #+BEGIN_SRC emacs-lisp
   (use-package emacs-lisp-mode
     :straight nil
-    :bind (("C-j" . eval-print-last-sexp)))
+    :bind ("C-j" . eval-print-last-sexp))
 #+END_SRC
 
 * JavaScript
@@ -658,8 +669,7 @@ Prefix key is ~C-z~.
     (setq elscreen-prefix-key "\C-z"
           elscreen-tab-display-kill-screen nil
           elscreen-tab-display-control nil
-          elscreen-display-tab nil)
-    )
+          elscreen-display-tab nil))
 #+END_SRC
 
 * eshell
@@ -716,8 +726,7 @@ Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this pag
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :straight t
-    :bind (("C-x g" . magit-status))
-  )
+    :bind (("C-x g" . magit-status)))
 #+END_SRC
 
 * ivy
