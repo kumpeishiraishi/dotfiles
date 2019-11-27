@@ -323,9 +323,8 @@ Disable some default key bindings. I easily type these keys unintentionally :p
 Various key bindings
 #+BEGIN_SRC emacs-lisp
   (bind-keys ("C-u" . undo)
-             ("C-h" . delete-backward-char)
-             ("C-c r" . replace-string)
-             ("C-c ;" . comment-dwin))
+	     ("C-h" . delete-backward-char)
+	     ("C-c r" . replace-string))
 #+END_SRC
 
 * flycheck
