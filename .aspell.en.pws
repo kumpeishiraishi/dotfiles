@@ -193,6 +193,10 @@ bosonic
 excitations
 quaternion
 quaternions
+linearize
+linearized
+linearization
+supercooled
 BCAA
 DOF
 DOFs
@@ -203,6 +207,11 @@ PNAS
 PRB
 PRE
 PRX
+JCP
+EPL
+SciPost
+JPSJ
+JSPS
 bivy
 alpinist
 carabiner
