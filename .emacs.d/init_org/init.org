@@ -441,7 +441,8 @@ Then we move on to =racer.el=.
 #+BEGIN_SRC emacs-lisp
   (use-package emacs-lisp-mode
     :straight nil
-    :bind ("C-j" . eval-print-last-sexp))
+    :bind (:map emacs-lisp-mode-map
+                ("C-j" . eval-print-last-sexp)))
 #+END_SRC
 
 * JavaScript
