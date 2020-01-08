@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2019/11/21
+#+DATE: 2020/01/08
 
 This is my Emacs configurations.
 
@@ -333,10 +333,10 @@ Various key bindings
     :straight t
     :diminish
     :bind (("M-n" . flycheck-next-error)
-           ("M-p" . flycheck-previous-error))
-    :hook ((c++-mode python-mode rust-mode) . flycheck-mode)
-    :init
-    (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++14")))
+	   ("M-p" . flycheck-previous-error))
+    :hook
+    (((c++-mode python-mode rust-mode) . flycheck-mode)
+     (c++-mode . (lambda () (setq flycheck-clang-language-standard "c++14"))))
     )
 #+END_SRC
 
@@ -371,15 +371,15 @@ When variable ~company-selection-wrap-around~ is ~t~, the cursor goes back to to
     :init
     (global-company-mode)
     :bind (:map company-active-map
-                ("M-n" . nil)
-                ("M-p" . nil)
-                ("C-n" . company-select-next)
-                ("C-p" . company-select-previous)
-                ("C-h" . nil))
+		("M-n" . nil)
+		("M-p" . nil)
+		("C-n" . company-select-next)
+		("C-p" . company-select-previous)
+		("C-h" . nil))
     :config
     (setq company-idle-delay 0
-          company-minimum-prefix-length 2
-          company-selection-wrap-around t)
+	  company-minimum-prefix-length 2
+	  company-selection-wrap-around t)
     )
 #+END_SRC
 
@@ -407,9 +407,8 @@ Default indent for C++ is ~4~ for me.
     :diminish
     :hook (((c-mode c++-mode) . irony-mode)
            (irony-mode . irony-cdb-autosetup-compile-options))
-    :init
-    (add-to-list 'company-backends 'company-irony)
     :custom
+    (add-to-list 'company-backends 'company-irony)
     (irony-additional-clang-options '("-std=c++11")))
 #+END_SRC
 
@@ -449,8 +448,7 @@ Then we move on to =racer.el=.
 #+BEGIN_SRC emacs-lisp
   (use-package js
     :straight json-mode
-    :init
-    (add-hook 'js-mode-hook (lambda () (setq js-indent-level 2)))
+    :hook (js-mode . (lambda () (setq js-indent-level 2)))
     )
 #+END_SRC
 
@@ -673,27 +671,20 @@ Prefix key is ~C-z~.
 #+END_SRC
 
 * eshell
-TODO: completion
+[[https://www.gnu.org/software/emacs/manual/html_mono/eshell.html][Eshell]] is a command interpreter implemented in Emacs Lisp.
+See the link for more detail.
+
+I have to confess that I am not a power user of Eshell.
+I mainly use =zsh=, and I only use Eshell for compiling small codes and testing small programs.
+So, I just need basic settings, like tab completion (=ivy= offers ~completion-at-point~ function).
 
 #+BEGIN_SRC emacs-lisp
-;; 補完時に大文字小文字を区別しない
-(setq eshell-cmpl-ignore-case t)
-;; prompt文字列の変更
-(setq eshell-prompt-function
-      (lambda ()
-        (concat "[kumpeishiraishi "
-                (eshell/pwd)
-                (if (= (user-uid) 0) "]\n# " "]\n$ ")
-                )))
-;; eshell alias
-;;(setq eshell-command-aliases-list
-;;      (append
-;;       (list
-;;        (list "la" "ls -a")
-;;        (list "ll" "ls -l")
-;;        (list "pandoc_gh" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css")
-;;        (list "pandoc_ghm" "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js"))
-;;       eshell-command-aliases-list))
+  (use-package eshell
+    :straight nil
+    :hook (eshell-mode . (lambda () (define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)))
+    :config
+    (setq eshell-cmpl-ignore-case t
+	  eshell-hist-ignoredups t))
 #+END_SRC
 
 * eww
