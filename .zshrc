@@ -2,9 +2,6 @@
 # Created: 2016-03-13
 # mollifierによる「少し凝った zshrc」https://gist.github.com/mollifier/4979906を改変
 
-# PATH
-export GOPATH=~/.go
-
 # 環境変数
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -48,9 +45,6 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # ../ の後は今いるディレクトリを補完しない
 zstyle ':completion:*' ignore-parents parent pwd ..
-
-# sudo の後ろでコマンド名を補完する
-zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin /usr/local/texlive/2015/bin/x86_64-darwin
 
 # ps コマンドのプロセス名補完
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
@@ -149,27 +143,6 @@ elif which putclip >/dev/null 2>&1 ; then
     # Cygwin
     alias -g C='| putclip'
 fi
-
-# Web search
-s(){
-    local web="https://www.google.co.jp/search?q="
-    local map="https://www.google.co.jp/maps/search/"
-    local jawp="https://ja.wikipedia.org/wiki/"
-    local enwp="https://en.wikipedia.org/wiki/"
-    local dict="http://eow.alc.co.jp/search?q="
-    case $1 in
-	"-m") shift; open "$map${*// /+}";;
-	"-jw") shift; w3m "$jawp${*// /_}";;
-	"-ew") shift; w3m "$enwp${*// /_}";;
-        "-d") shift; w3m "$dict${*// /_}";;
-	*) w3m "$web${*// /+}";;
-    esac
-}
-
-# 英和辞書（元ネタ：http://qiita.com/yubais/items/21cac44d71c30edd22c9）
-function dict() {
-    grep $1 ~/Dropbox/misc/eiwa.txt -A 1 -wi --color
-}
 
 ########################################
 # OS 別の設定
