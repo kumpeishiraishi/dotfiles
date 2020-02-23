@@ -150,6 +150,7 @@ parametrization
 vibrational
 dimers
 dimeric
+triatomic
 moduli
 translational
 ergodic
@@ -183,6 +184,7 @@ eigenfrequency
 eigenfrequencies
 eigenvector
 quartic
+quartically
 precession
 phonon
 phonons
