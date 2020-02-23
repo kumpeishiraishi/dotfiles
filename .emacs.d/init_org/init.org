@@ -7,7 +7,7 @@ This is my Emacs configurations.
 
 * Packages
 Bootstrap =straight.el=.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defvar bootstrap-version)
   (let ((bootstrap-file
 	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -25,31 +25,31 @@ Bootstrap =straight.el=.
 Install =use-package=, which I use to write package settings.
 You can set ~straight-use-package-by-default~ to a non-nil value to integrate =straight.el= and =use-package=.
 But I prefer not to do that for consistency (I might change my mind).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (straight-use-package 'use-package)
 #+END_SRC
 
 ~:diminish~ keyword requires =diminish= package.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package diminish
     :straight t)
 #+END_SRC
 
 ~:bind~ keyword requires =bind-key= package.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package bind-key
     :straight t)
 #+END_SRC
 
 * General settings
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (require 'cl)
   (setq make-backup-files nil)
   (fset 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
 Language environment, text encoding etc.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (set-language-environment "Japanese")
   (setenv "LANG" "en_US.UTF-8")
   (prefer-coding-system 'utf-8)
@@ -65,7 +65,7 @@ Language environment, text encoding etc.
 #+END_SRC
 
 =exec-path-from-shell= enable us to use shell PATH in Emacs.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package exec-path-from-shell
     :straight t
     :init
@@ -76,7 +76,7 @@ Language environment, text encoding etc.
 * Display
 ** General
 Do not show tool bar, scroll bar, etc.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (menu-bar-mode -1)
@@ -85,18 +85,18 @@ Do not show tool bar, scroll bar, etc.
 
 To display line numbers without =linum-mode=, we should use ~global-display-line-numbers-mode~.
 This feature is supported by Emacs from version 26.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (if (version<= "26" emacs-version)
       (global-display-line-numbers-mode 1))
 #+END_SRC
 
 Parens
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (show-paren-mode 1)
 #+END_SRC
 
 Window and color settings.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (when window-system
     (set-frame-parameter nil 'fullscreen 'fullboth)
     (set-background-color "Black")
@@ -105,14 +105,14 @@ Window and color settings.
 #+END_SRC
 
 Initial screen, message, major mode, directory.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (setq inhibit-splash-screen t)
   (setq initial-scratch-message nil)
   (setq default-directory "~/Dropbox/")
 #+END_SRC
 
 Do not delete =*scratch*= buffer (thanks to [[https://github.com/uwabami/emacs][this repository]]).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun my:make-scratch (&optional arg)
     (interactive)
     (progn
@@ -146,7 +146,7 @@ Do not delete =*scratch*= buffer (thanks to [[https://github.com/uwabami/emacs][
 #+END_SRC
 
 White space
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package whitespace
     :straight t)
 #+END_SRC
@@ -159,7 +159,7 @@ There is a option [[https://github.com/adobe-fonts/source-han-code-jp][Source Ha
 
 TODO: ヒラギノとSource Code Proでキレイに文字幅1:2にしたい。上の安直な方法でヒラギノを1.25倍にすると、幅は良いがイビツになる。（2017/01/06）
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (set-face-attribute 'default nil
 		      :family "Source Code Pro"
 		      :height 125)
@@ -171,12 +171,12 @@ TODO: ヒラギノとSource Code Proでキレイに文字幅1:2にしたい。�
 
 ** Mode line
 Do not display line number in a mode line.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (line-number-mode -1)
 #+END_SRC
 
 Time and date in a mode line.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (setq display-time-day-and-date t)
   ;;(setq display-time-string-forms
   ;;      '((format "%s %s %s %s:%s:%s %s"
@@ -186,12 +186,12 @@ Time and date in a mode line.
 #+END_SRC
 
 Show battery percentage.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (display-battery-mode 1)
 #+END_SRC
 
 Colors.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (set-face-foreground 'mode-line "blue1")
   (set-face-background 'mode-line "gray90")
   (setq-default mode-line-buffer-identification
@@ -199,7 +199,7 @@ Colors.
 #+END_SRC
 
 Abbreviations for each mode.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defvar mode-line-cleaner-alist
     '(
       (abbrev-mode . "")
@@ -229,7 +229,7 @@ I use =DDSKK= for Japanese writing.
 =DDSKK= is installed to my Dropbox directory, and some jisyo files are also in Dropbox.
 
 ** SKK Basics
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (let ((default-directory (expand-file-name "~/Dropbox/Emacs/skk/skk/")))
     (add-to-list 'load-path default-directory)
     (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
@@ -241,7 +241,7 @@ I use =DDSKK= for Japanese writing.
 #+END_SRC
 
 ** SKK dictionaries
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (setq skk-jisyo-code 'utf-8)
   (setq skk-isearch-start-mode 'utf-8);; migemoではSKK不要
   ;; (setq skk-user-directory "~/Dropbox/Emacs/skk") これでは以下のように、ファイル群を望んだフォルダ配下に保存できない（2016/05/02）
@@ -265,7 +265,7 @@ I use =DDSKK= for Japanese writing.
 #+END_SRC
 
 ** SKK displays
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (setq skk-latin-mode-string "A"
         skk-hiragana-mode-string "あ"
         skk-katakana-mode-string "ア")
@@ -280,12 +280,12 @@ I use =DDSKK= for Japanese writing.
 
 ** SKK misc
 Automatically insert corresponding paren.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (setq skk-auto-insert-paren t)
 #+END_SRC
 
 Completion
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (setq skk-previous-candidate-key "x");; 前候補に戻るのはxだけ、C-pは使わない
   (setq skk-dcomp-activate t);; 動的補完
   ;;      skk-dcomp-multiple-activate t
@@ -298,7 +298,7 @@ Completion
 
 Some characters must be displayed in full-width letters.
 Also, I do not want to use TODAY function.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (setq skk-rom-kana-rule-list
         (append skk-rom-kana-rule-list
                 '(("！" nil "!")
@@ -308,12 +308,12 @@ Also, I do not want to use TODAY function.
 
 * Key bindings
 When the window is split, use the super key and the arrow keys to switch windows.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (windmove-default-keybindings 'super)
 #+END_SRC
 
 Disable some default key bindings. I easily type these keys unintentionally :p
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (bind-keys ("C-M-p" .nil)
              ("s-n" . nil)
              ("M-ESC ESC" . nil)
@@ -321,14 +321,14 @@ Disable some default key bindings. I easily type these keys unintentionally :p
 #+END_SRC
 
 Various key bindings
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (bind-keys ("C-u" . undo)
 	     ("C-h" . delete-backward-char)
 	     ("C-c r" . replace-string))
 #+END_SRC
 
 * flycheck
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package flycheck
     :straight t
     :diminish
@@ -341,7 +341,7 @@ Various key bindings
 #+END_SRC
 
 * Spell check
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package flyspell
     :straight t
     :diminish
@@ -364,7 +364,7 @@ Variable ~company-minimum-prefix-length~ sets the number of letters at which =co
 By default, it is ~4~.
 
 When variable ~company-selection-wrap-around~ is ~t~, the cursor goes back to top when it tries to go lower at the bottom of completions.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package company
     :straight t
     :diminish
@@ -385,7 +385,7 @@ When variable ~company-selection-wrap-around~ is ~t~, the cursor goes back to to
 
 * C++
 Default indent for C++ is ~4~ for me.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package cc-mode
     :init
     (add-hook 'c++-mode-hook
@@ -401,19 +401,19 @@ Default indent for C++ is ~4~ for me.
 #+END_SRC
 
 =irony= is a minor mode for C/C++ completion.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package irony
     :straight (irony company-irony)
     :diminish
     :hook (((c-mode c++-mode) . irony-mode)
-           (irony-mode . irony-cdb-autosetup-compile-options))
+	   (irony-mode . irony-cdb-autosetup-compile-options))
     :custom
     (add-to-list 'company-backends 'company-irony)
     (irony-additional-clang-options '("-std=c++11")))
 #+END_SRC
 
 * Rust
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package rust-mode
     :straight t)
 #+END_SRC
@@ -429,7 +429,7 @@ First of all, we need to install =Racer=.
 
 Then we move on to =racer.el=.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package racer
     :straight t
     :diminish
@@ -437,7 +437,7 @@ Then we move on to =racer.el=.
 #+END_SRC
 
 * Emacs Lisp
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package emacs-lisp-mode
     :straight nil
     :bind (:map emacs-lisp-mode-map
@@ -445,7 +445,7 @@ Then we move on to =racer.el=.
 #+END_SRC
 
 * JavaScript
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package js
     :straight json-mode
     :hook (js-mode . (lambda () (setq js-indent-level 2)))
@@ -463,7 +463,7 @@ I use =YaTeX= to edit latex files for my articles, daily progress reports, prese
 - User dictionary is included in dotfiles.
 - ~biber~ is a replacement software for ~bibtex~.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package yatex
     :straight t
     :mode ("\\.tex$" . yatex-mode)
@@ -488,7 +488,7 @@ I use =YaTeX= to edit latex files for my articles, daily progress reports, prese
 #+END_SRC
 
 * Markdown
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package markdown-mode
     :straight t
     :config
@@ -500,7 +500,7 @@ I use =YaTeX= to edit latex files for my articles, daily progress reports, prese
 TODO: org-clock, org-todo, etc
 
 ** org-mode in general
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package org
     :straight t
     :init
@@ -516,7 +516,7 @@ TODO: org-clock, org-todo, etc
 
 ** org-babel
 Enable the execution of ~shell~ and ~python~ in org-mode code block.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package org
     :config
     (org-babel-do-load-languages 'org-babel-load-languages
@@ -526,15 +526,15 @@ Enable the execution of ~shell~ and ~python~ in org-mode code block.
     )
 #+END_SRC
 
-~ob-rust~ offers Rust execution in ~org-babel~.
-Note that it may requires ~cargo-script~ (run ~% cargo install cargo-script~ to install it).
-#+BEGIN_SRC emacs-lisp
+=ob-rust= offers Rust execution in =org-babel=.
+Note that it may requires =cargo-script= (run ~cargo install cargo-script~ to install it).
+#+begin_src emacs-lisp :tangle yes
   (use-package ob-rust
     :straight t)
 #+END_SRC
 
 ** ox-pandoc
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package ox-pandoc
     :straight t
     :config
@@ -543,13 +543,13 @@ Note that it may requires ~cargo-script~ (run ~% cargo install cargo-script~ to 
 #+END_SRC
 
 * csv mode
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package csv-mode
     :straight t)
 #+END_SRC
 
 * migemo
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package migemo
     :straight t
     :config
@@ -565,7 +565,7 @@ Note that it may requires ~cargo-script~ (run ~% cargo install cargo-script~ to 
 #+END_SRC
 
 * tramp
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package tramp
     :config
     (setq tramp-default-method "ssh"))
@@ -575,7 +575,7 @@ Note that it may requires ~cargo-script~ (run ~% cargo install cargo-script~ to 
 ~(setq dired-dwim-target t)~ sets ~mv~ / ~cp~ directory to the other dired directory (when the window is split).
 ~ls~ option for dired is ~-alh~.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package dired
     :straight nil
     :bind (:map dired-mode-map
@@ -595,7 +595,7 @@ Note that it may requires ~cargo-script~ (run ~% cargo install cargo-script~ to 
 #+END_SRC
 
 * undo-tree
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package undo-tree
     :straight t
     :diminish
@@ -607,7 +607,7 @@ Note that it may requires ~cargo-script~ (run ~% cargo install cargo-script~ to 
 
 * google-translate
 Thanks to [[http://emacs.rubikitch.com/google-translate/][rubikitch]].
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package google-translate
     :straight t)
   (defvar google-translate-english-chars "[:ascii:]’“”–"
@@ -641,7 +641,7 @@ Thanks to [[http://emacs.rubikitch.com/google-translate/][rubikitch]].
 #+END_SRC
 
 * Mail
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (setq user-mail-address "kumpeishiraishi@gmail.com"
         user-full-name "Kumpei Shiraishi")
   (setq gnus-select-method
@@ -658,7 +658,7 @@ Thanks to [[http://emacs.rubikitch.com/google-translate/][rubikitch]].
 Below settings prevent showing [X], [<->], tabs.
 Prefix key is ~C-z~.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package elscreen
     :straight t
     :init
@@ -670,15 +670,15 @@ Prefix key is ~C-z~.
           elscreen-display-tab nil))
 #+END_SRC
 
-* eshell
-[[https://www.gnu.org/software/emacs/manual/html_mono/eshell.html][Eshell]] is a command interpreter implemented in Emacs Lisp.
+* Eshell
+=[[https://www.gnu.org/software/emacs/manual/html_mono/eshell.html][Eshell]]= is a command interpreter implemented in Emacs Lisp.
 See the link for more detail.
 
 I have to confess that I am not a power user of Eshell.
 I mainly use =zsh=, and I only use Eshell for compiling small codes and testing small programs.
 So, I just need basic settings, like tab completion (=ivy= offers ~completion-at-point~ function).
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package eshell
     :straight nil
     :hook (eshell-mode . (lambda () (define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)))
@@ -689,12 +689,12 @@ So, I just need basic settings, like tab completion (=ivy= offers ~completion-at
 
 * eww
 If DuckDuckGo is not satisfactory, remove comment out below and use Google.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
 (setq eww-search-prefix "http://www.google.com/search?q=")
 #+END_SRC
 
 Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this page]]).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defvar eww-disable-colorize t)
   (defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
     (unless eww-disable-colorize
@@ -714,15 +714,15 @@ Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this pag
 #+END_SRC
 
 * magit
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package magit
     :straight t
     :bind (("C-x g" . magit-status)))
 #+END_SRC
 
 * ivy
-I use [[https://github.com/abo-abo/swiper][ivy/counsel/swiper]] to find files, search, etc.
-#+BEGIN_SRC emacs-lisp
+I use =[[https://github.com/abo-abo/swiper][ivy/counsel/swiper]]= to find files, search, etc.
+#+begin_src emacs-lisp :tangle yes
   (use-package ivy
     :straight (ivy counsel swiper)
     :init
@@ -749,7 +749,7 @@ To search Japanese letters with swiper, we have to use =migemo=.
 
 As of June 13, 2019, [[https://github.com/momomo5717/avy-migemo][the original repository]] does not work well because of the recent change of =ivy= / =counsel= / =swiper=, and the author has not merged [[https://github.com/momomo5717/avy-migemo/pull/8][a pull request]].
 Therefore, the user needs to designate a forked version.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package avy-migemo
     :straight (avy (avy-migemo :type git :host github :repo "tam17aki/avy-migemo"))
     :config
@@ -758,8 +758,17 @@ Therefore, the user needs to designate a forked version.
     )
 #+end_src
 
+* smex
+=[[https://github.com/nonsequitur/smex][smex]]= is an enhancement of ~M-x~.
+I use it only because it can deal with the history of =counsel-M-x=.
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package smex
+    :straight t)
+#+end_src
+
 * yasnippet
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package yasnippet
     :straight (yasnippet yasnippet-snippets)
     :diminish yas-minor-mode
@@ -777,7 +786,7 @@ Therefore, the user needs to designate a forked version.
 Sometimes, we forget what we have to do, lose our faith, and become jerks.
 Quotes from giants remind us our goal.
 I owe this code to [[http://futurismo.biz/archives/5938][this page]].
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (setq cookie-file "~/Dropbox/Emacs/policy.txt")
   (global-set-key (kbd "C-x C-,") 'cookie)
 #+END_SRC
