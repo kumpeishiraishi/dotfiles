@@ -78,6 +78,11 @@ Schoenholtz
 Sastry
 Falk
 Bouchbinder
+Tanguy
+Jin
+Yuliang
+Lanczos
+Arnoldi
 Gerrard
 Tononi
 Frusciante
@@ -97,6 +102,7 @@ Petzl
 Bool
 Haskell
 LAPACK
+ARPACK
 hoge
 GHCi
 CDs
@@ -173,6 +179,7 @@ asphericities
 frictionless
 ellipticity
 asphericity
+axisymmetric
 isostatic
 hyperstatic
 hypostatic
@@ -210,13 +217,16 @@ virial
 orientational
 rheology
 athermal
+monatomic
 BCAA
+CSR
 DOF
 DOFs
 RFOT
 VDOS
 EPM
 STZ
+BKS
 PRL
 PNAS
 PRB
