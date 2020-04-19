@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2020/01/08
+#+DATE: 2020/04/19
 
 This is my Emacs configurations.
 
@@ -333,10 +333,14 @@ Various key bindings
     :straight t
     :diminish
     :bind (("M-n" . flycheck-next-error)
-	   ("M-p" . flycheck-previous-error))
+           ("M-p" . flycheck-previous-error))
     :hook
     (((c++-mode python-mode rust-mode) . flycheck-mode)
      (c++-mode . (lambda () (setq flycheck-clang-language-standard "c++14"))))
+    :config
+    (setq flycheck-clang-include-path (list "/usr/local/opt/llvm/include/"
+                                            "/usr/local/include/eigen-3.3.7/"
+                                            "/usr/local/include/spectra-0.8.1/include/"))
     )
 #+END_SRC
 
@@ -371,15 +375,15 @@ When variable ~company-selection-wrap-around~ is ~t~, the cursor goes back to to
     :init
     (global-company-mode)
     :bind (:map company-active-map
-		("M-n" . nil)
-		("M-p" . nil)
-		("C-n" . company-select-next)
-		("C-p" . company-select-previous)
-		("C-h" . nil))
+                ("M-n" . nil)
+                ("M-p" . nil)
+                ("C-n" . company-select-next)
+                ("C-p" . company-select-previous)
+                ("C-h" . nil))
     :config
     (setq company-idle-delay 0
-	  company-minimum-prefix-length 2
-	  company-selection-wrap-around t)
+          company-minimum-prefix-length 2
+          company-selection-wrap-around t)
     )
 #+END_SRC
 
@@ -389,28 +393,45 @@ Default indent for C++ is ~4~ for me.
   (use-package cc-mode
     :init
     (add-hook 'c++-mode-hook
-          (lambda ()
-            (c-set-style "stroustrup")
-            (setq-default c-basic-offset 4
-                          tab-width 4
-                          indent-tabs-mode nil)
-            )
-          )
+              (lambda ()
+                (c-set-style "stroustrup")
+                (setq-default c-basic-offset 4
+                              tab-width 4
+                              indent-tabs-mode nil)
+                )
+              )
     :bind ("C-c a" . align)
     )
 #+END_SRC
 
+* irony
 =irony= is a minor mode for C/C++ completion.
+
+TODO: Because =irony= does not recognize 'self-added' include files (such as =Eigen=), I cannot get completions of the related codes. Fix this.
+
+Note that =flycheck= do recognize these include files because ~flycheck-clang-include-path~ is properly configured.
 #+begin_src emacs-lisp :tangle yes
   (use-package irony
     :straight (irony company-irony)
     :diminish
     :hook (((c-mode c++-mode) . irony-mode)
-	   (irony-mode . irony-cdb-autosetup-compile-options))
+           (irony-mode . irony-cdb-autosetup-compile-options))
     :custom
     (add-to-list 'company-backends 'company-irony)
-    (irony-additional-clang-options '("-std=c++11")))
+    (irony-additional-clang-options '("-std=c++17"))
+    )
 #+END_SRC
+
+=flycheck-irony= offers an =irony=-backend for =flycheck= mode.
+The following should work, but not for my environment, and I don't have time to figure out this conundrum right now.
+#+begin_src emacs-lisp :tangle yes
+;;  (use-package flycheck-irony
+;;    :straight t
+;;    :after (flycheck)
+;;    :config
+;;    (add-hook 'flycheck-mode-hook #'flycheck-irony-setup)
+;;    )
+#+end_src
 
 * Rust
 #+begin_src emacs-lisp :tangle yes
@@ -783,6 +804,7 @@ I use it only because it can deal with the history of =counsel-M-x=.
 #+END_SRC
 
 * misc
+** quotes
 Sometimes, we forget what we have to do, lose our faith, and become jerks.
 Quotes from giants remind us our goal.
 I owe this code to [[http://futurismo.biz/archives/5938][this page]].
@@ -790,3 +812,9 @@ I owe this code to [[http://futurismo.biz/archives/5938][this page]].
   (setq cookie-file "~/Dropbox/Emacs/policy.txt")
   (global-set-key (kbd "C-x C-,") 'cookie)
 #+END_SRC
+
+** Music playback
+#+begin_src emacs-lisp :tangle yes
+  (use-package vlc
+    :straight t)
+#+end_src
