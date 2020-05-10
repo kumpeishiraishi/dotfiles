@@ -62,6 +62,7 @@ Harrowell
 Widmer
 Hernan
 Makse
+Baule
 Donev
 Torquato
 Kadanoff
@@ -177,10 +178,12 @@ bidisperse
 monodisperse
 aspherical
 asphericities
+asphericity
 frictionless
 ellipticity
-asphericity
 axisymmetric
+spherocylinder
+spherocylinders
 isostatic
 hyperstatic
 hypostatic
@@ -199,9 +202,12 @@ phonons
 gapless
 configurational
 nonspherical
+anisotropic
 orthonormal
 orthonormalized
 quasilocalized
+anharmonic
+anharmonicity
 nonmonotonic
 interparticle
 calorimetry

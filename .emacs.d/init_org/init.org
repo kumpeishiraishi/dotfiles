@@ -99,8 +99,8 @@ Window and color settings.
 #+begin_src emacs-lisp :tangle yes
   (when window-system
     (set-frame-parameter nil 'fullscreen 'fullboth)
-    (set-background-color "Black")
-    (set-foreground-color "White")
+    (set-background-color "#0a0a0a")
+    (set-foreground-color "#eaeaea")
     (set-cursor-color "Green"))
 #+END_SRC
 

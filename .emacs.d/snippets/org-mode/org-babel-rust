@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: org-babel-rust
+# key: rs_
+# --
+#+begin_src rust
+$0
+#+end_src
