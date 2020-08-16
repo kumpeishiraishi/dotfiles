@@ -157,3 +157,6 @@ case ${OSTYPE} in
         alias ls='ls -F --color=auto'
         ;;
 esac
+
+export PATH=$HOME/.cargo/bin:/usr/local/bin:/sbin:/Library/TeX/texbin:/usr/sbin:/usr/local/opt/llvm/bin:$PATH
+export PATH=/usr/bin:$PATH
