@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2020/04/19
+#+DATE: 2020/08/16
 
 This is my Emacs configurations.
 
@@ -43,7 +43,7 @@ But I prefer not to do that for consistency (I might change my mind).
 
 * General settings
 #+begin_src emacs-lisp :tangle yes
-  (require 'cl)
+  (require 'cl-lib)
   (setq make-backup-files nil)
   (fset 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
@@ -213,7 +213,7 @@ Abbreviations for each mode.
       (markdown-mode . "Md")))
   (defun clean-mode-line ()
     (interactive)
-    (loop for (mode . mode-str) in mode-line-cleaner-alist
+    (cl-loop for (mode . mode-str) in mode-line-cleaner-alist
           do
           (let ((old-mode-str (cdr (assq mode minor-mode-alist))))
             (when old-mode-str
@@ -600,18 +600,19 @@ Note that it may requires =cargo-script= (run ~cargo install cargo-script~ to in
   (use-package dired
     :straight nil
     :bind (:map dired-mode-map
-                ("h" . nil)
-                ("C-M-p" . nil))
+		("h" . nil)
+		("C-M-p" . nil)
+		("D" . nil))
     :config
     (setq delete-by-moving-to-trash t
-          trash-directory "~/.Trash"
-          dired-recursive-copies 'always
-          dired-recursive-deletes 'always
-          dired-isearch-filenames t
-          dired-dwim-target t
-          dired-listing-switches (purecopy "-alh"))
+	  trash-directory "~/.Trash"
+	  dired-recursive-copies 'always
+	  dired-recursive-deletes 'always
+	  dired-isearch-filenames t
+	  dired-dwim-target t
+	  dired-listing-switches (purecopy "-alh"))
     (eval-after-load "dired" '(progn
-                                (define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode)))
+				(define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode)))
     )
 #+END_SRC
 
@@ -637,22 +638,22 @@ Thanks to [[http://emacs.rubikitch.com/google-translate/][rubikitch]].
     "regionか、現在のセンテンスを言語自動判別でGoogle翻訳する。"
     (interactive)
     (setq string
-          (cond ((stringp string) string)
-                (current-prefix-arg
-                 (read-string "Google Translate: "))
-                ((use-region-p)
-                 (buffer-substring (region-beginning) (region-end)))
-                (t
-                 (save-excursion
-                   (let (s)
-                     (forward-char 1)
-                     (backward-sentence)
-                     (setq s (point))
-                     (forward-sentence)
-                     (buffer-substring s (point)))))))
+	  (cond ((stringp string) string)
+		(current-prefix-arg
+		 (read-string "Google Translate: "))
+		((use-region-p)
+		 (buffer-substring (region-beginning) (region-end)))
+		(t
+		 (save-excursion
+		   (let (s)
+		     (forward-char 1)
+		     (backward-sentence)
+		     (setq s (point))
+		     (forward-sentence)
+		     (buffer-substring s (point)))))))
     (let* ((asciip (string-match
-                    (format "\\`[%s]+\\'" google-translate-english-chars)
-                    string)))
+		    (format "\\`[%s]+\\'" google-translate-english-chars)
+		    string)))
       (run-at-time 0.1 nil 'deactivate-mark)
       (google-translate-translate
        (if asciip "en" "ja")
