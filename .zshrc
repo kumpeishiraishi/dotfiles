@@ -158,5 +158,11 @@ case ${OSTYPE} in
         ;;
 esac
 
-export PATH=$HOME/.cargo/bin:/usr/local/bin:/sbin:/Library/TeX/texbin:/usr/sbin:/usr/local/opt/llvm/bin:$PATH
+export PATH=$HOME/.cargo/bin:/usr/local/bin:/sbin:/Library/TeX/texbin:/usr/sbin:$PATH
 export PATH=/usr/bin:$PATH
+
+function llvm (){
+    export PATH="/usr/local/opt/llvm/bin:$PATH"
+    export LDFLAGS="-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
+    unset -f llvm
+}
