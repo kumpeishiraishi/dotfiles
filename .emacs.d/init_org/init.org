@@ -1,154 +1,153 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2020/08/16
+#+DATE: 2020/09/21
 
 This is my Emacs configurations.
 
 * Packages
 Bootstrap =straight.el=.
 #+begin_src emacs-lisp :tangle yes
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-	(bootstrap-version 5))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-	  (url-retrieve-synchronously
-	   "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-	   'silent 'inhibit-cookies)
-	(goto-char (point-max))
-	(eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+	(url-retrieve-synchronously
+	 "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+	 'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 #+END_SRC
 
 Install =use-package=, which I use to write package settings.
 You can set ~straight-use-package-by-default~ to a non-nil value to integrate =straight.el= and =use-package=.
 But I prefer not to do that for consistency (I might change my mind).
 #+begin_src emacs-lisp :tangle yes
-  (straight-use-package 'use-package)
+(straight-use-package 'use-package)
 #+END_SRC
 
 ~:diminish~ keyword requires =diminish= package.
 #+begin_src emacs-lisp :tangle yes
-  (use-package diminish
-    :straight t)
+(use-package diminish
+  :straight t)
 #+END_SRC
 
 ~:bind~ keyword requires =bind-key= package.
 #+begin_src emacs-lisp :tangle yes
-  (use-package bind-key
-    :straight t)
+(use-package bind-key
+  :straight t)
 #+END_SRC
 
 * General settings
 #+begin_src emacs-lisp :tangle yes
-  (require 'cl-lib)
-  (setq make-backup-files nil)
-  (fset 'yes-or-no-p 'y-or-n-p)
+(require 'cl-lib)
+(setq make-backup-files nil)
+(fset 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
 Language environment, text encoding etc.
 #+begin_src emacs-lisp :tangle yes
-  (set-language-environment "Japanese")
-  (setenv "LANG" "en_US.UTF-8")
-  (prefer-coding-system 'utf-8)
-  (setq coding-system-for-read 'utf-8)
-  (setq coding-system-for-write 'utf-8)
-  ;; EmacsとIMEの問題は、SKKで入力することにしたので、一応解決。Emacsでは常に英数入力という制御ができれば嬉しいが。（2017/01/06）
-  ;; emacs-24.5-inline.patchを当ててHomebrewからインストールして可能になった、日本語関係の設定（起動時、ミニバッファ、isearch/migemoで英数）
-  ;; (setq default-input-method "MacOSX")でIME毎カーソル色変更などは出来なかった（未解決2016/03/28）
-  ;; 下記のIME関係は、インラインパッチをあてたEmacsの全画面表示時に、日本語入力が一文字しか出来ないという問題のため、棚上げ（2016/03/28）
-  ;; (add-hook 'after-init-hook 'mac-change-language-to-us)
-  ;; (add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
-  ;; (add-hook 'isearch-mode-hook 'mac-change-language-to-us)
+(set-language-environment "Japanese")
+(setenv "LANG" "en_US.UTF-8")
+(prefer-coding-system 'utf-8)
+(setq coding-system-for-read 'utf-8)
+(setq coding-system-for-write 'utf-8)
+;; EmacsとIMEの問題は、SKKで入力することにしたので、一応解決。Emacsでは常に英数入力という制御ができれば嬉しいが。（2017/01/06）
+;; emacs-24.5-inline.patchを当ててHomebrewからインストールして可能になった、日本語関係の設定（起動時、ミニバッファ、isearch/migemoで英数）
+;; (setq default-input-method "MacOSX")でIME毎カーソル色変更などは出来なかった（未解決2016/03/28）
+;; 下記のIME関係は、インラインパッチをあてたEmacsの全画面表示時に、日本語入力が一文字しか出来ないという問題のため、棚上げ（2016/03/28）
+;; (add-hook 'after-init-hook 'mac-change-language-to-us)
+;; (add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
+;; (add-hook 'isearch-mode-hook 'mac-change-language-to-us)
 #+END_SRC
 
 =exec-path-from-shell= enable us to use shell PATH in Emacs.
 #+begin_src emacs-lisp :tangle yes
-  (use-package exec-path-from-shell
-    :straight t
-    :init
-    (exec-path-from-shell-initialize)
-    )
+(use-package exec-path-from-shell
+  :straight t
+  :init
+  (exec-path-from-shell-initialize))
 #+END_SRC
 
 * Display
 ** General
 Do not show tool bar, scroll bar, etc.
 #+begin_src emacs-lisp :tangle yes
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (menu-bar-mode -1)
-  (setq ring-bell-function 'ignore)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(menu-bar-mode -1)
+(setq ring-bell-function 'ignore)
 #+END_SRC
 
 To display line numbers without =linum-mode=, we should use ~global-display-line-numbers-mode~.
 This feature is supported by Emacs from version 26.
 #+begin_src emacs-lisp :tangle yes
-  (if (version<= "26" emacs-version)
-      (global-display-line-numbers-mode 1))
+(if (version<= "26" emacs-version)
+    (global-display-line-numbers-mode 1))
 #+END_SRC
 
 Parens
 #+begin_src emacs-lisp :tangle yes
-  (show-paren-mode 1)
+(show-paren-mode 1)
 #+END_SRC
 
 Window and color settings.
 #+begin_src emacs-lisp :tangle yes
-  (when window-system
-    (set-frame-parameter nil 'fullscreen 'fullboth)
-    (set-background-color "#0a0a0a")
-    (set-foreground-color "#eaeaea")
-    (set-cursor-color "Green"))
+(when window-system
+  (set-frame-parameter nil 'fullscreen 'fullboth)
+  (set-background-color "#0a0a0a")
+  (set-foreground-color "#eaeaea")
+  (set-cursor-color "Green"))
 #+END_SRC
 
 Initial screen, message, major mode, directory.
 #+begin_src emacs-lisp :tangle yes
-  (setq inhibit-splash-screen t)
-  (setq initial-scratch-message nil)
-  (setq default-directory "~/Dropbox/")
+(setq inhibit-splash-screen t)
+(setq initial-scratch-message nil)
+(setq default-directory "~/Dropbox/")
 #+END_SRC
 
 Do not delete =*scratch*= buffer (thanks to [[https://github.com/uwabami/emacs][this repository]]).
 #+begin_src emacs-lisp :tangle yes
-  (defun my:make-scratch (&optional arg)
-    (interactive)
-    (progn
-      ;; "*scratch*" を作成して buffer-list に放り込む
-      (set-buffer (get-buffer-create "*scratch*"))
-      (funcall initial-major-mode)
-      (erase-buffer)
-      (when (and initial-scratch-message (not inhibit-startup-message))
-        (insert initial-scratch-message))
-      (or arg
-          (progn
-            (setq arg 0)
-            (switch-to-buffer "*scratch*")))
-      (cond ((= arg 0) (message "*scratch* is cleared up."))
-            ((= arg 1) (message "another *scratch* is created")))))
-  (defun my:buffer-name-list ()
-    (mapcar (function buffer-name) (buffer-list)))
-  (add-hook 'kill-buffer-query-functions
-            ;; *scratch* バッファで kill-buffer したら内容を消去するだけにする
-            (function (lambda ()
-                        (if (string= "*scratch*" (buffer-name))
-                            (progn (my:make-scratch 0) nil)
-                          t))))
-  (add-hook 'after-save-hook
-            ;; *scratch* バッファの内容を保存したら
-            ;; *scratch* バッファを新しく作る.
-            (function
-             (lambda ()
-               (unless (member "*scratch*" (my:buffer-name-list))
-                 (my:make-scratch 1)))))
+(defun my:make-scratch (&optional arg)
+  (interactive)
+  (progn
+    ;; "*scratch*" を作成して buffer-list に放り込む
+    (set-buffer (get-buffer-create "*scratch*"))
+    (funcall initial-major-mode)
+    (erase-buffer)
+    (when (and initial-scratch-message (not inhibit-startup-message))
+      (insert initial-scratch-message))
+    (or arg
+        (progn
+          (setq arg 0)
+          (switch-to-buffer "*scratch*")))
+    (cond ((= arg 0) (message "*scratch* is cleared up."))
+          ((= arg 1) (message "another *scratch* is created")))))
+(defun my:buffer-name-list ()
+  (mapcar (function buffer-name) (buffer-list)))
+(add-hook 'kill-buffer-query-functions
+          ;; *scratch* バッファで kill-buffer したら内容を消去するだけにする
+          (function (lambda ()
+                      (if (string= "*scratch*" (buffer-name))
+                          (progn (my:make-scratch 0) nil)
+                        t))))
+(add-hook 'after-save-hook
+          ;; *scratch* バッファの内容を保存したら
+          ;; *scratch* バッファを新しく作る.
+          (function
+           (lambda ()
+             (unless (member "*scratch*" (my:buffer-name-list))
+               (my:make-scratch 1)))))
 #+END_SRC
 
 White space
 #+begin_src emacs-lisp :tangle yes
-  (use-package whitespace
-    :straight t)
+(use-package whitespace
+  :straight t)
 #+END_SRC
 
 ** Fonts
@@ -160,68 +159,67 @@ There is a option [[https://github.com/adobe-fonts/source-han-code-jp][Source Ha
 TODO: ヒラギノとSource Code Proでキレイに文字幅1:2にしたい。上の安直な方法でヒラギノを1.25倍にすると、幅は良いがイビツになる。（2017/01/06）
 
 #+begin_src emacs-lisp :tangle yes
-  (set-face-attribute 'default nil
-		      :family "Source Code Pro"
-		      :height 125)
-  (if (equal system-type 'darwin)
-      (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Hiragino Kaku Gothic ProN"))
-    (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Source Han Sans")))
-  (setq face-font-rescale-alist '(("Hiragino.*" . 1)))
+(set-face-attribute 'default nil
+		    :family "Source Code Pro"
+		    :height 125)
+(if (equal system-type 'darwin)
+    (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Hiragino Kaku Gothic ProN"))
+  (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Source Han Sans")))
+(setq face-font-rescale-alist '(("Hiragino.*" . 1)))
 #+END_SRC
 
 ** Mode line
 Do not display line number in a mode line.
 #+begin_src emacs-lisp :tangle yes
-  (line-number-mode -1)
+(line-number-mode -1)
 #+END_SRC
 
 Time and date in a mode line.
 #+begin_src emacs-lisp :tangle yes
-  (setq display-time-day-and-date t)
-  ;;(setq display-time-string-forms
-  ;;      '((format "%s %s %s %s:%s:%s %s"
-  ;;              dayname monthname day 12-hours minutes seconds am-pm
-  ;;              )))
-  (display-time)
+(setq display-time-day-and-date t)
+;;(setq display-time-string-forms
+;;      '((format "%s %s %s %s:%s:%s %s"
+;;              dayname monthname day 12-hours minutes seconds am-pm)))
+(display-time)
 #+END_SRC
 
 Show battery percentage.
 #+begin_src emacs-lisp :tangle yes
-  (display-battery-mode 1)
+(display-battery-mode 1)
 #+END_SRC
 
 Colors.
 #+begin_src emacs-lisp :tangle yes
-  (set-face-foreground 'mode-line "blue1")
-  (set-face-background 'mode-line "gray90")
-  (setq-default mode-line-buffer-identification
-                `(,(propertize "%b" 'face '(:foreground "maroon2"))))
+(set-face-foreground 'mode-line "blue1")
+(set-face-background 'mode-line "gray90")
+(setq-default mode-line-buffer-identification
+              `(,(propertize "%b" 'face '(:foreground "maroon2"))))
 #+END_SRC
 
 Abbreviations for each mode.
 #+begin_src emacs-lisp :tangle yes
-  (defvar mode-line-cleaner-alist
-    '(
-      (abbrev-mode . "")
-      ;; Major modes
-      (lisp-interaction-mode . "Li")
-      (python-mode . "Py")
-      (haskell-mode . "Hs")
-      (emacs-lisp-mode . "El")
-      (c++-mode . "C++")
-      (c-mode . "C")
-      (markdown-mode . "Md")))
-  (defun clean-mode-line ()
-    (interactive)
-    (cl-loop for (mode . mode-str) in mode-line-cleaner-alist
-          do
-          (let ((old-mode-str (cdr (assq mode minor-mode-alist))))
-            (when old-mode-str
-              (setcar old-mode-str mode-str))
-            ;; major mode
-            (when (eq mode major-mode)
-              (setq mode-name mode-str)))))
-  (add-hook 'after-change-major-mode-hook 'clean-mode-line)
+(defvar mode-line-cleaner-alist
+  '(
+    (abbrev-mode . "")
+    ;; Major modes
+    (lisp-interaction-mode . "Li")
+    (python-mode . "Py")
+    (haskell-mode . "Hs")
+    (emacs-lisp-mode . "El")
+    (c++-mode . "C++")
+    (c-mode . "C")
+    (markdown-mode . "Md")))
+(defun clean-mode-line ()
+  (interactive)
+  (cl-loop for (mode . mode-str) in mode-line-cleaner-alist
+           do
+           (let ((old-mode-str (cdr (assq mode minor-mode-alist))))
+             (when old-mode-str
+               (setcar old-mode-str mode-str))
+             ;; major mode
+             (when (eq mode major-mode)
+               (setq mode-name mode-str)))))
+(add-hook 'after-change-major-mode-hook 'clean-mode-line)
 #+END_SRC
 
 * SKK
@@ -230,131 +228,128 @@ I use =DDSKK= for Japanese writing.
 
 ** SKK Basics
 #+begin_src emacs-lisp :tangle yes
-  (let ((default-directory (expand-file-name "~/Dropbox/Emacs/skk/skk/")))
-    (add-to-list 'load-path default-directory)
-    (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
-        (normal-top-level-add-subdirs-to-load-path)))
+(let ((default-directory (expand-file-name "~/Dropbox/Emacs/skk/skk/")))
+  (add-to-list 'load-path default-directory)
+  (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
+      (normal-top-level-add-subdirs-to-load-path)))
 
-  (require 'skk-autoloads)
-  (require 'skk-study)
-  (global-set-key "\C-\\" 'skk-mode)
+(require 'skk-autoloads)
+(require 'skk-study)
+(global-set-key "\C-\\" 'skk-mode)
 #+END_SRC
 
 ** SKK dictionaries
 #+begin_src emacs-lisp :tangle yes
-  (setq skk-jisyo-code 'utf-8)
-  (setq skk-isearch-start-mode 'utf-8);; migemoではSKK不要
-  ;; (setq skk-user-directory "~/Dropbox/Emacs/skk") これでは以下のように、ファイル群を望んだフォルダ配下に保存できない（2016/05/02）
-  (setq skk-jisyo "~/Dropbox/Emacs/skk/jisyo"
-        skk-backup-jisyo "~/Dropbox/Emacs/skk/jisyo.bak"
-        skk-record-file "~/Dropbox/Emacs/skk/record"
-        skk-study-file "~/Dropbox/Emacs/skk/study"
-        skk-study-backup-file "~/Dropbox/Emacs/skk/study.bak")
-  (setq skk-large-jisyo "~/Dropbox/Emacs/skk/SKK-JISYO.L")
-  (setq skk-extra-jisyo-file-list
-        (list
-         "~/Dropbox/Emacs/skk/SKK-JISYO.geo"
-         "~/Dropbox/Emacs/skk/SKK-JISYO.jinmei"
-         "~/Dropbox/Emacs/skk/SKK-JISYO.propernoun"
-         "~/Dropbox/Emacs/skk/SKK-JISYO.station"
-         "~/Dropbox/Emacs/skk/SKK-JISYO.itaiji"
-         "~/Dropbox/Emacs/skk/SKK-JISYO.fullname"
-         '("~/Dropbox/Emacs/skk/SKK-JISYO.JIS3_4" . euc-jisx0213)
-         ))
-  (setq skk-tut-file "~/Dropbox/Emacs/skk/skk/etc/SKK.tut")
+(setq skk-jisyo-code 'utf-8)
+(setq skk-isearch-start-mode 'utf-8);; migemoではSKK不要
+;; (setq skk-user-directory "~/Dropbox/Emacs/skk") これでは以下のように、ファイル群を望んだフォルダ配下に保存できない（2016/05/02）
+(setq skk-jisyo "~/Dropbox/Emacs/skk/jisyo"
+      skk-backup-jisyo "~/Dropbox/Emacs/skk/jisyo.bak"
+      skk-record-file "~/Dropbox/Emacs/skk/record"
+      skk-study-file "~/Dropbox/Emacs/skk/study"
+      skk-study-backup-file "~/Dropbox/Emacs/skk/study.bak")
+(setq skk-large-jisyo "~/Dropbox/Emacs/skk/SKK-JISYO.L")
+(setq skk-extra-jisyo-file-list
+      (list
+       "~/Dropbox/Emacs/skk/SKK-JISYO.geo"
+       "~/Dropbox/Emacs/skk/SKK-JISYO.jinmei"
+       "~/Dropbox/Emacs/skk/SKK-JISYO.propernoun"
+       "~/Dropbox/Emacs/skk/SKK-JISYO.station"
+       "~/Dropbox/Emacs/skk/SKK-JISYO.itaiji"
+       "~/Dropbox/Emacs/skk/SKK-JISYO.fullname"
+       '("~/Dropbox/Emacs/skk/SKK-JISYO.JIS3_4" . euc-jisx0213)))
+(setq skk-tut-file "~/Dropbox/Emacs/skk/skk/etc/SKK.tut")
 #+END_SRC
 
 ** SKK displays
 #+begin_src emacs-lisp :tangle yes
-  (setq skk-latin-mode-string "A"
-        skk-hiragana-mode-string "あ"
-        skk-katakana-mode-string "ア")
-  (when skk-use-color-cursor
-    (setq skk-cursor-default-color "Green"
-          skk-cursor-hiragana-color "Magenta"
-          skk-cursor-katakana-color "Cyan"
-          skk-cursor-abbrev-color "Royalblue"
-          skk-cursor-jisx0208-latin-color "Pink";; 全角英数
-          skk-cursor-latin-color "Green"))
+(setq skk-latin-mode-string "A"
+      skk-hiragana-mode-string "あ"
+      skk-katakana-mode-string "ア")
+(when skk-use-color-cursor
+  (setq skk-cursor-default-color "Green"
+        skk-cursor-hiragana-color "Magenta"
+        skk-cursor-katakana-color "Cyan"
+        skk-cursor-abbrev-color "Royalblue"
+        skk-cursor-jisx0208-latin-color "Pink";; 全角英数
+        skk-cursor-latin-color "Green"))
 #+END_SRC
 
 ** SKK misc
 Automatically insert corresponding paren.
 #+begin_src emacs-lisp :tangle yes
-  (setq skk-auto-insert-paren t)
+(setq skk-auto-insert-paren t)
 #+END_SRC
 
 Completion
 #+begin_src emacs-lisp :tangle yes
-  (setq skk-previous-candidate-key "x");; 前候補に戻るのはxだけ、C-pは使わない
-  (setq skk-dcomp-activate t);; 動的補完
-  ;;      skk-dcomp-multiple-activate t
-  ;;      skk-dcomp-multiple-rows 5);; 補完候補を複数表示させると表示が崩れるので、止め（2016/05/10）
-  (defadvice skk-j-mode-on (after skk-settings-for-dcomp activate)
-    (define-key skk-j-mode-map "\C-n" 'skk-comp-wrapper)
-    (define-key skk-j-mode-map "\C-p" 'skk-previous-comp-maybe))
-  (setq skk-show-annotation t)
+(setq skk-previous-candidate-key "x");; 前候補に戻るのはxだけ、C-pは使わない
+(setq skk-dcomp-activate t);; 動的補完
+;;      skk-dcomp-multiple-activate t
+;;      skk-dcomp-multiple-rows 5);; 補完候補を複数表示させると表示が崩れるので、止め（2016/05/10）
+(defadvice skk-j-mode-on (after skk-settings-for-dcomp activate)
+  (define-key skk-j-mode-map "\C-n" 'skk-comp-wrapper)
+  (define-key skk-j-mode-map "\C-p" 'skk-previous-comp-maybe))
+(setq skk-show-annotation t)
 #+END_SRC
 
 Some characters must be displayed in full-width letters.
 Also, I do not want to use TODAY function.
 #+begin_src emacs-lisp :tangle yes
-  (setq skk-rom-kana-rule-list
-        (append skk-rom-kana-rule-list
-                '(("！" nil "!")
-                  ("@" nil "@")
-                  )))
+(setq skk-rom-kana-rule-list
+      (append skk-rom-kana-rule-list
+              '(("！" nil "!")
+                ("@" nil "@"))))
 #+END_SRC
 
 * Key bindings
 When the window is split, use the super key and the arrow keys to switch windows.
 #+begin_src emacs-lisp :tangle yes
-  (windmove-default-keybindings 'super)
+(windmove-default-keybindings 'super)
 #+END_SRC
 
 Disable some default key bindings. I easily type these keys unintentionally :p
 #+begin_src emacs-lisp :tangle yes
-  (bind-keys ("C-M-p" .nil)
-             ("s-n" . nil)
-             ("M-ESC ESC" . nil)
-             ("C-z" . nil))
+(bind-keys ("C-M-p" .nil)
+           ("s-n" . nil)
+           ("M-ESC ESC" . nil)
+           ("C-z" . nil))
 #+END_SRC
 
 Various key bindings
 #+begin_src emacs-lisp :tangle yes
-  (bind-keys ("C-u" . undo)
-	     ("C-h" . delete-backward-char)
-	     ("C-c r" . replace-string))
+(bind-keys ("C-u" . undo)
+	   ("C-h" . delete-backward-char)
+	   ("C-c r" . replace-string))
 #+END_SRC
 
 * flycheck
 #+begin_src emacs-lisp :tangle yes
-  (use-package flycheck
-    :straight t
-    :diminish
-    :bind (("M-n" . flycheck-next-error)
-           ("M-p" . flycheck-previous-error))
-    :hook
-    (((c++-mode python-mode rust-mode) . flycheck-mode)
-     (c++-mode . (lambda () (setq flycheck-clang-language-standard "c++14"))))
-    :config
-    (setq flycheck-clang-include-path (list "/usr/local/opt/llvm/include/"
-                                            "/usr/local/include/eigen-3.3.7/"
-                                            "/usr/local/include/spectra-0.8.1/include/"))
-    )
+(use-package flycheck
+  :straight t
+  :diminish
+  :bind (("M-n" . flycheck-next-error)
+         ("M-p" . flycheck-previous-error))
+  :hook
+  (((c++-mode python-mode rust-mode) . flycheck-mode)
+   (c++-mode . (lambda () (setq flycheck-clang-language-standard "c++14"))))
+  :config
+  (setq flycheck-clang-include-path (list "/usr/local/opt/llvm/include/"
+                                          "/usr/local/include/eigen-3.3.7/"
+                                          "/usr/local/include/spectra-0.8.1/include/")))
 #+END_SRC
 
 * Spell check
 #+begin_src emacs-lisp :tangle yes
-  (use-package flyspell
-    :straight t
-    :diminish
-    :hook ((org-mode yatex-mode markdown-mode) . flyspell-mode)
-    :bind ([s-return] . ispell-word)
-    :config
-    (setq-default ispell-program-name "aspell")
-    (eval-after-load "ispell" '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")));; 日本語混じりでも有効に
-    )
+(use-package flyspell
+  :straight t
+  :diminish
+  :hook ((org-mode yatex-mode markdown-mode) . flyspell-mode)
+  :bind ([s-return] . ispell-word)
+  :config
+  (setq-default ispell-program-name "aspell")
+  (eval-after-load "ispell" '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")));; 日本語混じりでも有効に
+  )
 #+END_SRC
 
 * company
@@ -369,39 +364,35 @@ By default, it is ~4~.
 
 When variable ~company-selection-wrap-around~ is ~t~, the cursor goes back to top when it tries to go lower at the bottom of completions.
 #+begin_src emacs-lisp :tangle yes
-  (use-package company
-    :straight t
-    :diminish
-    :init
-    (global-company-mode)
-    :bind (:map company-active-map
-                ("M-n" . nil)
-                ("M-p" . nil)
-                ("C-n" . company-select-next)
-                ("C-p" . company-select-previous)
-                ("C-h" . nil))
-    :config
-    (setq company-idle-delay 0
-          company-minimum-prefix-length 2
-          company-selection-wrap-around t)
-    )
+(use-package company
+  :straight t
+  :diminish
+  :init
+  (global-company-mode)
+  :bind (:map company-active-map
+              ("M-n" . nil)
+              ("M-p" . nil)
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-previous)
+              ("C-h" . nil))
+  :config
+  (setq company-idle-delay 0
+        company-minimum-prefix-length 2
+        company-selection-wrap-around t))
 #+END_SRC
 
 * C++
 Default indent for C++ is ~4~ for me.
 #+begin_src emacs-lisp :tangle yes
-  (use-package cc-mode
-    :init
-    (add-hook 'c++-mode-hook
-              (lambda ()
-                (c-set-style "stroustrup")
-                (setq-default c-basic-offset 4
-                              tab-width 4
-                              indent-tabs-mode nil)
-                )
-              )
-    :bind ("C-c a" . align)
-    )
+(use-package cc-mode
+  :init
+  (add-hook 'c++-mode-hook
+            (lambda ()
+              (c-set-style "stroustrup")
+              (setq-default c-basic-offset 4
+                            tab-width 4
+                            indent-tabs-mode nil)))
+  :bind ("C-c a" . align))
 #+END_SRC
 
 * irony
@@ -411,32 +402,30 @@ TODO: Because =irony= does not recognize 'self-added' include files (such as =Ei
 
 Note that =flycheck= do recognize these include files because ~flycheck-clang-include-path~ is properly configured.
 #+begin_src emacs-lisp :tangle yes
-  (use-package irony
-    :straight (irony company-irony)
-    :diminish
-    :hook (((c-mode c++-mode) . irony-mode)
-           (irony-mode . irony-cdb-autosetup-compile-options))
-    :custom
-    (add-to-list 'company-backends 'company-irony)
-    (irony-additional-clang-options '("-std=c++17"))
-    )
+(use-package irony
+  :straight (irony company-irony)
+  :diminish
+  :hook (((c-mode c++-mode) . irony-mode)
+         (irony-mode . irony-cdb-autosetup-compile-options))
+  :custom
+  (add-to-list 'company-backends 'company-irony)
+  (irony-additional-clang-options '("-std=c++17")))
 #+END_SRC
 
 =flycheck-irony= offers an =irony=-backend for =flycheck= mode.
 The following should work, but not for my environment, and I don't have time to figure out this conundrum right now.
-#+begin_src emacs-lisp :tangle yes
-;;  (use-package flycheck-irony
-;;    :straight t
-;;    :after (flycheck)
-;;    :config
-;;    (add-hook 'flycheck-mode-hook #'flycheck-irony-setup)
-;;    )
+#+begin_src emacs-lisp :tangle no
+(use-package flycheck-irony
+  :straight t
+  :after (flycheck)
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 #+end_src
 
 * Rust
 #+begin_src emacs-lisp :tangle yes
-  (use-package rust-mode
-    :straight t)
+(use-package rust-mode
+  :straight t)
 #+END_SRC
 
 =racer.el= is a code completion mode for Rust in Emacs.
@@ -444,33 +433,32 @@ The following should work, but not for my environment, and I don't have time to 
 First of all, we need to install =Racer=.
 
 #+BEGIN_SRC shell
-  rustup toolchain add nightly
-  cargo +nightly install race
+rustup toolchain add nightly
+cargo +nightly install race
 #+END_SRC
 
 Then we move on to =racer.el=.
 
 #+begin_src emacs-lisp :tangle yes
-  (use-package racer
-    :straight t
-    :diminish
-    :hook (rust-mode . racer-mode))
+(use-package racer
+  :straight t
+  :diminish
+  :hook (rust-mode . racer-mode))
 #+END_SRC
 
 * Emacs Lisp
 #+begin_src emacs-lisp :tangle yes
-  (use-package emacs-lisp-mode
-    :straight nil
-    :bind (:map emacs-lisp-mode-map
-                ("C-j" . eval-print-last-sexp)))
+(use-package emacs-lisp-mode
+  :straight nil
+  :bind (:map emacs-lisp-mode-map
+              ("C-j" . eval-print-last-sexp)))
 #+END_SRC
 
 * JavaScript
 #+begin_src emacs-lisp :tangle yes
-  (use-package js
-    :straight json-mode
-    :hook (js-mode . (lambda () (setq js-indent-level 2)))
-    )
+(use-package js
+  :straight json-mode
+  :hook (js-mode . (lambda () (setq js-indent-level 2))))
 #+END_SRC
 
 * YaTeX
@@ -485,36 +473,32 @@ I use =YaTeX= to edit latex files for my articles, daily progress reports, prese
 - ~biber~ is a replacement software for ~bibtex~.
 
 #+begin_src emacs-lisp :tangle yes
-  (use-package yatex
-    :straight t
-    :mode ("\\.tex$" . yatex-mode)
-    :config
-    (setq YaTeX-kanji-code nil
-          YaTeX-japan nil
-          dvi2-command "open -a Preview"
-          tex-command "/Library/TeX/texbin/lualatex"
-          YaTeX-nervous nil
-          YaTeX-user-completion-table "~/dotfiles/.yatexrc"
-          bibtex-command "biber")
-    )
-  ;; skk対策
-  (add-hook 'skk-mode-hook
-            (lambda ()
-              (if (eq major-mode 'yatex-mode)
-                  (progn
-                    (define-key skk-j-mode-map "\\" 'self-insert-command)
-                    (define-key skk-j-mode-map "$" 'YaTeX-insert-dollar)
-                    ))
-              ))
+(use-package yatex
+  :straight t
+  :mode ("\\.tex$" . yatex-mode)
+  :config
+  (setq YaTeX-kanji-code nil
+        YaTeX-japan nil
+        dvi2-command "open -a Preview"
+        tex-command "/Library/TeX/texbin/lualatex"
+        YaTeX-nervous nil
+        YaTeX-user-completion-table "~/dotfiles/.yatexrc"
+        bibtex-command "biber"))
+;; skk対策
+(add-hook 'skk-mode-hook
+          (lambda ()
+            (if (eq major-mode 'yatex-mode)
+                (progn
+                  (define-key skk-j-mode-map "\\" 'self-insert-command)
+                  (define-key skk-j-mode-map "$" 'YaTeX-insert-dollar)))))
 #+END_SRC
 
 * Markdown
 #+begin_src emacs-lisp :tangle yes
-  (use-package markdown-mode
-    :straight t
-    :config
-    (setq markdown-command "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js")
-    )
+(use-package markdown-mode
+  :straight t
+  :config
+  (setq markdown-command "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js"))
 #+END_SRC
 
 * org-mode
@@ -522,74 +506,71 @@ TODO: org-clock, org-todo, etc
 
 ** org-mode in general
 #+begin_src emacs-lisp :tangle yes
-  (use-package org
-    :straight t
-    :init
-    (setq initial-major-mode 'org-mode)
-    :mode ("\\.txt\\'" . org-mode)
-    :config
-    (setq org-hide-leading-stars t;; 見出しの*は最小限に
-	  org-startup-truncated nil);; 画面端で改行
-    ;; org表示
-    (add-hook 'org-mode-hook 'turn-on-font-lock)
-    )
+(use-package org
+  :straight t
+  :init
+  (setq initial-major-mode 'org-mode)
+  :mode ("\\.txt\\'" . org-mode)
+  :config
+  (setq org-hide-leading-stars t;; 見出しの*は最小限に
+	org-startup-truncated nil);; 画面端で改行
+  ;; org表示
+  (add-hook 'org-mode-hook 'turn-on-font-lock))
 #+END_SRC
 
 ** org-babel
 Enable the execution of ~shell~ and ~python~ in org-mode code block.
 #+begin_src emacs-lisp :tangle yes
-  (use-package org
-    :config
-    (org-babel-do-load-languages 'org-babel-load-languages
-				 '((shell  . t)
-				   (python . t)))
-    (setq org-babel-python-command "python3")
-    )
+(use-package org
+  :config
+  (org-babel-do-load-languages 'org-babel-load-languages
+			       '((shell  . t)
+				 (python . t)))
+  (setq org-babel-python-command "python3")
+  (setq org-src-preserve-indentation t))
 #+END_SRC
 
 =ob-rust= offers Rust execution in =org-babel=.
 Note that it may requires =cargo-script= (run ~cargo install cargo-script~ to install it).
 #+begin_src emacs-lisp :tangle yes
-  (use-package ob-rust
-    :straight t)
+(use-package ob-rust
+  :straight t)
 #+END_SRC
 
 ** ox-pandoc
 #+begin_src emacs-lisp :tangle yes
-  (use-package ox-pandoc
-    :straight t
-    :config
-    (setq org-pandoc-options '((standalone . t)))
-  )
+(use-package ox-pandoc
+  :straight t
+  :config
+  (setq org-pandoc-options '((standalone . t))))
 #+END_SRC
 
 * csv mode
 #+begin_src emacs-lisp :tangle yes
-  (use-package csv-mode
-    :straight t)
+(use-package csv-mode
+  :straight t)
 #+END_SRC
 
 * migemo
 #+begin_src emacs-lisp :tangle yes
-  (use-package migemo
-    :straight t
-    :config
-    (setq migemo-command "cmigemo"
-          migemo-options '("-q" "--emacs")
-          migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict"
-          migemo-user-dictionary nil
-          migemo-regex-dictionary nil
-          migemo-coding-system 'utf-8-unix)
-    (load-library "migemo")
-    (migemo-init)
-    )
+(use-package migemo
+  :straight t
+  :config
+  (setq migemo-command "cmigemo"
+        migemo-options '("-q" "--emacs")
+        migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict"
+        migemo-user-dictionary nil
+        migemo-regex-dictionary nil
+        migemo-coding-system 'utf-8-unix)
+  (load-library "migemo")
+  (migemo-init))
 #+END_SRC
 
 * tramp
 #+begin_src emacs-lisp :tangle yes
-  (use-package tramp
-    :config
-    (setq tramp-default-method "ssh"))
+(use-package tramp
+  :config
+  (setq tramp-default-method "ssh"))
 #+END_SRC
 
 * dired
@@ -597,83 +578,81 @@ Note that it may requires =cargo-script= (run ~cargo install cargo-script~ to in
 ~ls~ option for dired is ~-alh~.
 
 #+begin_src emacs-lisp :tangle yes
-  (use-package dired
-    :straight nil
-    :bind (:map dired-mode-map
-		("h" . nil)
-		("C-M-p" . nil)
-		("D" . nil))
-    :config
-    (setq delete-by-moving-to-trash t
-	  trash-directory "~/.Trash"
-	  dired-recursive-copies 'always
-	  dired-recursive-deletes 'always
-	  dired-isearch-filenames t
-	  dired-dwim-target t
-	  dired-listing-switches (purecopy "-alh"))
-    (eval-after-load "dired" '(progn
-				(define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode)))
-    )
+(use-package dired
+  :straight nil
+  :bind (:map dired-mode-map
+	      ("h" . nil)
+	      ("C-M-p" . nil)
+	      ("D" . nil))
+  :config
+  (setq delete-by-moving-to-trash t
+	trash-directory "~/.Trash"
+	dired-recursive-copies 'always
+	dired-recursive-deletes 'always
+	dired-isearch-filenames t
+	dired-dwim-target t
+	dired-listing-switches (purecopy "-alh"))
+  (eval-after-load "dired" '(progn
+			      (define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode))))
 #+END_SRC
 
 * undo-tree
 #+begin_src emacs-lisp :tangle yes
-  (use-package undo-tree
-    :straight t
-    :diminish
-    :bind ("M-/" . undo-tree-redo)
-    :init
-    (global-undo-tree-mode)
-    )
+(use-package undo-tree
+  :straight t
+  :diminish
+  :bind ("M-/" . undo-tree-redo)
+  :init
+  (global-undo-tree-mode))
 #+END_SRC
 
 * google-translate
 Thanks to [[http://emacs.rubikitch.com/google-translate/][rubikitch]].
 #+begin_src emacs-lisp :tangle yes
-  (use-package google-translate
-    :straight t)
-  (defvar google-translate-english-chars "[:ascii:]’“”–"
-    "これらの文字が含まれているときは英語とみなす")
-  (defun google-translate-enja-or-jaen (&optional string)
-    "regionか、現在のセンテンスを言語自動判別でGoogle翻訳する。"
-    (interactive)
-    (setq string
-	  (cond ((stringp string) string)
-		(current-prefix-arg
-		 (read-string "Google Translate: "))
-		((use-region-p)
-		 (buffer-substring (region-beginning) (region-end)))
-		(t
-		 (save-excursion
-		   (let (s)
-		     (forward-char 1)
-		     (backward-sentence)
-		     (setq s (point))
-		     (forward-sentence)
-		     (buffer-substring s (point)))))))
-    (let* ((asciip (string-match
-		    (format "\\`[%s]+\\'" google-translate-english-chars)
-		    string)))
-      (run-at-time 0.1 nil 'deactivate-mark)
-      (google-translate-translate
-       (if asciip "en" "ja")
-       (if asciip "ja" "en")
-       string)))
-  (global-set-key (kbd "C-x t") 'google-translate-enja-or-jaen)
+(use-package google-translate
+  :straight t)
+(defvar google-translate-english-chars "[:ascii:]’“”–"
+  "これらの文字が含まれているときは英語とみなす")
+(defun google-translate-enja-or-jaen (&optional string)
+  "regionか、現在のセンテンスを言語自動判別でGoogle翻訳する。"
+  (interactive)
+  (setq string
+	(cond ((stringp string) string)
+	      (current-prefix-arg
+	       (read-string "Google Translate: "))
+	      ((use-region-p)
+	       (buffer-substring (region-beginning) (region-end)))
+	      (t
+	       (save-excursion
+		 (let (s)
+		   (forward-char 1)
+		   (backward-sentence)
+		   (setq s (point))
+		   (forward-sentence)
+		   (buffer-substring s (point)))))))
+  (let* ((asciip (string-match
+		  (format "\\`[%s]+\\'" google-translate-english-chars)
+		  string)))
+    (run-at-time 0.1 nil 'deactivate-mark)
+    (google-translate-translate
+     (if asciip "en" "ja")
+     (if asciip "ja" "en")
+     string)))
+(global-set-key (kbd "C-x t") 'google-translate-enja-or-jaen)
 #+END_SRC
 
 * Mail
 #+begin_src emacs-lisp :tangle yes
-  (setq user-mail-address "kumpeishiraishi@gmail.com"
-        user-full-name "Kumpei Shiraishi")
-  (setq gnus-select-method
-        '(nnimap "gmail"
-                 (nnimap-address "imap.gmail.com")
-                 (nnimap-server-port "imaps")
-                 (nnimap-stream ssl)))
-  (setq smtpmail-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-service 587
-        gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+(setq user-mail-address "kumpeishiraishi@gmail.com"
+      user-full-name "Kumpei Shiraishi")
+(setq gnus-select-method
+      '(nnimap "gmail"
+               (nnimap-address "imap.gmail.com")
+               (nnimap-server-port "imaps")
+               (nnimap-stream ssl)))
+(setq smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587
+      gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
 #+END_SRC
 
 * elscreen
@@ -681,15 +660,15 @@ Below settings prevent showing [X], [<->], tabs.
 Prefix key is ~C-z~.
 
 #+begin_src emacs-lisp :tangle yes
-  (use-package elscreen
-    :straight t
-    :init
-    (elscreen-start)
-    :config
-    (setq elscreen-prefix-key "\C-z"
-          elscreen-tab-display-kill-screen nil
-          elscreen-tab-display-control nil
-          elscreen-display-tab nil))
+(use-package elscreen
+  :straight t
+  :init
+  (elscreen-start)
+  :config
+  (setq elscreen-prefix-key "\C-z"
+        elscreen-tab-display-kill-screen nil
+        elscreen-tab-display-control nil
+        elscreen-display-tab nil))
 #+END_SRC
 
 * Eshell
@@ -701,12 +680,12 @@ I mainly use =zsh=, and I only use Eshell for compiling small codes and testing 
 So, I just need basic settings, like tab completion (=ivy= offers ~completion-at-point~ function).
 
 #+begin_src emacs-lisp :tangle yes
-  (use-package eshell
-    :straight nil
-    :hook (eshell-mode . (lambda () (define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)))
-    :config
-    (setq eshell-cmpl-ignore-case t
-	  eshell-hist-ignoredups t))
+(use-package eshell
+  :straight nil
+  :hook (eshell-mode . (lambda () (define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)))
+  :config
+  (setq eshell-cmpl-ignore-case t
+	eshell-hist-ignoredups t))
 #+END_SRC
 
 * eww
@@ -717,53 +696,52 @@ If DuckDuckGo is not satisfactory, remove comment out below and use Google.
 
 Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this page]]).
 #+begin_src emacs-lisp :tangle yes
-  (defvar eww-disable-colorize t)
-  (defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
-    (unless eww-disable-colorize
-      (funcall orig start end fg)))
-  (advice-add 'shr-colorize-region :around 'shr-colorize-region--disable)
-  (advice-add 'eww-colorize-region :around 'shr-colorize-region--disable)
-  (defun eww-disable-color ()
-    "eww で文字色を反映させない"
-    (interactive)
-    (setq-local eww-disable-colorize t)
-    (eww-reload))
-  (defun eww-enable-color ()
-    "eww で文字色を反映させる"
-    (interactive)
-    (setq-local eww-disable-colorize nil)
-    (eww-reload))
+(defvar eww-disable-colorize t)
+(defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
+  (unless eww-disable-colorize
+    (funcall orig start end fg)))
+(advice-add 'shr-colorize-region :around 'shr-colorize-region--disable)
+(advice-add 'eww-colorize-region :around 'shr-colorize-region--disable)
+(defun eww-disable-color ()
+  "eww で文字色を反映させない"
+  (interactive)
+  (setq-local eww-disable-colorize t)
+  (eww-reload))
+(defun eww-enable-color ()
+  "eww で文字色を反映させる"
+  (interactive)
+  (setq-local eww-disable-colorize nil)
+  (eww-reload))
 #+END_SRC
 
 * magit
 #+begin_src emacs-lisp :tangle yes
-  (use-package magit
-    :straight t
-    :bind (("C-x g" . magit-status)))
+(use-package magit
+  :straight t
+  :bind (("C-x g" . magit-status)))
 #+END_SRC
 
 * ivy
 I use =[[https://github.com/abo-abo/swiper][ivy/counsel/swiper]]= to find files, search, etc.
 #+begin_src emacs-lisp :tangle yes
-  (use-package ivy
-    :straight (ivy counsel swiper)
-    :init
-    (ivy-mode 1)
-    (counsel-mode 1)
-    :diminish (ivy-mode counsel-mode swiper)
-    :bind (("C-s" . swiper)
-           ("C-x C-f" . counsel-find-file)
-           ("C-x b" . counsel-switch-buffer)
-           ("M-x" . counsel-M-x)
-           ("M-y" . counsel-yank-pop)
-           ("C-c g" . counsel-git)
-           ("C-c j" . counsel-git-grep)
-           ("C-c k" . counsel-rg)
-           ("C-c C-r" . ivy-resume))
-    :config
-    (setq ivy-height 20
-          ivy-use-virtual-buffers t)
-    )
+(use-package ivy
+  :straight (ivy counsel swiper)
+  :init
+  (ivy-mode 1)
+  (counsel-mode 1)
+  :diminish (ivy-mode counsel-mode swiper)
+  :bind (("C-s" . swiper)
+         ("C-x C-f" . counsel-find-file)
+         ("C-x b" . counsel-switch-buffer)
+         ("M-x" . counsel-M-x)
+         ("M-y" . counsel-yank-pop)
+         ("C-c g" . counsel-git)
+         ("C-c j" . counsel-git-grep)
+         ("C-c k" . counsel-rg)
+         ("C-c C-r" . ivy-resume))
+  :config
+  (setq ivy-height 20
+        ivy-use-virtual-buffers t))
 #+END_SRC
 
 To search Japanese letters with swiper, we have to use =migemo=.
@@ -772,12 +750,11 @@ To search Japanese letters with swiper, we have to use =migemo=.
 As of June 13, 2019, [[https://github.com/momomo5717/avy-migemo][the original repository]] does not work well because of the recent change of =ivy= / =counsel= / =swiper=, and the author has not merged [[https://github.com/momomo5717/avy-migemo/pull/8][a pull request]].
 Therefore, the user needs to designate a forked version.
 #+begin_src emacs-lisp :tangle yes
-  (use-package avy-migemo
-    :straight (avy (avy-migemo :type git :host github :repo "tam17aki/avy-migemo"))
-    :config
-    (avy-migemo-mode 1)
-    (require 'avy-migemo-e.g.swiper)
-    )
+(use-package avy-migemo
+  :straight (avy (avy-migemo :type git :host github :repo "tam17aki/avy-migemo"))
+  :config
+  (avy-migemo-mode 1)
+  (require 'avy-migemo-e.g.swiper))
 #+end_src
 
 * smex
@@ -785,23 +762,23 @@ Therefore, the user needs to designate a forked version.
 I use it only because it can deal with the history of =counsel-M-x=.
 
 #+begin_src emacs-lisp :tangle yes
-  (use-package smex
-    :straight t)
+(use-package smex
+  :straight t)
 #+end_src
 
 * yasnippet
 #+begin_src emacs-lisp :tangle yes
-  (use-package yasnippet
-    :straight (yasnippet yasnippet-snippets)
-    :diminish yas-minor-mode
-    :bind (:map yas-minor-mode-map
-           ("C-x i n" . yas-new-snippet)
-           :map yas-keymap
-           ("C-h" . yas-skip-and-clear-field))
-    :init
-    (yas-global-mode 1)
-    (setq yas-snippet-dirs "~/dotfiles/.emacs.d/snippets")
-    (yas-load-directory yas-snippet-dirs))
+(use-package yasnippet
+  :straight (yasnippet yasnippet-snippets)
+  :diminish yas-minor-mode
+  :bind (:map yas-minor-mode-map
+              ("C-x i n" . yas-new-snippet)
+              :map yas-keymap
+              ("C-h" . yas-skip-and-clear-field))
+  :init
+  (yas-global-mode 1)
+  (setq yas-snippet-dirs "~/dotfiles/.emacs.d/snippets")
+  (yas-load-directory yas-snippet-dirs))
 #+END_SRC
 
 * misc
@@ -810,12 +787,12 @@ Sometimes, we forget what we have to do, lose our faith, and become jerks.
 Quotes from giants remind us our goal.
 I owe this code to [[http://futurismo.biz/archives/5938][this page]].
 #+begin_src emacs-lisp :tangle yes
-  (setq cookie-file "~/Dropbox/Emacs/policy.txt")
-  (global-set-key (kbd "C-x C-,") 'cookie)
+(setq cookie-file "~/Dropbox/Emacs/policy.txt")
+(global-set-key (kbd "C-x C-,") 'cookie)
 #+END_SRC
 
 ** Music playback
 #+begin_src emacs-lisp :tangle yes
-  (use-package vlc
-    :straight t)
+(use-package vlc
+  :straight t)
 #+end_src
