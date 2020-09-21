@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: jupyter-notebook-like
+# key: ju_
+# --
+#+begin_src python :results output file :exports both
+$0
+#+end_src
