@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2020/09/21
+#+DATE: 2020/09/29
 
 This is my Emacs configurations.
 
@@ -395,32 +395,26 @@ Default indent for C++ is ~4~ for me.
   :bind ("C-c a" . align))
 #+END_SRC
 
-* irony
-=irony= is a minor mode for C/C++ completion.
+* LSP
+TODO: Which one is better, =clangd= or =ccls=? Better configurations for LSP.
 
-TODO: Because =irony= does not recognize 'self-added' include files (such as =Eigen=), I cannot get completions of the related codes. Fix this.
-
-Note that =flycheck= do recognize these include files because ~flycheck-clang-include-path~ is properly configured.
-#+begin_src emacs-lisp :tangle yes
-(use-package irony
-  :straight (irony company-irony)
-  :diminish
-  :hook (((c-mode c++-mode) . irony-mode)
-         (irony-mode . irony-cdb-autosetup-compile-options))
-  :custom
-  (add-to-list 'company-backends 'company-irony)
-  (irony-additional-clang-options '("-std=c++17")))
-#+END_SRC
-
-=flycheck-irony= offers an =irony=-backend for =flycheck= mode.
-The following should work, but not for my environment, and I don't have time to figure out this conundrum right now.
-#+begin_src emacs-lisp :tangle no
-(use-package flycheck-irony
+ #+begin_src emacs-lisp :tangle yes
+(use-package lsp-mode
   :straight t
-  :after (flycheck)
+  :hook ((python-mode c++-mode) . lsp)
+  :commands lsp
   :config
-  (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-#+end_src
+  (setq lsp-prefer-flymake nil)
+  (setq lsp-clients-clangd-executable "/usr/local/opt/llvm/bin/clangd"))
+
+(use-package lsp-ui
+  :straight t
+  :commands lsp-ui-mode)
+
+(use-package company-lsp
+  :straight t
+  :commands company-lsp)
+ #+end_src
 
 * Rust
 #+begin_src emacs-lisp :tangle yes
