@@ -121,8 +121,6 @@ alias ghc='stack ghc'
 alias ghci='stack ghci'
 alias runghc='stack runghc'
 alias runhaskell='stack runhaskell'
-alias jupyternb='jupyter notebook'
-alias g++='g++-9'
 
 # sudo の後のコマンドでエイリアスを有効にする
 alias sudo='sudo '
@@ -158,8 +156,7 @@ case ${OSTYPE} in
         ;;
 esac
 
-export PATH=$HOME/.cargo/bin:/usr/local/bin:/sbin:/Library/TeX/texbin:/usr/sbin:$PATH
-export PATH=/usr/bin:$PATH
+export PATH=/usr/local/opt/make/libexec/gnubin:$HOME/.cargo/bin:/usr/local/bin:/sbin:/Library/TeX/texbin:/usr/sbin:$PATH
 
 function llvm (){
     export PATH="/usr/local/opt/llvm/bin:$PATH"
