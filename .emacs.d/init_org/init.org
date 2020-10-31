@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2020/09/29
+#+DATE: 2020/10/31
 
 This is my Emacs configurations.
 
@@ -401,7 +401,7 @@ TODO: Which one is better, =clangd= or =ccls=? Better configurations for LSP.
  #+begin_src emacs-lisp :tangle yes
 (use-package lsp-mode
   :straight t
-  :hook ((python-mode c++-mode) . lsp)
+  :hook ((python-mode c++-mode rust-mode) . lsp)
   :commands lsp
   :config
   (setq lsp-prefer-flymake nil)
@@ -409,7 +409,9 @@ TODO: Which one is better, =clangd= or =ccls=? Better configurations for LSP.
 
 (use-package lsp-ui
   :straight t
-  :commands lsp-ui-mode)
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-doc-use-childframe nil))
 
 (use-package company-lsp
   :straight t
@@ -520,7 +522,7 @@ Enable the execution of ~shell~ and ~python~ in org-mode code block.
   (org-babel-do-load-languages 'org-babel-load-languages
 			       '((shell  . t)
 				 (python . t)))
-  (setq org-babel-python-command "python3")
+  (setq org-babel-python-command "/usr/local/bin/python3.8")
   (setq org-src-preserve-indentation t))
 #+END_SRC
 
@@ -719,7 +721,7 @@ Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this pag
 I use =[[https://github.com/abo-abo/swiper][ivy/counsel/swiper]]= to find files, search, etc.
 #+begin_src emacs-lisp :tangle yes
 (use-package ivy
-  :straight (ivy counsel swiper)
+  :straight ivy counsel swiper
   :init
   (ivy-mode 1)
   (counsel-mode 1)
@@ -745,7 +747,7 @@ As of June 13, 2019, [[https://github.com/momomo5717/avy-migemo][the original re
 Therefore, the user needs to designate a forked version.
 #+begin_src emacs-lisp :tangle yes
 (use-package avy-migemo
-  :straight (avy (avy-migemo :type git :host github :repo "tam17aki/avy-migemo"))
+  :straight avy (avy-migemo :type git :host github :repo "tam17aki/avy-migemo")
   :config
   (avy-migemo-mode 1)
   (require 'avy-migemo-e.g.swiper))
@@ -763,7 +765,7 @@ I use it only because it can deal with the history of =counsel-M-x=.
 * yasnippet
 #+begin_src emacs-lisp :tangle yes
 (use-package yasnippet
-  :straight (yasnippet yasnippet-snippets)
+  :straight yasnippet yasnippet-snippets
   :diminish yas-minor-mode
   :bind (:map yas-minor-mode-map
               ("C-x i n" . yas-new-snippet)
