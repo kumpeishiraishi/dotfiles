@@ -8,3 +8,5 @@ startup_message off
 defencoding utf-8
 encoding utf-8 utf-8
 setenv LANG ja_JP.UTF-8
+# color
+term screen-256color

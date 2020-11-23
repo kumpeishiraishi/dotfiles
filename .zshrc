@@ -7,10 +7,6 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export EDITOR=nano
 
-# 色を使用出来るように
-autoload -Uz colors
-colors
-
 # emacs風キーバインドに
 bindkey -e
 
@@ -20,7 +16,7 @@ HISTSIZE=1000000
 SAVEHIST=1000000
 
 # プロンプト表示
-PROMPT="%{${fg[green]}%}[%n@%m]%{${fg[magenta]}%} %~ %{${reset_color}%}
+PROMPT="%F{83}[%n@%m]%f %F{207}%~%f %{${reset_color}%}
 %# "
 SPROMPT="%{${bg[red]}%}correct: %R -> %r ? [n,y,a,e] %{${reset_color}%}"
 
@@ -31,7 +27,6 @@ select-word-style default
 # / も区切りと扱うので、^W でディレクトリ１つ分を削除できる
 zstyle ':zle:*' word-chars " /=;@:{},|"
 zstyle ':zle:*' word-style unspecified
-
 
 ########################################
 # 補完
