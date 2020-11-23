@@ -170,6 +170,8 @@ sigmoid
 backend
 BHA
 MCT
+MCMC
+AQS
 RSB
 arXiv
 LJ
