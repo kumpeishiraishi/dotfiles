@@ -17,6 +17,7 @@ Kurchan
 Parisi
 Ruocco
 Mezard
+Cavagna
 Monasson
 Silvio
 Pierfrancesco
@@ -80,6 +81,12 @@ Torquato
 Kadanoff
 Zeller
 Pohl
+Gardiner
+Torrie
+Valleau
+Behler
+Parrinello
+Heuer
 Stillinger
 Rahman
 Schober
@@ -87,7 +94,7 @@ Schirmacher
 Tildesley
 Flenner
 Agoritsas
-Schoenholtz
+Schoenholz
 Sastry
 Wolynes
 Tarjus
@@ -216,6 +223,7 @@ isostatic
 hyperstatic
 hypostatic
 hypostaticity
+symplectic
 metastable
 variational
 unjam
@@ -259,6 +267,7 @@ perceptron
 viscoelasticity
 athermal
 monatomic
+metadynamics
 BCAA
 COVID
 GSD
@@ -277,6 +286,7 @@ BKS
 KABLJ
 TLS
 PTS
+DFT
 PRL
 PNAS
 PRB
