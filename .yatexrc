@@ -1,4 +1,5 @@
 (setq user-env-table '(
+("luacode*")
 ("scope")
 ("autobreak")
 ("textblock*")
@@ -12,6 +13,7 @@
 ("theorem*")
 ("easylist")
 ))
+
 (setq YaTeX::usepackage-alist-private '(
 ("mhchem")
 ("hyperref")
@@ -62,6 +64,7 @@
 ("uplatex")
 ))
 (setq user-singlecmd-table '(
+("printbibliography")
 ("IfValueTF")
 ("NewDocumentCommand")
 ("sim")
