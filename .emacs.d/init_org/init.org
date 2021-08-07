@@ -72,6 +72,11 @@ Language environment, text encoding etc.
   (exec-path-from-shell-initialize))
 #+END_SRC
 
+#+begin_src emacs-lisp :tangle yes
+(use-package bookmark+
+  :straight t)
+#+end_src
+
 * Display
 ** General
 Do not show tool bar, scroll bar, etc.
