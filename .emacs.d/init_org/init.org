@@ -534,7 +534,7 @@ Enable the execution of ~shell~ and ~python~ in org-mode code block.
   (org-babel-do-load-languages 'org-babel-load-languages
 			       '((shell  . t)
 				 (python . t)))
-  (setq org-babel-python-command "/usr/local/bin/python3.8")
+  (setq org-babel-python-command "/usr/local/bin/python3")
   (setq org-src-preserve-indentation t))
 #+END_SRC
 
