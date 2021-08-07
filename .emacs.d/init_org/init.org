@@ -700,7 +700,7 @@ So, I just need basic settings, like tab completion (=ivy= offers ~completion-at
 * eww
 If DuckDuckGo is not satisfactory, remove comment out below and use Google.
 #+begin_src emacs-lisp :tangle yes
-(setq eww-search-prefix "http://www.google.com/search?q=")
+;; (setq eww-search-prefix "http://www.google.com/search?q=")
 #+END_SRC
 
 Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this page]]).
