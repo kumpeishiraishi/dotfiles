@@ -99,6 +99,12 @@ Parens
 (show-paren-mode 1)
 #+END_SRC
 
+Highlight current line.
+#+begin_src emacs-lisp :tangle yes
+(global-hl-line-mode t)
+(set-face-background 'hl-line "#333333")
+#+end_src
+
 Window and color settings.
 #+begin_src emacs-lisp :tangle yes
 (when window-system
