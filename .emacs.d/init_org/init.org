@@ -546,7 +546,7 @@ Note that it may requires =cargo-script= (run ~cargo install cargo-script~ to in
 #+END_SRC
 
 ** ox-pandoc
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp :tangle no
 (use-package ox-pandoc
   :straight t
   :config
@@ -575,7 +575,7 @@ Note that it may requires =cargo-script= (run ~cargo install cargo-script~ to in
 #+END_SRC
 
 * tramp
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp :tangle no
 (use-package tramp
   :straight t
   :config
