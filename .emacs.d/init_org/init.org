@@ -422,7 +422,9 @@ TODO: Which one is better, =clangd= or =ccls=? Better configurations for LSP.
   :commands lsp
   :config
   (setq lsp-prefer-flymake nil)
-  (setq lsp-clients-clangd-executable "/usr/local/opt/llvm/bin/clangd"))
+  (setq lsp-clients-clangd-executable "/usr/bin/clangd-12")
+  (if (eq system-type 'darwin)
+      (setq lsp-clients-clangd-executable "/usr/local/opt/llvm/bin/clangd")))
 
 (use-package lsp-ui
   :straight t
@@ -496,7 +498,9 @@ I use =YaTeX= to edit latex files for my articles, daily progress reports, prese
         tex-command "/Library/TeX/texbin/lualatex"
         YaTeX-nervous nil
         YaTeX-user-completion-table "~/dotfiles/.yatexrc"
-        bibtex-command "biber"))
+        bibtex-command "biber")
+  (if (eq system-type 'gnu/linux)
+      (setq dvi2-command "xdg-open")))
 ;; skk対策
 (add-hook 'skk-mode-hook
           (lambda ()
@@ -571,10 +575,12 @@ Note that it may requires =cargo-script= (run ~cargo install cargo-script~ to in
   :config
   (setq migemo-command "cmigemo"
         migemo-options '("-q" "--emacs")
-        migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict"
+        migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"
         migemo-user-dictionary nil
         migemo-regex-dictionary nil
         migemo-coding-system 'utf-8-unix)
+  (if (eq system-type 'darwin)
+      (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict"))
   (load-library "migemo")
   (migemo-init))
 #+END_SRC
@@ -595,19 +601,21 @@ Note that it may requires =cargo-script= (run ~cargo install cargo-script~ to in
 (use-package dired
   :straight nil
   :bind (:map dired-mode-map
-	      ("h" . nil)
-	      ("C-M-p" . nil)
-	      ("D" . nil))
+              ("h" . nil)
+              ("C-M-p" . nil)
+              ("D" . nil))
   :config
   (setq delete-by-moving-to-trash t
-	trash-directory "~/.Trash"
-	dired-recursive-copies 'always
-	dired-recursive-deletes 'always
-	dired-isearch-filenames t
-	dired-dwim-target t
-	dired-listing-switches (purecopy "-alh"))
+        trash-directory "~/.Trash"
+        dired-recursive-copies 'always
+        dired-recursive-deletes 'always
+        dired-isearch-filenames t
+        dired-dwim-target t
+        dired-listing-switches (purecopy "-alh"))
+  (if (eq system-type 'gnu/linux)
+      (setq trash-directory "~/.local/share/Trash/files"))
   (eval-after-load "dired" '(progn
-			      (define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode))))
+                              (define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode))))
 #+END_SRC
 
 * undo-tree
