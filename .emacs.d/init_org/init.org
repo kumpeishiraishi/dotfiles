@@ -322,7 +322,7 @@ Also, I do not want to use TODAY function.
 * Key bindings
 When the window is split, use the super key and the arrow keys to switch windows.
 #+begin_src emacs-lisp :tangle yes
-(windmove-default-keybindings 'super)
+(windmove-default-keybindings 'ctrl)
 #+END_SRC
 
 Disable some default key bindings. I easily type these keys unintentionally :p
