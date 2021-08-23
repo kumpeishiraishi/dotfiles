@@ -118,7 +118,11 @@ Initial screen, message, major mode, directory.
 #+begin_src emacs-lisp :tangle yes
 (setq inhibit-splash-screen t)
 (setq initial-scratch-message nil)
-(setq default-directory "~/Dropbox/")
+(if (equal system-type 'gnu/linux)
+    (setq DBdirec "/data1/kumpei/Dropbox/"))
+(if (equal system-type 'darwin)
+    (setq DBdirec '"~/Dropbox/"))
+(setq default-directory DBdirec)
 #+END_SRC
 
 Do not delete =*scratch*= buffer (thanks to [[https://github.com/uwabami/emacs][this repository]]).
@@ -239,7 +243,7 @@ I use =DDSKK= for Japanese writing.
 
 ** SKK Basics
 #+begin_src emacs-lisp :tangle yes
-(let ((default-directory (expand-file-name "~/Dropbox/Emacs/skk/skk/")))
+(let ((default-directory (expand-file-name (concat DBdirec "Emacs/skk/skk/"))))
   (add-to-list 'load-path default-directory)
   (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
       (normal-top-level-add-subdirs-to-load-path)))
@@ -254,23 +258,23 @@ I use =DDSKK= for Japanese writing.
 (setq skk-jisyo-code 'utf-8)
 (setq skk-isearch-start-mode 'utf-8);; migemoではSKK不要
 ;; (setq skk-user-directory "~/Dropbox/Emacs/skk") これでは以下のように、ファイル群を望んだフォルダ配下に保存できない（2016/05/02）
-(setq skk-jisyo "~/Dropbox/Emacs/skk/jisyo"
-      skk-backup-jisyo "~/Dropbox/Emacs/skk/jisyo.bak"
-      skk-record-file "~/Dropbox/Emacs/skk/record"
-      skk-study-file "~/Dropbox/Emacs/skk/study"
-      skk-study-backup-file "~/Dropbox/Emacs/skk/study.bak")
-(setq skk-large-jisyo "~/Dropbox/Emacs/skk/SKK-JISYO.L")
+(setq skk-jisyo (concat DBdirec "Emacs/skk/" "jisyo")
+      skk-backup-jisyo (concat DBdirec "Emacs/skk/" "jisyo.bak")
+      skk-record-file (concat DBdirec "Emacs/skk/" "record")
+      skk-study-file (concat DBdirec "Emacs/skk/" "study")
+      skk-study-backup-file (concat DBdirec "Emacs/skk/" "study.bak"))
+(setq skk-large-jisyo (concat DBdirec "Emacs/skk/" "SKK-JISYO.L"))
 (setq skk-extra-jisyo-file-list
       (list
-       "~/Dropbox/Emacs/skk/SKK-JISYO.geo"
-       "~/Dropbox/Emacs/skk/SKK-JISYO.jinmei"
-       "~/Dropbox/Emacs/skk/SKK-JISYO.propernoun"
-       "~/Dropbox/Emacs/skk/SKK-JISYO.station"
-       "~/Dropbox/Emacs/skk/SKK-JISYO.itaiji"
-       "~/Dropbox/Emacs/skk/SKK-JISYO.yama"
-       "~/Dropbox/Emacs/skk/SKK-JISYO.fullname"
-       '("~/Dropbox/Emacs/skk/SKK-JISYO.JIS3_4" . euc-jisx0213)))
-(setq skk-tut-file "~/Dropbox/Emacs/skk/skk/etc/SKK.tut")
+       (concat DBdirec "Emacs/skk/" "SKK-JISYO.geo")
+       (concat DBdirec "Emacs/skk/" "SKK-JISYO.jinmei")
+       (concat DBdirec "Emacs/skk/" "SKK-JISYO.propernoun")
+       (concat DBdirec "Emacs/skk/" "SKK-JISYO.station")
+       (concat DBdirec "Emacs/skk/" "SKK-JISYO.itaiji")
+       (concat DBdirec "Emacs/skk/" "SKK-JISYO.yama")
+       (concat DBdirec "Emacs/skk/" "SKK-JISYO.fullname")
+       (cons (concat DBdirec "Emacs/skk/" "SKK-JISYO.JIS3_4") 'euc-jisx0213)))
+(setq skk-tut-file (concat DBdirec "Emacs/skk/" "skk/etc/SKK.tut"))
 #+END_SRC
 
 ** SKK displays
@@ -796,7 +800,7 @@ Sometimes, we forget what we have to do, lose our faith, and become jerks.
 Quotes from giants remind us our goal.
 I owe this code to [[http://futurismo.biz/archives/5938][this page]].
 #+begin_src emacs-lisp :tangle yes
-(setq cookie-file "~/Dropbox/Emacs/policy.txt")
+(setq cookie-file (concat DBdirec "Emacs/policy.txt"))
 (global-set-key (kbd "C-x C-,") 'cookie)
 #+END_SRC
 
