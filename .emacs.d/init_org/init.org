@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2020/10/31
+#+DATE: 2021/08/26
 
 This is my Emacs configurations.
 
@@ -109,7 +109,7 @@ Window and color settings.
 #+begin_src emacs-lisp :tangle yes
 (when window-system
   (set-frame-parameter nil 'fullscreen 'fullboth)
-  (set-background-color "#0a0a0a")
+  (set-background-color "#002B36")
   (set-foreground-color "#eaeaea")
   (set-cursor-color "Green"))
 #+END_SRC
@@ -515,7 +515,7 @@ I use =YaTeX= to edit latex files for my articles, daily progress reports, prese
 (use-package markdown-mode
   :straight t
   :config
-  (setq markdown-command "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js"))
+  (setq markdown-command "pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=$HOME/dotfiles/.pandoc/github.css --mathjax=$HOME/dotfiles/.pandoc/dynoload.js"))
 #+END_SRC
 
 * org-mode
