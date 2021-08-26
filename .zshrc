@@ -74,7 +74,7 @@ setopt ignore_eof
 setopt interactive_comments
 # ディレクトリ名だけでcdする、cd後は自動でls
 setopt auto_cd
-function chpwd() { ls }
+function chpwd() { ls -F --color=auto }
 # cd したら自動的にpushdする
 setopt auto_pushd
 # 重複したディレクトリを追加しない
@@ -110,8 +110,8 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
-alias pandoc_gh='pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css'
-alias pandoc_ghm='pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=/Users/kumpeishiraishi/dotfiles/.pandoc/github.css --mathjax=/Users/kumpeishiraishi/dotfiles/.pandoc/dynoload.js'
+alias pandoc_gh='pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=$HOME/dotfiles/.pandoc/github.css'
+alias pandoc_ghm='pandoc --standalone --self-contained --highlight-style=pygments -t html5 --css=$HOME/dotfiles/.pandoc/github.css --mathjax=$HOME/dotfiles/.pandoc/dynoload.js'
 alias ghc='stack ghc'
 alias ghci='stack ghci'
 alias runghc='stack runghc'
@@ -151,10 +151,10 @@ case ${OSTYPE} in
         ;;
 esac
 
-export PATH=/usr/local/opt/make/libexec/gnubin:$HOME/.cargo/bin:/usr/local/bin:/sbin:/Library/TeX/texbin:/usr/sbin:$PATH
-
-function llvm (){
-    export PATH="/usr/local/opt/llvm/bin:$PATH"
-    export LDFLAGS="-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
-    unset -f llvm
-}
+export MANPATH="/usr/local/texlive/2021/texmf-dist/doc/man:$MANPATH"
+export INFOPATH="/usr/local/texlive/2021/texmf-dist/doc/info:$INFOPATH"
+path=(
+    /usr/local/texlive/2021/bin/x86_64-linux
+    $path
+)
+export CPATH=$HOME/.local/include:$CPATH
