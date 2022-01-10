@@ -5,14 +5,15 @@ Debye
 Kubo
 Atsushi
 Ikeda
-Harukuni
 Hideyuki
 Mizuno
 Silbert
+Hukushima
 Ising
 Navier
 Langevin
 Zamponi
+Harukuni
 Kurchan
 Parisi
 Ruocco
@@ -113,6 +114,7 @@ Lanczos
 Arnoldi
 Ornstein
 Uhlenbeck
+Spearman
 Gerrard
 Tononi
 Frusciante
@@ -189,6 +191,7 @@ QLV
 QLVs
 nonequilibrium
 equilibration
+equilibrate
 parametrization
 vibrational
 dimers
@@ -203,6 +206,7 @@ hyperuniformity
 hyperuniform
 diagonalize
 diagonalizing
+diagonalization
 compressibility
 invariance
 isostaticity
@@ -228,6 +232,8 @@ hypostatic
 hypostaticity
 symplectic
 metastable
+metabasin
+metabasins
 variational
 unjam
 unjammed
@@ -272,6 +278,7 @@ viscoelasticity
 athermal
 monatomic
 metadynamics
+archetypical
 BCAA
 COVID
 GSD
