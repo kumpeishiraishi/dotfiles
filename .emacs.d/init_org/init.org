@@ -273,6 +273,7 @@ I use =DDSKK= for Japanese writing.
        (concat DBdirec "Emacs/skk/" "SKK-JISYO.station")
        (concat DBdirec "Emacs/skk/" "SKK-JISYO.itaiji")
        (concat DBdirec "Emacs/skk/" "SKK-JISYO.yama")
+       (concat DBdirec "Emacs/skk/" "skk_jisyo_tokyo/SKK-JISYO.tokyo")
        (concat DBdirec "Emacs/skk/" "SKK-JISYO.fullname")
        (cons (concat DBdirec "Emacs/skk/" "SKK-JISYO.JIS3_4") 'euc-jisx0213)))
 (setq skk-tut-file (concat DBdirec "Emacs/skk/" "skk/etc/SKK.tut"))
@@ -541,9 +542,9 @@ Enable the execution of ~shell~ and ~python~ in org-mode code block.
 (use-package org
   :config
   (org-babel-do-load-languages 'org-babel-load-languages
-			       '((shell  . t)
-				 (python . t)))
-  (setq org-babel-python-command "/usr/local/bin/python3")
+                               '((shell . t)
+                                 (python . t)))
+  (setq org-babel-python-command "python3")
   (setq org-src-preserve-indentation t))
 #+END_SRC
 
