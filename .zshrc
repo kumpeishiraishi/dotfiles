@@ -158,3 +158,5 @@ path=(
     $path
 )
 export CPATH=$HOME/.local/include:$CPATH
+export LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
+export LIBRARY_PATH=$HOME/.local/lib:$LIBRARY_PATH
