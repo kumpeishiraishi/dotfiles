@@ -151,10 +151,10 @@ case ${OSTYPE} in
         ;;
 esac
 
-export MANPATH="/usr/local/texlive/2021/texmf-dist/doc/man:$MANPATH"
-export INFOPATH="/usr/local/texlive/2021/texmf-dist/doc/info:$INFOPATH"
+export MANPATH="/usr/local/texlive/2022/texmf-dist/doc/man:$MANPATH"
+export INFOPATH="/usr/local/texlive/2022/texmf-dist/doc/info:$INFOPATH"
 path=(
-    /usr/local/texlive/2021/bin/x86_64-linux
+    /usr/local/texlive/2022/bin/x86_64-linux
     $path
 )
 export CPATH=$HOME/.local/include:$CPATH
