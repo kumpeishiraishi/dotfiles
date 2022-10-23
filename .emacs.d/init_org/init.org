@@ -338,7 +338,8 @@ Various key bindings
 #+begin_src emacs-lisp :tangle yes
 (bind-keys ("C-u" . undo)
 	   ("C-h" . delete-backward-char)
-	   ("C-c r" . replace-string))
+	   ("C-c r" . replace-string)
+	   ("C-o" . other-window))
 #+END_SRC
 
 * flycheck
