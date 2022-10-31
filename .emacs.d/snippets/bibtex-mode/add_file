@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: add_file
+# key: af
+# --
+file={:physics/glasses/$0},
