@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2021/08/26
+#+DATE: 2022/12/10
 
 This is my Emacs configurations.
 
@@ -803,6 +803,13 @@ I use it only because it can deal with the history of =counsel-M-x=.
   (setq yas-snippet-dirs "~/dotfiles/.emacs.d/snippets")
   (yas-load-directory yas-snippet-dirs))
 #+END_SRC
+
+* cmake
+#+begin_src emacs-lisp :tangle yes
+(use-package cmake-mode
+  :straight nil
+  :mode ("CMakeLists.txt" . cmake-mode))
+#+end_src
 
 * misc
 ** quotes
