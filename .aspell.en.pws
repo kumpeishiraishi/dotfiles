@@ -186,6 +186,8 @@ ipython
 Jupyter
 matplotlib
 MPI
+Gaumont
+Laboratoire
 magit
 yasnippet
 YaTeX
@@ -213,9 +215,11 @@ QLVs
 nonequilibrium
 equilibration
 equilibrate
+equilibrated
 equilibrating
 parametrization
 vibrational
+rescaled
 dimers
 dimeric
 triatomic
@@ -260,6 +264,7 @@ variational
 unjam
 unjammed
 unjamming
+marginality
 eigenmode
 eigenmodes
 eigenfrequency
@@ -338,6 +343,7 @@ JPSJ
 JSPS
 APS
 OBCX
+CNRS
 bivy
 alpinist
 carabiner
