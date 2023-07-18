@@ -1,0 +1,22 @@
+* dotfiles
+This repository contains almost all of my configuration files.
+
+** Fonts
+Links:
+- [[https://github.com/adobe-fonts/source-code-pro][Source Code Pro]]
+- [[https://github.com/adobe-fonts/source-han-sans][Source Han Sans]]
+- [[https://github.com/adobe-fonts/source-han-serif][Source Han Serif]]
+  - Download the Japanese version in Language-specific OTFs
+- [[https://www.ctan.org/tex-archive/fonts/tex-gyre/opentype][TeX Gyre Heros]]
+
+Instructions:
+1. Download OTF files
+2. Copy files to =~/.local/share/fonts=
+
+** TeX Live
+- Check out [[https://tug.org/texlive/quickinstall.html][this page]].
+- Install directory should be changed to =~/.local/texlive=.
+- =basic scheme= is sufficient.
+
+** Python
+- Install =pyenv= (see [[https://github.com/pyenv/pyenv#automatic-installer][here]] for detail).

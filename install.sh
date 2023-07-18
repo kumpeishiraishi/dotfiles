@@ -7,6 +7,12 @@ ln -s ~/dotfiles/.emacs.d/init.el ~/.emacs.d/init.el
 ln -s ~/dotfiles/.zshrc ~/.zshrc
 ln -s ~/dotfiles/.screenrc ~/.screenrc
 
+if [ $OSTYPE=='linux-gnu' ]
+then
+    sudo apt update
+    sudo apt install gnome-sushi clangd
+fi
+
 if [ $(uname)=='Darwin' ]
 then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
