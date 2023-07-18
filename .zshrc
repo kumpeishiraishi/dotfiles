@@ -157,6 +157,7 @@ export INFOPATH="$HOME/.local/texlive/2023/texmf-dist/doc/info:$INFOPATH"
 path=(
     $HOME/.pyenv/bin
     $HOME/.local/texlive/2023/bin/x86_64-linux
+    $HOME/.local/bin
     $path
 )
 export CPATH=$HOME/.local/include:$CPATH
