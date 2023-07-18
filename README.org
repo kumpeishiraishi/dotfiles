@@ -1,6 +1,12 @@
 * dotfiles
 This repository contains almost all of my configuration files.
 
+** shell
+- Change login shell to =zsh=:
+#+begin_src shell
+chsh -s /bin/zsh
+#+end_src
+
 ** Fonts
 Links:
 - [[https://github.com/adobe-fonts/source-code-pro][Source Code Pro]]
