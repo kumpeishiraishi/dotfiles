@@ -10,7 +10,7 @@ ln -s ~/dotfiles/.screenrc ~/.screenrc
 if [ $OSTYPE=='linux-gnu' ]
 then
     sudo apt update
-    sudo apt install gnome-sushi clangd
+    sudo apt install git gnome-sushi clangd cmigemo aspell nkf screen zsh cmake ripgrep
 fi
 
 if [ $(uname)=='Darwin' ]

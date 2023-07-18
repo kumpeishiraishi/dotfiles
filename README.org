@@ -26,3 +26,8 @@ Instructions:
 
 ** Python
 - Install =pyenv= (see [[https://github.com/pyenv/pyenv#automatic-installer][here]] for detail).
+
+** others
+- Install software via =apt= following =install.sh=.
+- [[https://downloads.jabref.org/][JabRef]]
+- [[https://zoom.us/download?os=linux][Zoom]]
