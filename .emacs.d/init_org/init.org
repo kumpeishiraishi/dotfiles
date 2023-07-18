@@ -423,7 +423,7 @@ TODO: Which one is better, =clangd= or =ccls=? Better configurations for LSP.
   :commands lsp
   :config
   (setq lsp-prefer-flymake nil)
-  (setq lsp-clients-clangd-executable "/usr/bin/clangd-12")
+  (setq lsp-clients-clangd-executable "/usr/bin/clangd")
   (if (eq system-type 'darwin)
       (setq lsp-clients-clangd-executable "/usr/local/opt/llvm/bin/clangd")))
 
