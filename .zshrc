@@ -152,12 +152,14 @@ case ${OSTYPE} in
         ;;
 esac
 
-export MANPATH="/usr/local/texlive/2022/texmf-dist/doc/man:$MANPATH"
-export INFOPATH="/usr/local/texlive/2022/texmf-dist/doc/info:$INFOPATH"
+export MANPATH="$HOME/.local/texlive/2023/texmf-dist/doc/man:$MANPATH"
+export INFOPATH="$HOME/.local/texlive/2023/texmf-dist/doc/info:$INFOPATH"
 path=(
-    /usr/local/texlive/2022/bin/x86_64-linux
+    $HOME/.pyenv/bin
+    $HOME/.local/texlive/2023/bin/x86_64-linux
     $path
 )
 export CPATH=$HOME/.local/include:$CPATH
 export LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
 export LIBRARY_PATH=$HOME/.local/lib:$LIBRARY_PATH
+eval "$(pyenv init --path)"
