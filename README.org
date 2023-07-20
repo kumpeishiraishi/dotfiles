@@ -41,3 +41,16 @@ pip3 install --upgrade pip numpy matplotlib ipython pandas jupyterlab scipy 'pyt
 - [[https://www.dropbox.com/install-linux][Dropbox]]
 - [[https://downloads.jabref.org/][JabRef]]
 - [[https://zoom.us/download?os=linux][Zoom]]
+
+** ssh
+Generate SSH keys for
+- GitHub
+- clusters and/or supercomputers
+with
+#+begin_src shell
+ssh-keygen -t rsa -b 4096 -C "YOUR_COMPUTER_NAME" -f ~/.ssh/id_TARGET_NAME
+#+end_src
+or
+#+begin_src shell
+ssh-keygen -t ed25519 -C "YOUR_COMPUTER_NAME" -f ~/.ssh/id_TARGET_NAME
+#+end_src
