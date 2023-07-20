@@ -1,7 +1,7 @@
 * dotfiles
 This repository contains almost all of my configuration files.
 
-** shell
+** Shell
 - Change login shell to =zsh=:
 #+begin_src shell
 chsh -s /bin/zsh
@@ -31,7 +31,7 @@ Instructions:
 pip3 install --upgrade pip numpy matplotlib ipython pandas jupyterlab scipy 'python-lsp-server[all]'
 #+end_src
 
-** others
+** Others
 - Install software via =apt= following =install.sh=.
 - C++
   - [[https://github.com/rogersce/cnpy][cnpy]]
@@ -41,8 +41,9 @@ pip3 install --upgrade pip numpy matplotlib ipython pandas jupyterlab scipy 'pyt
 - [[https://www.dropbox.com/install-linux][Dropbox]]
 - [[https://downloads.jabref.org/][JabRef]]
 - [[https://zoom.us/download?os=linux][Zoom]]
+- [[https://www.ovito.org/linux-downloads][OVITO]]
 
-** ssh
+** SSH
 Generate SSH keys for
 - GitHub
 - clusters and/or supercomputers
