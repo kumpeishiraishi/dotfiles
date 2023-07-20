@@ -26,8 +26,18 @@ Instructions:
 
 ** Python
 - Install =pyenv= (see [[https://github.com/pyenv/pyenv#automatic-installer][here]] for detail).
+- Packages:
+#+begin_src shell
+pip3 install --upgrade pip numpy matplotlib ipython pandas jupyterlab scipy 'python-lsp-server[all]'
+#+end_src
 
 ** others
 - Install software via =apt= following =install.sh=.
+- C++
+  - [[https://github.com/rogersce/cnpy][cnpy]]
+  - [[https://eigen.tuxfamily.org][Eigen]]
+  - [[https://www.boost.org/users/download][Boost]]
+- [[https://github.com/gohugoio/hugo/releases][Hugo]]
+- [[https://www.dropbox.com/install-linux][Dropbox]]
 - [[https://downloads.jabref.org/][JabRef]]
 - [[https://zoom.us/download?os=linux][Zoom]]
