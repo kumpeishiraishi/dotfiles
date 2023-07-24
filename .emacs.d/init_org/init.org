@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2022/12/10
+#+DATE: 2023/07/24
 
 This is my Emacs configurations.
 
@@ -30,6 +30,7 @@ But I prefer not to do that for consistency (I might change my mind).
 #+END_SRC
 
 ~:diminish~ keyword requires =diminish= package.
+This keyword enables to hide minor modes in your mode line.
 #+begin_src emacs-lisp :tangle yes
 (use-package diminish
   :straight t)
@@ -626,7 +627,9 @@ Note that it may requires =cargo-script= (run ~cargo install cargo-script~ to in
   :diminish
   :bind ("M-/" . undo-tree-redo)
   :init
-  (global-undo-tree-mode))
+  (global-undo-tree-mode)
+  :config
+  (setq undo-tree-auto-save-history nil))
 #+END_SRC
 
 * google-translate
