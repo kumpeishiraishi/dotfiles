@@ -1,0 +1,28 @@
+# -*- mode: snippet -*-
+# name: janew
+# key: janew
+# --
+%#!lualatex
+\documentclass{ltjsarticle}
+
+\usepackage{amsmath,amssymb,amsfonts,siunitx,graphicx}
+\usepackage{luatexja-fontspec}
+\setmainfont{TeX Gyre Termes}
+\setsansfont{TeX Gyre Heros Bold}
+\usepackage[sourcehan,jis2004,delux]{luatexja-preset}
+
+\usepackage[style=phys,articletitle=false,maxnames=3,biblabel=brackets,chaptertitle=false,pageranges=false]{biblatex}
+\addbibresource{\string~/Dropbox/articles/my_bibfile.bib}
+
+\usepackage[pdfencoding=auto,pdfa,hidelinks]{hyperref}
+\hypersetup{
+bookmarksnumbered=true,
+bookmarksopen=true,
+colorlinks=true,
+linkcolor={blue!50!black},
+citecolor={blue!50!black},
+urlcolor={blue!80!black}}
+
+\begin{document}
+$0
+\end{document}
