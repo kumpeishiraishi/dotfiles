@@ -17,7 +17,7 @@ urlcolor={blue!80!black}}
 \title{$0}
 \author{Kumpei Shiraishi}
 \email{kumpei.shiraishi@umontpellier.fr}
-\affiliation{Laboratoire Charles Coulomb (L2C), Universit\'e de Montpellier, CNRS, 34095 Montpellier, France}
+\affiliation{Laboratoire Charles Coulomb (L2C), Universit\\'e de Montpellier, CNRS, 34095 Montpellier, France}
 \date{\today}
 \begin{abstract}
 
