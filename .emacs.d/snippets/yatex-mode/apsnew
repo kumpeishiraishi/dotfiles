@@ -1,0 +1,27 @@
+# -*- mode: snippet -*-
+# name: apsnew
+# key: apsnew
+# --
+%#!pdflatex
+%#BIBTEX bibtex
+\documentclass[aps,pre,reprint,superscriptaddress]{revtex4-2}
+\usepackage{amsmath,graphicx,siunitx,xcolor,hyperref}
+\sisetup{range-phrase=\text{--}}
+\hypersetup{
+colorlinks,
+linkcolor={blue!50!black},
+citecolor={blue!50!black},
+urlcolor={blue!80!black}}
+
+\begin{document}
+\title{$0}
+\author{Kumpei Shiraishi}
+\email{kumpei.shiraishi@umontpellier.fr}
+\affiliation{Laboratoire Charles Coulomb (L2C), Universit\'e de Montpellier, CNRS, 34095 Montpellier, France}
+\date{\today}
+\begin{abstract}
+
+\end{abstract}
+\maketitle
+
+\end{document}
