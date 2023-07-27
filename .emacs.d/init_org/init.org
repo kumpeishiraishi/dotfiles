@@ -698,12 +698,9 @@ Prefix key is ~C-z~.
 #+END_SRC
 
 * Eshell
-=[[https://www.gnu.org/software/emacs/manual/html_mono/eshell.html][Eshell]]= is a command interpreter implemented in Emacs Lisp.
+[[https://www.gnu.org/software/emacs/manual/html_mono/eshell.html][Eshell]] is a command interpreter implemented in Emacs Lisp.
 See the link for more detail.
-
-I have to confess that I am not a power user of Eshell.
-I mainly use =zsh=, and I only use Eshell for compiling small codes and testing small programs.
-So, I just need basic settings, like tab completion (=ivy= offers ~completion-at-point~ function).
+I just need basic settings for Eshell, like tab completion (=ivy= offers ~completion-at-point~ function).
 
 #+begin_src emacs-lisp :tangle yes
 (use-package eshell
@@ -715,9 +712,9 @@ So, I just need basic settings, like tab completion (=ivy= offers ~completion-at
 #+END_SRC
 
 * eww
-If DuckDuckGo is not satisfactory, remove comment out below and use Google.
-#+begin_src emacs-lisp :tangle yes
-;; (setq eww-search-prefix "http://www.google.com/search?q=")
+Below you can set your default search engine to Google.
+#+begin_src emacs-lisp :tangle no
+(setq eww-search-prefix "http://www.google.com/search?q=")
 #+END_SRC
 
 Avoid white background (thanks to [[http://futurismo.biz/archives/2950][this page]]).
