@@ -3,8 +3,11 @@ module load openmpi-2.0.1_gcc-5.1.0
 
 shopt -s autocd
 
-alias ll='ls -la'
+alias ll='ls -lha'
 alias la='ls -a'
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
 
 export LD_LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/lib64:$LD_LIBRARY_PATH
 export LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/lib64:$LIBRARY_PATH
