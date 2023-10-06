@@ -1,4 +1,8 @@
 (setq user-env-table '(
+("reply")
+("mydiff")
+("refcomment")
+("overprint")
 ("acknowledgments")
 ("luacode*")
 ("scope")
