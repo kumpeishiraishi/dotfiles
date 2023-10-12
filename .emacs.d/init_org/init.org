@@ -1,7 +1,7 @@
 #+TITLE: My Emacs settings
 #+AUTHOR: Kumpei Shiraishi
 #+EMAIL: kumpeishiraishi@gmail.com
-#+DATE: 2023/07/24
+#+DATE: 2023/10/12
 
 This is my Emacs configurations.
 
@@ -633,39 +633,18 @@ Note that it may requires =cargo-script= (run ~cargo install cargo-script~ to in
 #+END_SRC
 
 * google-translate
-Thanks to [[http://emacs.rubikitch.com/google-translate/][rubikitch]].
 #+begin_src emacs-lisp :tangle yes
 (use-package google-translate
-  :straight t)
-(defvar google-translate-english-chars "[:ascii:]’“”–"
-  "これらの文字が含まれているときは英語とみなす")
-(defun google-translate-enja-or-jaen (&optional string)
-  "regionか、現在のセンテンスを言語自動判別でGoogle翻訳する。"
-  (interactive)
-  (setq string
-	(cond ((stringp string) string)
-	      (current-prefix-arg
-	       (read-string "Google Translate: "))
-	      ((use-region-p)
-	       (buffer-substring (region-beginning) (region-end)))
-	      (t
-	       (save-excursion
-		 (let (s)
-		   (forward-char 1)
-		   (backward-sentence)
-		   (setq s (point))
-		   (forward-sentence)
-		   (buffer-substring s (point)))))))
-  (let* ((asciip (string-match
-		  (format "\\`[%s]+\\'" google-translate-english-chars)
-		  string)))
-    (run-at-time 0.1 nil 'deactivate-mark)
-    (google-translate-translate
-     (if asciip "en" "ja")
-     (if asciip "ja" "en")
-     string)))
-(global-set-key (kbd "C-x t") 'google-translate-enja-or-jaen)
-#+END_SRC
+  :straight t
+  :init
+  (require 'google-translate)
+  (require 'google-translate-smooth-ui)
+  :bind ("C-x t" . google-translate-smooth-translate)
+  :config
+  (setq google-translate-translation-directions-alist
+  	'(("en" . "ja") ("ja" . "en") ("en" . "fr") ("fr" . "en")))
+)
+#+end_src
 
 * Mail
 #+begin_src emacs-lisp :tangle yes
