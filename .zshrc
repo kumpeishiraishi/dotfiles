@@ -158,6 +158,7 @@ path=(
     $HOME/.pyenv/bin
     $HOME/.local/texlive/2023/bin/x86_64-linux
     $HOME/.local/bin
+    /opt/intel/oneapi/compiler/latest/bin
     $path
 )
 export CPATH=$HOME/.local/include:$CPATH
