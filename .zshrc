@@ -152,11 +152,9 @@ case ${OSTYPE} in
         ;;
 esac
 
-export MANPATH="$HOME/.local/texlive/2023/texmf-dist/doc/man:$MANPATH"
-export INFOPATH="$HOME/.local/texlive/2023/texmf-dist/doc/info:$INFOPATH"
 path=(
     $HOME/.pyenv/bin
-    $HOME/.local/texlive/2023/bin/x86_64-linux
+    $HOME/.local/texlive/2024/bin/x86_64-linux
     $HOME/.local/bin
     /opt/intel/oneapi/compiler/latest/bin
     $path
