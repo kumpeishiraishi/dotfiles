@@ -3,5 +3,6 @@
 # key: pyro_
 # --
 #+begin_src python :results output
+import numpy as np
 $0
 #+end_src
