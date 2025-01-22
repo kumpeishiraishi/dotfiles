@@ -367,6 +367,7 @@ Various key bindings
   :bind ([s-return] . ispell-word)
   :config
   (setq-default ispell-program-name "aspell")
+  (setq ispell-dictionary "british")
   (eval-after-load "ispell" '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")));; 日本語混じりでも有効に
   )
 #+END_SRC
