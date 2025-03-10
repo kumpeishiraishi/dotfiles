@@ -154,7 +154,7 @@ esac
 
 path=(
     $HOME/.pyenv/bin
-    $HOME/.local/texlive/2024/bin/x86_64-linux
+    $HOME/.local/texlive/2025/bin/x86_64-linux
     $HOME/.local/bin
     /opt/intel/oneapi/compiler/latest/bin
     $path
