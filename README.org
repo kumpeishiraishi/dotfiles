@@ -21,7 +21,7 @@ Instructions:
 
 ** TeX Live
 - Check out [[https://tug.org/texlive/quickinstall.html][this page]].
-- Install directory should be changed to =~/.local/texlive=.
+- Install directory should be changed to =~/.local/texlive/YYYY=.
 - =basic scheme= is sufficient.
 
 ** Python
