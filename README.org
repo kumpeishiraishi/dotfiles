@@ -56,3 +56,10 @@ or
 #+begin_src shell
 ssh-keygen -t ed25519 -C "YOUR_COMPUTER_NAME" -f ~/.ssh/id_TARGET_NAME
 #+end_src
+
+** git
+Set user name and email:
+#+begin_src shell
+git config --global user.name "kumpeishiraishi"
+git config --global user.email "my.email.address@email.com"
+#+end_src
