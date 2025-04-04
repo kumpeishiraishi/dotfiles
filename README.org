@@ -63,3 +63,9 @@ Set user name and email:
 git config --global user.name "kumpeishiraishi"
 git config --global user.email "my.email.address@email.com"
 #+end_src
+
+** clangd
+#+begin_src shell
+mkdir ~/.config/clangd
+echo "CompileFlags:\n  Add:\n    - --include-directory=/usr/include/c++/13/\n    - --include-directory=/usr/include/x86_64-linux-gnu/c++/13/\n    - --include-directory=/home/kumpei/.local/include/" > ~/.config/clangd/config.yaml
+#+end_src
