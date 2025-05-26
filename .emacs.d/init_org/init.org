@@ -787,8 +787,15 @@ I use it only because it can deal with the history of =counsel-M-x=.
 * cmake
 #+begin_src emacs-lisp :tangle yes
 (use-package cmake-mode
-  :straight nil
-  :mode ("CMakeLists.txt" . cmake-mode))
+  :straight t
+  :mode "CMakeLists.txt")
+#+end_src
+
+* LAMMPS
+#+begin_src emacs-lisp :tangle yes
+(use-package lammps-mode
+  :straight t
+  :mode "\\.lmp\\'")
 #+end_src
 
 * misc
