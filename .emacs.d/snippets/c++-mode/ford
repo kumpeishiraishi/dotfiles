@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: ford
+# key: ford
+# --
+for (int d=0; d<deg; d++) {
+    $0
+}
