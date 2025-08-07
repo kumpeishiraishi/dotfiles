@@ -69,3 +69,10 @@ git config --global user.email "my.email.address@email.com"
 mkdir ~/.config/clangd
 echo "CompileFlags:\n  Add:\n    - --include-directory=/usr/include/c++/13/\n    - --include-directory=/usr/include/x86_64-linux-gnu/c++/13/\n    - --include-directory=/home/kumpei/.local/include/" > ~/.config/clangd/config.yaml
 #+end_src
+
+** Intel oneAPI
+1. Go to [[https://www.intel.com/content/www/us/en/developer/tools/oneapi/overview.html][this link]] and download the offline installer for 'Intel oneAPI Base Toolkit'.
+2. Run the install script like this:
+#+begin_src shell
+./intel-oneapi-base-toolkit-2025.2.0.592.sh -a --silent --cli --eula accept --install-dir ~/.local/intel/oneapi
+#+end_src
