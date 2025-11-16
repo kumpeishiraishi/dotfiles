@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: my_fori
+# key: fori
+# --
+for (int i=0; i<N; i++) {
+    $0
+}
