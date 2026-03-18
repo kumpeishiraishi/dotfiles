@@ -283,7 +283,9 @@ I use =DDSKK= for Japanese writing.
        (concat DBdirec "Emacs/skk/" "SKK-JISYO.itaiji")
        (concat DBdirec "Emacs/skk/" "SKK-JISYO.yama")
        (concat DBdirec "Emacs/skk/" "skk_jisyo_tokyo/SKK-JISYO.tokyo")
+       (concat DBdirec "Emacs/skk/" "SKK-JISYO.osaka")
        (concat DBdirec "Emacs/skk/" "SKK-JISYO.fullname")
+       (concat DBdirec "Emacs/skk/" "SKK-JISYO.emoji.utf8")
        (cons (concat DBdirec "Emacs/skk/" "SKK-JISYO.JIS3_4") 'euc-jisx0213)))
 (setq skk-tut-file (concat DBdirec "Emacs/skk/" "skk/etc/SKK.tut"))
 #+END_SRC
