@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: column
+# key: column
+# expand-env: ((yas-indent-line 'fixed))
+# --
+\begin{columns}
+\begin{column}{.$1\textwidth}
+$0
+\end{column}
+\begin{column}{.$2\textwidth}
+
+\end{column}
+\end{columns}
